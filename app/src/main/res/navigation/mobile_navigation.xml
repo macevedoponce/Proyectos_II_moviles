@@ -3,23 +3,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_inicio">
+
 
     <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.acevedo.rutaexperienciauc.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/navigation_favoritos"
+        android:name="com.acevedo.rutaexperienciauc.ui.favoritos.FavoritosFragment"
+        android:label="@string/title_favoritos"
+        tools:layout="@layout/fragment_favoritos" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.acevedo.rutaexperienciauc.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_sedes"
+        android:name="com.acevedo.rutaexperienciauc.ui.sedes.SedesFragment"
+        android:label="@string/title_sedes"
+        tools:layout="@layout/fragment_sedes" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.acevedo.rutaexperienciauc.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_inicio"
+        android:name="com.acevedo.rutaexperienciauc.ui.inicio.InicioFragment"
+        android:label="@string/title_inicio"
+        tools:layout="@layout/fragment_inicio" />
+
+    <fragment
+        android:id="@+id/navigation_ayuda"
+        android:name="com.acevedo.rutaexperienciauc.ui.ayuda.AyudaFragment"
+        android:label="@string/title_ayuda"
+        tools:layout="@layout/fragment_ayuda" />
+
+    <fragment
+        android:id="@+id/navigation_soporte"
+        android:name="com.acevedo.rutaexperienciauc.ui.soporte.SoporteFragment"
+        android:label="@string/title_soporte"
+        tools:layout="@layout/fragment_soporte" />
 </navigation>

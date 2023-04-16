@@ -7,4 +7,7 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- colores  Ruta Experiencia APP-->
+    <color name="icon_selected">#A304A3</color>
 </resources>
