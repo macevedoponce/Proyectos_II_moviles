@@ -4,7 +4,6 @@ plugins {
 
 android {
     compileSdkVersion 32
-    buildToolsVersion "30.0.2"
 
     defaultConfig {
         applicationId "com.acevedo.rutaexperienciauc"
@@ -29,6 +28,7 @@ android {
     buildFeatures {
         viewBinding true
     }
+    namespace 'com.acevedo.rutaexperienciauc'
 }
 
 dependencies {
