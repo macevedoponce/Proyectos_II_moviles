@@ -6,7 +6,25 @@
     <string name="title_sedes">Sedes</string>
     <string name="title_ayuda">Ayuda</string>
     <string name="title_soporte">Soporte</string>
+    <string name="btn_escribenos">Escríbenos</string>
+    <string name="btn_aceptar">Aceptar</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Diferenciales -->
+    <string name="dif_pensamiento_title_1">Pensamiento +</string>
+    <string name="dif_pensamiento_title_2">Acción emprendedora</string>
+    <string name="dif_pensamiento_desc">Impulsamos el pensamiento más la acción emprendedora a partir de la generación de autoconfianza y el desarrollo del sentido de posibilidad para crear oportunidades y generar valor.</string>
+
+    <string name="dif_bienestar_title_1">Bienestar</string>
+    <string name="dif_bienestar_title_2">integral</string>
+    <string name="dif_bienestar_desc">Promovemos el bienestar integral constante para alcanzar el desarrollo de nuestros estudiantes, docentes, colaboradoras y colaboradores; en forma preventiva y proactiva.</string>
+
+    <string name="dif_comunidades_title_1">Comunidades</string>
+    <string name="dif_comunidades_title_2">colaborativas</string>
+    <string name="dif_comunidades_desc">Generamos comunidades colaborativas que se nutren de otras perspectivas, para innovar y emprender y así contribuir activamente a un beneficio colectivo para lograr cambio y acelerar el aprendizaje.</string>
+
+
 </resources>
