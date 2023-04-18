@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.splash">
+
+    <ImageView
+        android:id="@+id/imgSplashFondo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/fondo_uc"
+        android:scaleType="centerCrop"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/degradado_oscuro">
+
+    </View>
+    <ImageView
+        android:id="@+id/imgSplashLogo"
+        android:layout_width="208dp"
+        android:layout_height="155.2dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/logo_uc_blanco"
+        />
+
+    <TextView
+        android:id="@+id/Txtsplash_año"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_alignParentRight="true"
+        android:text=""
+        android:textColor="@color/white"
+        ></TextView>
+    <TextView
+        android:id="@+id/txtDerechosReservados"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:text="Todos los derechos reservados"
+        android:textColor="@color/white"
+        ></TextView>
+</RelativeLayout>
