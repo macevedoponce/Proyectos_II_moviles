@@ -1,10 +1,8 @@
 package com.acevedo.rutaexperienciauc.ui.inicio;
 
 import android.app.Dialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
@@ -12,7 +10,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,7 +29,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
@@ -51,7 +47,7 @@ public class InicioFragment extends Fragment {
     ImageSlider imageSlider;
     RecyclerView rvSedes;
 
-    CardView cvPensamiento, cvComunidades, cvBienestar;
+    CardView cvPensamiento, cvComunidades, cvBienestar, cvEscribenos;
     List<Sede> listaSede;
 
     RequestQueue requestQueue;
@@ -74,6 +70,7 @@ public class InicioFragment extends Fragment {
         cvPensamiento = vista.findViewById(R.id.cvPensamiento);
         cvComunidades = vista.findViewById(R.id.cvComunidades);
         cvBienestar = vista.findViewById(R.id.cvBienestar);
+        cvEscribenos = vista.findViewById(R.id.cvEscribenos);
 
         cvPensamiento.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,6 +90,15 @@ public class InicioFragment extends Fragment {
                 dialogDiferenciales("comunidades");
             }
         });
+
+//        cvEscribenos.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent i = new Intent(getContext(), SolicitarInformacionFragment.class);
+//                startActivity(i);
+//            }
+//        });
+
 
         //sedes
         rvSedes = vista.findViewById(R.id.rvSedes);
