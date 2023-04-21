@@ -19,13 +19,13 @@
         android:background="@drawable/degradado_oscuro">
 
     </View>
+
     <ImageView
         android:id="@+id/imgSplashLogo"
         android:layout_width="208dp"
         android:layout_height="155.2dp"
         android:layout_centerInParent="true"
-        android:src="@drawable/logo_uc_blanco"
-        />
+        android:src="@drawable/logo_uc_blanco" />
 
     <TextView
         android:id="@+id/Txtsplash_año"

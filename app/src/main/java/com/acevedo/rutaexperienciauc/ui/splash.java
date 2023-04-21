@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,15 +18,27 @@ import com.bumptech.glide.Glide;
 import java.util.Calendar;
 
 public class splash extends AppCompatActivity {
-    TextView Txtsplash_año;
-    ImageView imgSplashFondo,imgSplashLogo;
+    TextView Txtsplash_año,txtDerechosReservados;
+    ImageView imgSplashLogo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        //animacion
+        Animation animacion1 = AnimationUtils.loadAnimation(this, R.anim.splash_top);
+        Animation animacion2 = AnimationUtils.loadAnimation(this, R.anim.splash_bottom);
+
         Txtsplash_año = findViewById(R.id.Txtsplash_año);
         imgSplashLogo = findViewById(R.id.imgSplashLogo);
-        imgSplashFondo = findViewById(R.id.imgSplashFondo);
+        txtDerechosReservados = findViewById(R.id.txtDerechosReservados);
+
+        Txtsplash_año.setAnimation(animacion2);
+        imgSplashLogo.setAnimation(animacion1);
+        txtDerechosReservados.setAnimation(animacion2);
+
+
+
 
         //Añadimos un temporizador para pasar al inicio
         new Handler().postDelayed(new Runnable() {
@@ -42,14 +56,5 @@ public class splash extends AppCompatActivity {
         //Enviamos el año al textView
         Txtsplash_año.setText(String.valueOf(year));
 
-//        //Encontramos la imagen del logo de la universidad
-//        Glide.with(this)
-//                .load("https://scontent.flim2-2.fna.fbcdn.net/v/t1.6435-9/40160004_1820551124696091_2401308222259462144_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=174925&_nc_eui2=AeHN_Oua9_w6G_vTcE24I-USx9mPdfQA97HH2Y919AD3sQgwhwQ1gv80r4sBqgkjhSzD_RI4Nd_ZyzzNdD6-jrQ6&_nc_ohc=yk_Fg2hgZWsAX9WftJg&_nc_ht=scontent.flim2-2.fna&oh=00_AfCUpJqs6E4oFZ7vhi9HGjX2YOFWNaTSUTPDhhUqtPIHSA&oe=64661898")
-//                .into(imgSplashLogo);
-//
-        //Encontramos la imagen del fondo de la universidad
-//        Glide.with(this)
-//                .load("https://ucontinental.edu.pe/www/wp-content/uploads/2023/03/campus-huancayo-11.jpg")
-//                .into(imgSplashFondo);
     }
 }
