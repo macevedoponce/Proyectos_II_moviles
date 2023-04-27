@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".ui.solicitarInformacion.SolicitarInformacionFragment">
 
@@ -10,122 +11,127 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        tools:ignore="MissingConstraints">
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="-5dp">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="Solicita Información"
-            android:textSize="20dp"
             android:textColor="@color/icon_selected"
-            android:layout_gravity="center">
-        </TextView>
+            android:textSize="20dp"></TextView>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
+
             <EditText
                 android:id="@+id/edtSolInfoNombres"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:hint="Nombres*"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:layout_marginRight="20dp"
-                android:elevation="2dp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/borde_edit_text"
-                >
-            </EditText>
+                android:elevation="2dp"
+                android:hint="Nombres*"
+                android:inputType="textCapSentences"></EditText>
 
             <EditText
                 android:id="@+id/edtSolInfoApellidoPaterno"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:hint="Apellido Paterno*"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:layout_marginRight="20dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/borde_edit_text"
                 android:elevation="2dp"
-                android:background="@drawable/borde_edit_text">
-            </EditText>
+                android:hint="Apellido Paterno*"
+                android:inputType="textCapSentences"></EditText>
 
             <EditText
                 android:id="@+id/edtSolInfoApellidoMaterno"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:hint="Apellido Materno*"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:layout_marginRight="20dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/borde_edit_text"
                 android:elevation="2dp"
-                android:background="@drawable/borde_edit_text">
-            </EditText>
+                android:hint="Apellido Materno*"
+                android:inputType="textCapSentences"></EditText>
 
             <EditText
                 android:id="@+id/edtSolInfoEmail"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:hint="Email*"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:layout_marginRight="20dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/borde_edit_text"
                 android:elevation="2dp"
-                android:background="@drawable/borde_edit_text">
-            </EditText>
+                android:hint="Email*"
+                android:inputType="textEmailAddress"></EditText>
 
             <EditText
                 android:id="@+id/edtSolInfoCelular"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:hint="Celular*"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:layout_marginRight="20dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/borde_edit_text"
                 android:elevation="2dp"
-                android:background="@drawable/borde_edit_text">
-            </EditText>
+                android:hint="Celular*"
+                android:inputType="number" ></EditText>
 
             <EditText
                 android:id="@+id/edtSolInfoFechaNacimiento"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:hint="Fecha de nacimiento*"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:layout_marginRight="20dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/borde_edit_text"
                 android:elevation="2dp"
-                android:background="@drawable/borde_edit_text">
-            </EditText>
+                android:hint="Fecha de nacimiento*"
+                android:inputType="date"></EditText>
         </LinearLayout>
+
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="10dp">
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="170dp"
                 android:layout_height="wrap_content"
+                android:background="@drawable/borde_edit_text"
+                android:elevation="2dp"
                 android:orientation="vertical"
-                android:background="@drawable/borde_edit_text">
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="5dp">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Modalidad de interes"
-                    android:textColor="@color/black">
-                </TextView>
+                    android:textColor="@color/black"></TextView>
 
                 <RadioGroup
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
+                    android:layout_height="match_parent">
 
                     <RadioButton
                         android:id="@+id/RBPresencial"
@@ -140,32 +146,33 @@
                         android:text="SemiPresencial" />
 
                     <RadioButton
-                        android:id="@+id/radioButton3"
+                        android:id="@+id/RBADistancia"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="A Distancia" />
                 </RadioGroup>
             </LinearLayout>
+
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="170dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginLeft="30dp"
                 android:background="@drawable/borde_edit_text"
-                android:layout_gravity="right">
+                android:elevation="2dp"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp">
 
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Método de contacto"
-                    android:textColor="@color/black">
-                </TextView>
+                    android:textColor="@color/black"></TextView>
 
                 <RadioGroup
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
+                    android:layout_height="match_parent">
 
                     <RadioButton
                         android:id="@+id/RBCorreoElectronico"
@@ -192,9 +199,10 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp">
+            android:orientation="horizontal">
+
             <RadioButton
                 android:id="@+id/RDConsentimiento"
                 android:layout_width="match_parent"
@@ -206,12 +214,12 @@
 
         <Button
             android:id="@+id/btnSolicitarInformacion"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Enviar"
+            app:backgroundTint="@null"
+            style="@style/style_txt_btn"
             android:background="@drawable/degradado"
-            android:layout_gravity="center">
-        </Button>
+            android:text="Enviar"></Button>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

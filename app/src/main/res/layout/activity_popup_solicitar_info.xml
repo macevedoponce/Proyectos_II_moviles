@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.solicitarInformacion.PopupSolicitarInfo"
+    android:orientation="vertical"
+    android:background="@drawable/background_popup">
+
+    <TextView
+        android:id="@+id/txtFelicitaciones"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="¡FELICITACIONES!"
+        android:textSize="24dp"
+        android:textStyle="bold"
+        >
+    </TextView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:justificationMode="inter_word"
+        android:text="Tú mensaje fue enviado satisfactoriamente, nos estaremos comunicando contigo en el menor tiempo posible."></TextView>
+
+    <Button
+        android:id="@+id/btnPopupAceptar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:backgroundTint="@null"
+        style="@style/style_txt_btn"
+        android:background="@drawable/degradado"
+        android:text="Aceptar"></Button>
+
+</LinearLayout>
