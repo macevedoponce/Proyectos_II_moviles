@@ -44,7 +44,8 @@
             android:layout_gravity="center"
             android:textColor="@color/white"
             android:fontFamily="@font/poppins_bold"
-            android:text="Salud"
+            android:text="Los Olivos - Lima"
+            android:textAlignment="center"
             android:textSize="20sp" />
 
     </androidx.cardview.widget.CardView>
