@@ -28,4 +28,7 @@
 
     <!-- Solicitar informacion -->
     <string name="title_solicitar_informacion">Solicitar Informacion</string>
+
+    <!-- Buscar carrera -->
+    <string name="hint_ingresar_carrera_pref">Ingrese la carrera de su preferencia</string>
 </resources>
