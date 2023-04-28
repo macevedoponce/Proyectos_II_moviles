@@ -3,113 +3,145 @@ package com.acevedo.rutaexperienciauc.clases;
 import java.util.Date;
 
 public class SolicitarInformacion {
-    int IdContacto;
-    String CcNombre;
-    String CcApellidoPaterno;
-    String CcApellidoMaterno;
-    String CcCorreo;
-    String CcTelefono;
-    Date CcFechaNacimiento;
-    Date CcFechaContaco;
-    int IdTipoContacto;
-    int IdTipoModalidad;
+    int IdSolicitarInfo;
+    String SiNombre;
+    String SiApellidoPaterno;
+    String SiApellidoMaterno;
+    String CaNombre;
+    String SeNombre;
+    String SiModalidad;
+    String SiCorreo;
+    String SiTelefono;
+    Date SiFechaNacimiento;
+    Date SiFechaContacto;
+    String SiTipoContacto;
 
-    public SolicitarInformacion() {
+    public SolicitarInformacion(int idSolicitarInfo, String siNombre, String siApellidoPaterno, String siApellidoMaterno, String caNombre, String seNombre, String siModalidad, String siCorreo, String siTelefono, Date siFechaNacimiento, Date siFechaContacto, String siTipoContacto) {
+        this.IdSolicitarInfo = idSolicitarInfo;
+        this.SiNombre = siNombre;
+        this.SiApellidoPaterno = siApellidoPaterno;
+        this.SiApellidoMaterno = siApellidoMaterno;
+        this.CaNombre = caNombre;
+        this.SeNombre = seNombre;
+        this.SiModalidad = siModalidad;
+        this.SiCorreo = siCorreo;
+        this.SiTelefono = siTelefono;
+        this.SiFechaNacimiento = siFechaNacimiento;
+        this.SiFechaContacto = siFechaContacto;
+        this.SiTipoContacto = siTipoContacto;
     }
 
-    public int getIdContacto() {
-        return IdContacto;
+    public int getIdSolicitarInfo() {
+        return IdSolicitarInfo;
     }
 
-    public void setIdContacto(int idContacto) {
-        IdContacto = idContacto;
+    public void setIdSolicitarInfo(int idSolicitarInfo) {
+        IdSolicitarInfo = idSolicitarInfo;
     }
 
-    public String getCcNombre() {
-        return CcNombre;
+    public String getSiNombre() {
+        return SiNombre;
     }
 
-    public void setCcNombre(String ccNombre) {
-        CcNombre = ccNombre;
+    public void setSiNombre(String siNombre) {
+        SiNombre = siNombre;
     }
 
-    public String getCcApellidoPaterno() {
-        return CcApellidoPaterno;
+    public String getSiApellidoPaterno() {
+        return SiApellidoPaterno;
     }
 
-    public void setCcApellidoPaterno(String ccApellidoPaterno) {
-        CcApellidoPaterno = ccApellidoPaterno;
+    public void setSiApellidoPaterno(String siApellidoPaterno) {
+        SiApellidoPaterno = siApellidoPaterno;
     }
 
-    public String getCcApellidoMaterno() {
-        return CcApellidoMaterno;
+    public String getSiApellidoMaterno() {
+        return SiApellidoMaterno;
     }
 
-    public void setCcApellidoMaterno(String ccApellidoMaterno) {
-        CcApellidoMaterno = ccApellidoMaterno;
+    public void setSiApellidoMaterno(String siApellidoMaterno) {
+        SiApellidoMaterno = siApellidoMaterno;
     }
 
-    public String getCcCorreo() {
-        return CcCorreo;
+    public String getCaNombre() {
+        return CaNombre;
     }
 
-    public void setCcCorreo(String ccCorreo) {
-        CcCorreo = ccCorreo;
+    public void setCaNombre(String caNombre) {
+        CaNombre = caNombre;
     }
 
-    public String getCcTelefono() {
-        return CcTelefono;
+    public String getSeNombre() {
+        return SeNombre;
     }
 
-    public void setCcTelefono(String ccTelefono) {
-        CcTelefono = ccTelefono;
+    public void setSeNombre(String seNombre) {
+        SeNombre = seNombre;
     }
 
-    public Date getCcFechaNacimiento() {
-        return CcFechaNacimiento;
+    public String getSiModalidad() {
+        return SiModalidad;
     }
 
-    public void setCcFechaNacimiento(Date ccFechaNacimiento) {
-        CcFechaNacimiento = ccFechaNacimiento;
+    public void setSiModalidad(String siModalidad) {
+        SiModalidad = siModalidad;
     }
 
-    public Date getCcFechaContaco() {
-        return CcFechaContaco;
+    public String getSiCorreo() {
+        return SiCorreo;
     }
 
-    public void setCcFechaContaco(Date ccFechaContaco) {
-        CcFechaContaco = ccFechaContaco;
+    public void setSiCorreo(String siCorreo) {
+        SiCorreo = siCorreo;
     }
 
-    public int getIdTipoContacto() {
-        return IdTipoContacto;
+    public String getSiTelefono() {
+        return SiTelefono;
     }
 
-    public void setIdTipoContacto(int idTipoContacto) {
-        IdTipoContacto = idTipoContacto;
+    public void setSiTelefono(String siTelefono) {
+        SiTelefono = siTelefono;
     }
 
-    public int getIdTipoModalidad() {
-        return IdTipoModalidad;
+    public Date getSiFechaNacimiento() {
+        return SiFechaNacimiento;
     }
 
-    public void setIdTipoModalidad(int idTipoModalidad) {
-        IdTipoModalidad = idTipoModalidad;
+    public void setSiFechaNacimiento(Date siFechaNacimiento) {
+        SiFechaNacimiento = siFechaNacimiento;
+    }
+
+    public Date getSiFechaContacto() {
+        return SiFechaContacto;
+    }
+
+    public void setSiFechaContacto(Date siFechaContacto) {
+        SiFechaContacto = siFechaContacto;
+    }
+
+    public String getSiTipoContacto() {
+        return SiTipoContacto;
+    }
+
+    public void setSiTipoContacto(String siTipoContacto) {
+        SiTipoContacto = siTipoContacto;
     }
 
     @Override
     public String toString() {
         return "SolicitarInformacion{" +
-                "IdContacto=" + IdContacto +
-                ", CcNombre='" + CcNombre + '\'' +
-                ", CcApellidoPaterno='" + CcApellidoPaterno + '\'' +
-                ", CcApellidoMaterno='" + CcApellidoMaterno + '\'' +
-                ", CcCorreo='" + CcCorreo + '\'' +
-                ", CcTelefono='" + CcTelefono + '\'' +
-                ", CcFechaNacimiento=" + CcFechaNacimiento +
-                ", CcFechaContaco=" + CcFechaContaco +
-                ", IdTipoContacto=" + IdTipoContacto +
-                ", IdTipoModalidad=" + IdTipoModalidad +
+                "IdSolicitarInfo=" + IdSolicitarInfo +
+                ", SiNombre='" + SiNombre + '\'' +
+                ", SiApellidoPaterno='" + SiApellidoPaterno + '\'' +
+                ", SiApellidoMaterno='" + SiApellidoMaterno + '\'' +
+                ", CaNombre='" + CaNombre + '\'' +
+                ", SeNombre='" + SeNombre + '\'' +
+                ", SiModalidad='" + SiModalidad + '\'' +
+                ", SiCorreo='" + SiCorreo + '\'' +
+                ", SiTelefono='" + SiTelefono + '\'' +
+                ", SiFechaNacimiento=" + SiFechaNacimiento +
+                ", SiFechaContacto=" + SiFechaContacto +
+                ", SiTipoContacto='" + SiTipoContacto + '\'' +
                 '}';
     }
 }

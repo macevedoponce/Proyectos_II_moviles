@@ -1,225 +1,295 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".ui.solicitarInformacion.SolicitarInformacionFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="-5dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Solicita Información"
-            android:textColor="@color/icon_selected"
-            android:textSize="20dp"></TextView>
-
-        <LinearLayout
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <EditText
-                android:id="@+id/edtSolInfoNombres"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/borde_edit_text"
-                android:elevation="2dp"
-                android:hint="Nombres*"
-                android:inputType="textCapSentences"></EditText>
-
-            <EditText
-                android:id="@+id/edtSolInfoApellidoPaterno"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/borde_edit_text"
-                android:elevation="2dp"
-                android:hint="Apellido Paterno*"
-                android:inputType="textCapSentences"></EditText>
-
-            <EditText
-                android:id="@+id/edtSolInfoApellidoMaterno"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/borde_edit_text"
-                android:elevation="2dp"
-                android:hint="Apellido Materno*"
-                android:inputType="textCapSentences"></EditText>
-
-            <EditText
-                android:id="@+id/edtSolInfoEmail"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/borde_edit_text"
-                android:elevation="2dp"
-                android:hint="Email*"
-                android:inputType="textEmailAddress"></EditText>
-
-            <EditText
-                android:id="@+id/edtSolInfoCelular"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/borde_edit_text"
-                android:elevation="2dp"
-                android:hint="Celular*"
-                android:inputType="number" ></EditText>
-
-            <EditText
-                android:id="@+id/edtSolInfoFechaNacimiento"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/borde_edit_text"
-                android:elevation="2dp"
-                android:hint="Fecha de nacimiento*"
-                android:inputType="date"></EditText>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:orientation="horizontal">
-
+            android:layout_height="0dp"
+            android:layout_weight="1">
             <LinearLayout
-                android:layout_width="170dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/borde_edit_text"
-                android:elevation="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="500dp"
                 android:orientation="vertical"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="5dp">
-
+                android:layout_marginBottom="30dp">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Modalidad de interes"
-                    android:textColor="@color/black"></TextView>
+                    android:layout_gravity="center"
+                    android:text="@string/title_solicitar_informacion"
+                    android:textColor="@color/icon_selected"
+                    android:textSize="20dp"></TextView>
 
-                <RadioGroup
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                    <RadioButton
-                        android:id="@+id/RBPresencial"
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Presencial" />
+                        android:id="@+id/tilSolInfoNombres"
+                        android:background="@drawable/borde_edit_text"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="10dp"
+                        android:elevation="2dp"
+                        style="@style/Base.Widget.MaterialComponents.TextInputLayout.OutLineBox"
+                        >
+                        <EditText
+                            android:id="@+id/edtSolInfoNombres"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:background="@color/white"
+                            android:hint="@string/soli_info_nombres"
+                            android:inputType="textCapSentences"
+                            ></EditText>
 
-                    <RadioButton
-                        android:id="@+id/RBSemiPresencial"
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="SemiPresencial" />
+                        android:id="@+id/tilSolInfoApellidoPaterno"
+                        android:background="@drawable/borde_edit_text"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="10dp"
+                        android:elevation="2dp"
+                        style="@style/Base.Widget.MaterialComponents.TextInputLayout.OutLineBox"                        >
+                        <EditText
+                            android:id="@+id/edtSolInfoApellidoPaterno"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:background="@color/white"
+                            android:hint="@string/soli_info_apellido_paterno"
+                            android:inputType="textCapSentences"
+                            ></EditText>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <RadioButton
-                        android:id="@+id/RBADistancia"
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="A Distancia" />
-                </RadioGroup>
-            </LinearLayout>
+                        android:id="@+id/tilSolInfoApellidoMaterno"
+                        android:background="@drawable/borde_edit_text"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="10dp"
+                        android:elevation="2dp"
+                        style="@style/Base.Widget.MaterialComponents.TextInputLayout.OutLineBox"                        >
+                        <EditText
+                            android:id="@+id/edtSolInfoApellidoMaterno"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:background="@color/white"
+                            android:hint="@string/soli_info_apellido_materno"
+                            android:inputType="textCapSentences"
+                            ></EditText>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-            <LinearLayout
-                android:layout_width="170dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:background="@drawable/borde_edit_text"
-                android:elevation="2dp"
-                android:orientation="vertical"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp">
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tilSolInfoEmail"
+                        android:background="@drawable/borde_edit_text"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="10dp"
+                        android:elevation="2dp"
+                        style="@style/Base.Widget.MaterialComponents.TextInputLayout.OutLineBox">
+                        <EditText
+                            android:id="@+id/edtSolInfoEmail"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:background="@color/white"
+                            android:hint="@string/soli_info_email"
+                            android:inputType="textEmailAddress"
+                            android:drawableRight="@drawable/ic_email"
+                            ></EditText>
+                    </com.google.android.material.textfield.TextInputLayout>
 
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tilSolInfoCelular"
+                        android:background="@drawable/borde_edit_text"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="10dp"
+                        android:elevation="2dp"
+                        style="@style/Base.Widget.MaterialComponents.TextInputLayout.OutLineBox"                        >
+                        <EditText
+                            android:id="@+id/edtSolInfoCelular"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:background="@color/white"
+                            android:hint="@string/soli_info_celular"
+                            android:inputType="number"
+                            android:drawableRight="@drawable/ic_celular"
+                            ></EditText>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                <TextView
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tilSolInfoFechaNacimiento"
+                        android:background="@drawable/borde_edit_text"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="10dp"
+                        android:elevation="2dp"
+                        android:layout_marginBottom="10dp"
+                        style="@style/Base.Widget.MaterialComponents.TextInputLayout.OutLineBox"
+                        >
+                        <EditText
+                            android:id="@+id/edtSolInfoFechaNacimiento"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:background="@color/white"
+                            android:hint="@string/soli_info_fecha_nacimiento"
+                            android:inputType="date"
+                            android:drawableRight="@drawable/ic_calendario"
+                            ></EditText>
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/borde_edit_text"
+                        android:elevation="2dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/title_modalidad_interes"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"></TextView>
+
+                        <RadioGroup
+                            android:id="@+id/rgModalidad"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <RadioButton
+                                android:id="@+id/rbPresencial"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/modal_interes_presencial"
+                                android:background="@color/white"/>
+
+                            <RadioButton
+                                android:id="@+id/rbSemiPresencial"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/modal_interes_semipresencial" />
+
+                            <RadioButton
+                                android:id="@+id/rbADistancia"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/modal_interes_a_distancia" />
+                        </RadioGroup>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/borde_edit_text"
+                        android:elevation="2dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/title_metodo_contacto"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"></TextView>
+
+                        <RadioGroup
+                            android:id="@+id/rgMetodoContacto"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <RadioButton
+                                android:id="@+id/rbCorreoElectronico"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/meto_contacto_correo_electronico" />
+
+                            <RadioButton
+                                android:id="@+id/rbCelular"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/meto_contacto_celular" />
+
+                            <RadioButton
+                                android:id="@+id/rbWhatsApp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/meto_contacto_WhatsApp" />
+                        </RadioGroup>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Método de contacto"
-                    android:textColor="@color/black"></TextView>
-
-                <RadioGroup
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <RadioButton
-                        android:id="@+id/RBCorreoElectronico"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Correo Electronico" />
-
-                    <RadioButton
-                        android:id="@+id/RBCelular"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Celular" />
-
-                    <RadioButton
-                        android:id="@+id/RDWhatsApp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="WhatsApp" />
-                </RadioGroup>
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:orientation="horizontal">
+                    <RadioGroup
+                        android:id="@+id/rgConsentimiento"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <RadioButton
+                            android:id="@+id/rbConsentimiento"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:justificationMode="inter_word"
+                            android:text="@string/consentimiento" />
+                    </RadioGroup>
+                </LinearLayout>
             </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/RDConsentimiento"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:justificationMode="inter_word"
-                android:text="Otorgo expresamente mi consentimiento para que mis
-                              datos personales sean tratados de acuerdo con la política de tratamiento de datos" />
-        </LinearLayout>
-
+        </ScrollView>
         <Button
             android:id="@+id/btnSolicitarInformacion"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="37dp"
             app:backgroundTint="@null"
+            android:layout_marginTop="10dp"
             style="@style/style_txt_btn"
             android:background="@drawable/degradado"
-            android:text="Enviar"></Button>
-
+            android:text="@string/btn_enviar"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            ></Button>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

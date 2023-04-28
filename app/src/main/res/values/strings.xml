@@ -27,5 +27,27 @@
     <string name="dif_comunidades_desc">Generamos comunidades colaborativas que se nutren de otras perspectivas, para innovar y emprender y así contribuir activamente a un beneficio colectivo para lograr cambio y acelerar el aprendizaje.</string>
 
     <!-- Solicitar informacion -->
-    <string name="title_solicitar_informacion">Solicitar Informacion</string>
+    <string name="title_solicitar_informacion">Solicitar Información</string>
+    <string name="soli_info_nombres"><small>Nombres*</small></string>
+    <string name="soli_info_apellido_paterno"><small>Apellido Paterno*</small></string>
+    <string name="soli_info_apellido_materno"><small>Apellido Materno*</small></string>
+    <string name="soli_info_email"><small>Email*</small></string>
+    <string name="soli_info_celular"><small>Celular*</small></string>
+    <string name="soli_info_fecha_nacimiento"><small>Fecha de Nacimiento*</small></string>
+    <string name="title_modalidad_interes">Modalidad de interés</string>
+    <string name="modal_interes_presencial">Presencial</string>
+    <string name="modal_interes_semipresencial">SemiPresencial</string>
+    <string name="modal_interes_a_distancia">A Distancia</string>
+    <string name="title_metodo_contacto">Método de contacto</string>
+    <string name="meto_contacto_correo_electronico">Correo Electronico</string>
+    <string name="meto_contacto_celular">Celular</string>
+    <string name="meto_contacto_WhatsApp">WhatsApp</string>
+    <string name="consentimiento">Otorgo expresamente mi consentimiento para que mis datos personales sean tratados de acuerdo con la <b><u>política de tratamiento de datos.</u></b></string>
+    <string name="btn_enviar">Enviar</string>
+
+    <!-- PopupSolicitarInfo -->
+    <string name="title_popup_solicitar_info">¡FELICITACIONES!</string>
+    <string name="popup_comentario">Tú mensaje fue enviado satisfactoriamente, nos estaremos comunicando contigo en el menor tiempo posible.</string>
+    <string name="popup_btn_aceptar">Aceptar</string>
+
 </resources>
