@@ -26,6 +26,7 @@ import com.acevedo.rutaexperienciauc.R;
 import com.acevedo.rutaexperienciauc.adapter.SedeAdapter;
 import com.acevedo.rutaexperienciauc.clases.Sede;
 import com.acevedo.rutaexperienciauc.ui.sedes.SedesFragment;
+
 import com.acevedo.rutaexperienciauc.ui.solicitarInformacion.SolicitarInformacionFragment;
 import com.acevedo.rutaexperienciauc.util.Util;
 import com.android.volley.Request;
@@ -76,6 +77,7 @@ public class InicioFragment extends Fragment {
         cvBienestar = vista.findViewById(R.id.cvBienestar);
         cvEscribenos = vista.findViewById(R.id.cvEscribenos);
 
+
         cvPensamiento.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,14 +97,34 @@ public class InicioFragment extends Fragment {
             }
         });
 
-//        cvEscribenos.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent i = new Intent(getContext(), SolicitarInformacionFragment.class);
-//                startActivity(i);
-//            }
-//        });
+        cvEscribenos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Obtener instancia del FragmentManager
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 
+                //Crear instancia del Fragment que deseas mostrar
+
+                SolicitarInformacionFragment fragment = new SolicitarInformacionFragment();
+
+                //Crear una instancia de la clase FragmentTransaction
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+                // Reemplazar el contenido del contenedor de fragmentos con el Fragment que deseas mostrar
+                transaction.replace(R.id.frameLayoutInicio, fragment);
+
+                // Agregar el Fragment actual a la pila de retroceso
+                transaction.addToBackStack("null");
+
+                // Finalizar la transacción
+                transaction.commit();
+                imageSlider.setVisibility(View.GONE);
+                cvPensamiento.setVisibility(View.GONE);
+                cvComunidades.setVisibility(View.GONE);
+                cvBienestar.setVisibility(View.GONE);
+                cvEscribenos.setVisibility(View.GONE);
+            }
+        });
 
         //sedes
         rvSedes = vista.findViewById(R.id.rvSedes);
