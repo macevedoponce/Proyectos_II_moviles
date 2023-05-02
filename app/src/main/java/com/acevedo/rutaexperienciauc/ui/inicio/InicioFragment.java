@@ -25,6 +25,8 @@ import android.widget.Toast;
 import com.acevedo.rutaexperienciauc.R;
 import com.acevedo.rutaexperienciauc.adapter.SedeAdapter;
 import com.acevedo.rutaexperienciauc.clases.Sede;
+import com.acevedo.rutaexperienciauc.ui.sedes.SedesFragment;
+
 import com.acevedo.rutaexperienciauc.ui.solicitarInformacion.SolicitarInformacionFragment;
 import com.acevedo.rutaexperienciauc.util.Util;
 import com.android.volley.Request;
@@ -132,8 +134,7 @@ public class InicioFragment extends Fragment {
         listaSede = new ArrayList<>();
 
         cargarSedes();
-        cargarSlider();
-
+        obtenerImagenesSlider();
 
         return vista;
 
@@ -185,7 +186,7 @@ public class InicioFragment extends Fragment {
     }
 
     private void cargarSedes() {
-        String url = Util.RUTA_SEDE;
+        String url = Util.RUTA_SEDE_RANDOM;
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
@@ -195,12 +196,12 @@ public class InicioFragment extends Fragment {
                         for (int i = 0; i < response.length(); i++) {
                             try {
                                 JSONObject jsonObject = response.getJSONObject(i);
-                                int id =jsonObject.getInt("sede_id");
-                                String nombre = jsonObject.getString("sede_nombre");
-                                String adress =jsonObject.getString("sede_adresss");
-                                String phone = jsonObject.getString("sede_phone");
-                                String image_url = jsonObject.getString("sede_image_url");
-                                Sede sede = new Sede(id, nombre, adress, phone, Util.RUTA +image_url);
+                                int id =jsonObject.getInt("IdSede");
+                                String nombre = jsonObject.getString("SeNombre");
+                                String adress =jsonObject.getString("SeDireccion");
+                                String image_url = jsonObject.getString("SeUrlImagen");
+                                //Sede sede = new Sede(id, nombre, adress, phone, Util.RUTA +image_url);
+                                Sede sede = new Sede(id, nombre, adress, image_url);
                                 listaSede.add(sede);
 
                             } catch (JSONException e) {
@@ -212,7 +213,7 @@ public class InicioFragment extends Fragment {
                     adapter.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            mostrarSedes(view);
+                            selectSede(view);
                         }
                     });
 
@@ -227,53 +228,9 @@ public class InicioFragment extends Fragment {
         });
         requestQueue.add(request);
 
-
-
-
-
-
-//        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-//            @Override
-//            public void onResponse(JSONObject response) {
-//                try {
-//                    JSONArray jsonArray = response.getJSONArray("");
-//                    for(int i = 0; i<jsonArray.length();i++){
-//                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-//                        int id =jsonObject.getInt("sede_id");
-//                        String nombre = jsonObject.getString("sede_nombre");
-//                        String adress =jsonObject.getString("sede_adresss");
-//                        String phone = jsonObject.getString("sede_phone");
-//                        String image_url = Util.RUTA_SEDE + jsonObject.getString("sede_image_url");
-//                        Sede sede = new Sede(id, nombre, adress, phone, image_url);
-//                        listaSede.add(sede);
-//                    }
-//                    SedeAdapter adapter = new SedeAdapter(getContext(),listaSede);
-//                    adapter.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View view) {
-//                            mostrarSedes(view);
-//                        }
-//                    });
-//
-//                    rvSedes.setAdapter(adapter);
-//                    adapter.notifyDataSetChanged();
-//
-//                } catch (JSONException e) {
-//                    //e.printStackTrace();
-//                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-//                    Log.v("error",e.getMessage());
-//                }
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//        requestQueue.add(jsonObjectRequest);
     }
 
-    private void mostrarSedes(View view) {
+    private void selectSede(View view) {
         int id = listaSede.get(rvSedes.getChildAdapterPosition(view)).getId();
         String nombre = listaSede.get(rvSedes.getChildAdapterPosition(view)).getNombre();
 
@@ -281,7 +238,7 @@ public class InicioFragment extends Fragment {
 
         // activar cuando se tenga lista la interface de facultades y se debe de enviar el id para hacer la consulta en el api
 
-//        Intent i = new Intent(getContext(), ListProductosActivity.class);
+//        Intent i = new Intent(getContext(), carrerasFragment.class);
 //        i.putExtra("sede_id",id);
 //        startActivity(i);
     }
@@ -304,7 +261,7 @@ public class InicioFragment extends Fragment {
     //función que recepciona imagenes desde api
     private void obtenerImagenesSlider() {
         RequestQueue queue = Volley.newRequestQueue(getContext());
-        String url = Util.RUTA_SLIDER;
+        String url = Util.RUTA_SEDE;
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -313,15 +270,16 @@ public class InicioFragment extends Fragment {
                         for (int i = 0; i < response.length(); i++) {
                             try {
                                 JSONObject jsonObject = response.getJSONObject(i);
-                                String imageUrl = jsonObject.getString("slider_url");
-                                slideModels.add(new SlideModel(Util.RUTA+imageUrl,ScaleTypes.FIT)); //agregamos la ruta ya que el API solo manda dirección
+                                String imageUrl = jsonObject.getString("SeUrlImagen");
+                                String title = jsonObject.getString("SeNombre");
+                                slideModels.add(new SlideModel(imageUrl,title,ScaleTypes.FIT));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
 
                         imageSlider.setImageList(slideModels, ScaleTypes.CENTER_CROP);
-                        imageSlider.startSliding(3000);
+                        imageSlider.startSliding(5000);
                     }
                 }, new Response.ErrorListener() {
             @Override

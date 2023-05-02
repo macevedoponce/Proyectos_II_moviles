@@ -68,7 +68,6 @@ public class SedeAdapter extends RecyclerView.Adapter<SedeAdapter.SedeHolder> im
         ImageView ivSede;
         TextView tvSedeName;
 
-        CardView cvSede;
         View view;
 
         public SedeHolder(@NonNull View itemView) {

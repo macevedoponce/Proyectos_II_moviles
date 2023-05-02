@@ -3,64 +3,115 @@ package com.acevedo.rutaexperienciauc.ui.sedes;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.acevedo.rutaexperienciauc.R;
+import com.acevedo.rutaexperienciauc.adapter.SedeAdapter;
+import com.acevedo.rutaexperienciauc.clases.Sede;
+import com.acevedo.rutaexperienciauc.util.Util;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
+import com.denzcoskun.imageslider.models.SlideModel;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SedesFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
 public class SedesFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public SedesFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SedesFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SedesFragment newInstance(String param1, String param2) {
-        SedesFragment fragment = new SedesFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    RecyclerView rvSedesAll;
+    List<Sede> listaSede;
+    RequestQueue requestQueue;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sedes, container, false);
+        View vista = inflater.inflate(R.layout.fragment_sedes, container, false);
+        rvSedesAll = vista.findViewById(R.id.rvSedesAll);
+        rvSedesAll.setHasFixedSize(true);
+        rvSedesAll.setLayoutManager(new LinearLayoutManager(getContext()));
+        requestQueue = Volley.newRequestQueue(getContext());
+        listaSede = new ArrayList<>();
+        cargarSedes();
+        return vista;
+    }
+
+
+    private void cargarSedes() {
+        String url = Util.RUTA_SEDE;
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        List<SlideModel> slideModels = new ArrayList<>();
+                        for (int i = 0; i < response.length(); i++) {
+                            try {
+                                JSONObject jsonObject = response.getJSONObject(i);
+                                int id =jsonObject.getInt("IdSede");
+                                String nombre = jsonObject.getString("SeNombre");
+                                String adress =jsonObject.getString("SeDireccion");
+                                String image_url = jsonObject.getString("SeUrlImagen");
+                                Sede sede = new Sede(id, nombre, adress, image_url);
+                                listaSede.add(sede);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        SedeAdapter adapter = new SedeAdapter(getContext(),listaSede);
+                        adapter.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                selectSede(view);
+                            }
+                        });
+
+                        rvSedesAll.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        requestQueue.add(request);
+
+    }
+
+    private void selectSede(View view) {
+        int id = listaSede.get(rvSedesAll.getChildAdapterPosition(view)).getId();
+        String nombre = listaSede.get(rvSedesAll.getChildAdapterPosition(view)).getNombre();
+
+        Toast.makeText(getContext(), nombre+"", Toast.LENGTH_SHORT).show();
+
+        // activar cuando se tenga lista la interface de facultades y se debe de enviar el id para hacer la consulta en el api
+
+//        Intent i = new Intent(getContext(), carrerasFragment.class);
+//        i.putExtra("sede_id",id);
+//        startActivity(i);
     }
 }

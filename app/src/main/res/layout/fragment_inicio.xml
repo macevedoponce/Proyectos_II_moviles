@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fragment_inicio"
     tools:context=".ui.inicio.InicioFragment">
     
     <androidx.cardview.widget.CardView
@@ -25,9 +26,9 @@
             <com.denzcoskun.imageslider.ImageSlider
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                app:iss_period="5000"
                 app:iss_auto_cycle="true"
                 app:iss_delay="1000"
+                app:iss_text_align="CENTER"
                 android:id="@+id/imageSlider"/>
 
         </LinearLayout>
