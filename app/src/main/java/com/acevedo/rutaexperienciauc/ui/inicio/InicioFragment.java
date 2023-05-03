@@ -26,6 +26,7 @@ import com.acevedo.rutaexperienciauc.R;
 import com.acevedo.rutaexperienciauc.adapter.SedeAdapter;
 import com.acevedo.rutaexperienciauc.clases.Sede;
 import com.acevedo.rutaexperienciauc.ui.sedes.SedesFragment;
+import com.acevedo.rutaexperienciauc.ui.sedes.carreras.rutaExperiencia.experiencia.ListExperienciasFragment;
 import com.acevedo.rutaexperienciauc.ui.solicitarInformacion.SolicitarInformacionFragment;
 import com.acevedo.rutaexperienciauc.util.Util;
 import com.android.volley.Request;
@@ -95,13 +96,22 @@ public class InicioFragment extends Fragment {
             }
         });
 
-//        cvEscribenos.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent i = new Intent(getContext(), SolicitarInformacionFragment.class);
-//                startActivity(i);
-//            }
-//        });
+        cvEscribenos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //codigo que reemplaza el fragment inicio por el fragment solicitar información
+                ListExperienciasFragment listExperienciasFragment = new ListExperienciasFragment(); // inicializa el fragment
+
+                Bundle args = new Bundle();
+                args.putInt("idCarrera",1);
+                args.putInt("exCiclo", 5);
+                listExperienciasFragment.setArguments(args);
+
+                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment_activity_main,listExperienciasFragment).addToBackStack(null).commit(); // reemplaza el contenedor del fragment con el nuevo fragment
+
+
+            }
+        });
 
 
         //sedes
