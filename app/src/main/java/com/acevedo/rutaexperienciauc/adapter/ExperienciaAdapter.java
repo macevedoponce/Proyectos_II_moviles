@@ -17,7 +17,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-public class ExperienciaAdapter extends RecyclerView.Adapter<ExperienciaAdapter.ExperienciaHolder> implements View.OnClickListener {
+public class ExperienciaAdapter extends RecyclerView.Adapter<ExperienciaAdapter.ExperienciaHolder> implements View.OnClickListener{
 
     Context context;
     List<Experiencia> experienciaList;
@@ -51,15 +51,12 @@ public class ExperienciaAdapter extends RecyclerView.Adapter<ExperienciaAdapter.
 
     public void setOnClickListener(View.OnClickListener listener){
         this.listener = listener;
-        Toast.makeText(context, "click en item 1", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onClick(View v) {
-        Toast.makeText(context, "click en item 2", Toast.LENGTH_SHORT).show();
         if(listener != null){
             listener.onClick(v);
-            Toast.makeText(context, "click en item 3", Toast.LENGTH_SHORT).show();
         }
     }
     public class ExperienciaHolder extends RecyclerView.ViewHolder {

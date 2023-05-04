@@ -1,13 +1,9 @@
 package com.acevedo.rutaexperienciauc.clases;
 
 public class Experiencia {
-
     int idExperiencia;
     String exNombre;
     String exIconoUrl;
-
-    public Experiencia() {
-    }
 
     public Experiencia(int idExperiencia, String exNombre, String exIconoUrl) {
         this.idExperiencia = idExperiencia;

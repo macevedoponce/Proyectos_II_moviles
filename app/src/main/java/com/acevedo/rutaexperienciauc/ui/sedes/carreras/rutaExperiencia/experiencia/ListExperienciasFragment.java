@@ -1,6 +1,5 @@
 package com.acevedo.rutaexperienciauc.ui.sedes.carreras.rutaExperiencia.experiencia;
 
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
@@ -8,7 +7,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +15,7 @@ import android.widget.Toast;
 
 import com.acevedo.rutaexperienciauc.R;
 import com.acevedo.rutaexperienciauc.adapter.ExperienciaAdapter;
-import com.acevedo.rutaexperienciauc.adapter.SedeAdapter;
 import com.acevedo.rutaexperienciauc.clases.Experiencia;
-import com.acevedo.rutaexperienciauc.clases.Sede;
 import com.acevedo.rutaexperienciauc.util.Util;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -27,7 +23,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
-import com.denzcoskun.imageslider.models.SlideModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,11 +42,10 @@ public class ListExperienciasFragment extends Fragment {
 
     int idCarrera, exCiclo;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //datos que son obtenidos desde rutaExperienciaFragment
 
         idCarrera = getArguments().getInt("idCarrera");
         exCiclo = getArguments().getInt("exCiclo");
@@ -60,7 +54,7 @@ public class ListExperienciasFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        // Inflate the layout for this fragment
         View vista = inflater.inflate(R.layout.fragment_list_experiencias, container, false);
         ivCiclo = vista.findViewById(R.id.ivCiclo);
         rvExperiencias = vista.findViewById(R.id.rvExperiencias);
@@ -76,14 +70,13 @@ public class ListExperienciasFragment extends Fragment {
 
         ivCiclo.setImageDrawable(drawable);
 
-
         return vista;
     }
 
-    public String getCicloName(int number) {
+    private String getCicloName(int exCiclo) {
         String[] cicloNames = {"ciclo_uno", "ciclo_dos", "ciclo_tres", "ciclo_cuatro", "ciclo_cinco", "ciclo_seis", "ciclo_siete", "ciclo_ocho", "ciclo_nueve", "ciclo_diez", "ciclo_once", "ciclo_doce", "ciclo_trece", "ciclo_catorce"};
         // Restar 1 al número para que se corresponda con el índice del array
-        int index = number - 1;
+        int index = exCiclo - 1;
         if (index >= 0 && index < cicloNames.length) {
             return cicloNames[index];
         } else {
@@ -131,17 +124,21 @@ public class ListExperienciasFragment extends Fragment {
     }
 
     private void selectExperiencia(View view) {
-
         int idExperiencia = listaExperiencia.get(rvExperiencias.getChildAdapterPosition(view)).getIdExperiencia();
         String iconoUrl = listaExperiencia.get(rvExperiencias.getChildAdapterPosition(view)).getExIconoUrl();
 
-        Toast.makeText(getContext(), "urra"+idExperiencia, Toast.LENGTH_SHORT).show();
-        Intent i = new Intent(getContext(), DetalleExperienciaActivity.class);
-        i.putExtra("IdExperiencia",idExperiencia);
-        i.putExtra("ExIconoUrl",iconoUrl);
-        startActivity(i);
+        Toast.makeText(getContext(), "urra" + idExperiencia, Toast.LENGTH_SHORT).show();
+
+        //codigo que reemplaza el fragment inicio por el fragment solicitar información
+        DetalleExperienciaFragment detalleExperienciaFragment = new DetalleExperienciaFragment(); // inicializa el fragment
+
+        Bundle args = new Bundle();
+        args.putInt("idCarrera",idExperiencia);
+        args.putString("iconoUrl", iconoUrl);
+        detalleExperienciaFragment.setArguments(args);
+
+        getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment_activity_main,detalleExperienciaFragment).addToBackStack(null).commit(); // reemplaza el contenedor del fragment con el nuevo fragment
 
 
     }
-
 }

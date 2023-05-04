@@ -12,7 +12,7 @@
         android:gravity="center"
         android:padding="10dp"
         android:orientation="horizontal">
-        
+
         <ImageView
             android:id="@+id/ivCiclo"
             android:layout_width="53dp"
@@ -25,12 +25,13 @@
             android:layout_marginStart="10dp"
             style="@style/style_txt_title"
             android:text="Experiencias"/>
-        
+
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvExperiencias"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+
 
 </LinearLayout>
