@@ -213,48 +213,61 @@ public class SolicitarInformacionFragment extends Fragment {
     private void solicitarInformacion() {
 
         LocalDateTime fechaActual = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String fechaHoraActualString = fechaActual.format(formatter);
 
+        //Construir el objeto JSON con los datos
+        JSONObject datos = new JSONObject();
         String url = Util.RUTA_SOLICITAR_INFORMACION;
+        requestQueue = Volley.newRequestQueue(getContext());
 
-        StringRequest postResquest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Intent intent =new Intent(getContext(), PopupSolicitarInfo.class);
-                startActivity(intent);
-                edtSolInfoNombres.setText("");
-                edtSolInfoApellidoPaterno.setText("");
-                edtSolInfoApellidoMaterno.setText("");
-                edtSolInfoEmail.setText("");
-                edtSolInfoCelular.setText("");
-                edtSolInfoFechaNacimiento.setText("");
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("error",error.getMessage());
-            }
-        })
-        {
-            protected Map<String,String> getParams() throws AuthFailureError{
-                Map<String, String> params = new HashMap<>();
-                params.put("SiNombre",edtSolInfoNombres.getText().toString());
-                params.put("SiApellidoPaterno",edtSolInfoApellidoPaterno.getText().toString());
-                params.put("SiApellidoMaterno",edtSolInfoApellidoMaterno.getText().toString());
-                params.put("SiCorreo",edtSolInfoEmail.getText().toString());
-                params.put("SiTelefono",edtSolInfoCelular.getText().toString());
-                params.put("SiFechaNacimiento",edtSolInfoFechaNacimiento.getText().toString());
-                params.put("CaNombre",spCarreras.getSelectedItem().toString());
-                params.put("SeNombre",spSedes.getSelectedItem().toString());
-                params.put("SiModalidad","ModalidadInteres");
-                params.put("SiFechaSolicitud",fechaHoraActualString);
-                params.put("SiTipoContacto","MetodoContacto");
-                return params;
-            }
-        };
-        Volley.newRequestQueue(getContext()).add(postResquest);
+        try{
+            datos.put("SiNombre", edtSolInfoNombres.getText().toString());
+            datos.put("SiApellidoPaterno", edtSolInfoApellidoPaterno.getText().toString());
+            datos.put("SiApellidoMaterno", edtSolInfoApellidoMaterno.getText().toString());
+            datos.put("SiCorreo", edtSolInfoEmail.getText().toString());
+            datos.put("SiTelefono", edtSolInfoCelular.getText().toString());
+            datos.put("SiFechaNacimiento", edtSolInfoFechaNacimiento.getText().toString());
+            datos.put("CaNombre", spCarreras.getSelectedItem().toString());
+            datos.put("SeNombre", spSedes.getSelectedItem().toString());
+            datos.put("SiModalidad", "ModalidadInteres");
+            datos.put("SiFechaSolicitud", fechaHoraActualString);
+            datos.put("SiTipoContacto", "MetodoContacto");
+        } catch (JSONException e){
+            e.printStackTrace();
         }
+        //Enviar la petición al servidor
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, datos,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        //Mostrar mensaje de exito
+                        Intent intent =new Intent(getContext(), PopupSolicitarInfo.class);
+                        startActivity(intent);
+                        //Limpiar los datos del texto
+                        edtSolInfoNombres.setText("");
+                        edtSolInfoApellidoPaterno.setText("");
+                        edtSolInfoApellidoMaterno.setText("");
+                        edtSolInfoEmail.setText("");
+                        edtSolInfoCelular.setText("");
+                        edtSolInfoFechaNacimiento.setText("");
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        if (error.networkResponse != null && error.networkResponse.data != null) {
+                            String errorResponse = new String(error.networkResponse.data);
+                            Log.e("Volley Error", errorResponse);
+                            Toast.makeText(getContext(), "E1: " + errorResponse, Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getContext(), "Error al insertar los datos", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+        );
+        requestQueue.add(jsonObjectRequest);
+    }
 
     private boolean validarCampo() {
         boolean camposCompletos = true;
@@ -364,7 +377,7 @@ public class SolicitarInformacionFragment extends Fragment {
                             @Override
                             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                                 // Actualizar el texto del EditText con la fecha seleccionada
-                                String date = dayOfMonth + "/" + (month + 1) + "/" + year;
+                                String date = year + "-" + (month + 1) + "-" + dayOfMonth;
                                 edtSolInfoFechaNacimiento.setText(date);
                             }
                         }, year, month, dayOfMonth);
