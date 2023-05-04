@@ -50,4 +50,19 @@
     <string name="popup_comentario">Tú mensaje fue enviado satisfactoriamente, nos estaremos comunicando contigo en el menor tiempo posible.</string>
     <string name="popup_btn_aceptar">Aceptar</string>
 
+    <string-array name="mis_sedes">
+        <item>Sede Huancayo</item>
+        <item>Sede Cuzco</item>
+        <item>Sede Arequipa</item>
+        <item>Sede los olivos</item>
+    </string-array>
+
+    <string-array name="mis_carreras">
+        <item>Ingenieria de sistemas e informatica</item>
+        <item>Arquitectura</item>
+        <item>Psicologia</item>
+        <item>Ingenieria Civil</item>
+        <item>Ingenieria Ambiental</item>
+    </string-array>
+
 </resources>

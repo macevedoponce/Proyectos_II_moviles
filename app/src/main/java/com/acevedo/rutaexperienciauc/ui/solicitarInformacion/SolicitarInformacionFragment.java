@@ -13,34 +13,52 @@ import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.acevedo.rutaexperienciauc.R;
+import com.acevedo.rutaexperienciauc.adapter.SedeAdapter;
+import com.acevedo.rutaexperienciauc.clases.Sede;
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import com.acevedo.rutaexperienciauc.util.Util;
+import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.android.material.textfield.TextInputLayout;
 
 
-public class SolicitarInformacionFragment extends Fragment implements Response.Listener<JSONObject>, Response.ErrorListener{
+public class SolicitarInformacionFragment extends Fragment {
 
     //Variables del layout
     TextInputLayout tilSolInfoNombres,tilSolInfoApellidoPaterno,tilSolInfoApellidoMaterno,tilSolInfoEmail,tilSolInfoCelular,tilSolInfoFechaNacimiento;
@@ -49,12 +67,12 @@ public class SolicitarInformacionFragment extends Fragment implements Response.L
     Button btnSolicitarInformacion;
     RadioGroup rgModalidad,rgMetodoContacto,rgConsentimiento;
 
+    Spinner spSedes, spCarreras;
+
     //Variables para utilizar internamente
     String ModalidadInteres, MetodoContacto;
 
     RequestQueue requestQueue;
-
-    JsonObjectRequest jsonObjectRequest;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -83,23 +101,22 @@ public class SolicitarInformacionFragment extends Fragment implements Response.L
         rgConsentimiento = vista.findViewById(R.id.rgConsentimiento);
         rbConsentimiento = vista.findViewById(R.id.rbConsentimiento);
         btnSolicitarInformacion =vista.findViewById(R.id.btnSolicitarInformacion);
+        spSedes = vista.findViewById(R.id.spSedes);
+        spCarreras = vista.findViewById(R.id.spCarreras);
 
-        requestQueue = Volley.newRequestQueue(getContext());
         modalidad_metodoContacto();
 
-        btnSolicitarInformacion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        //uso del spinner sedes
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.mis_sedes, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spSedes.setAdapter(adapter);
 
-                if(validarCampo()){
-                    if(rbConsentimiento.isChecked()==true){
-                        Intent intent =new Intent(getContext(), PopupSolicitarInfo.class);
-                        startActivity(intent);
-                     }
-                        //solicitarInformacion();
-                }
-            }
-        });
+        //uso del spinner carreras
+        ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getContext(),R.array.mis_carreras, android.R.layout.simple_spinner_item);
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spCarreras.setAdapter(adapter1);
+
+
         edtSolInfoNombres = tilSolInfoNombres.getEditText().findViewById(R.id.edtSolInfoNombres);
         edtSolInfoApellidoPaterno = tilSolInfoApellidoPaterno.getEditText().findViewById(R.id.edtSolInfoApellidoPaterno);
         edtSolInfoApellidoMaterno = tilSolInfoApellidoMaterno.getEditText().findViewById(R.id.edtSolInfoApellidoMaterno);
@@ -108,13 +125,137 @@ public class SolicitarInformacionFragment extends Fragment implements Response.L
         edtSolInfoFechaNacimiento = tilSolInfoFechaNacimiento.getEditText().findViewById(R.id.edtSolInfoFechaNacimiento);
 
         implementarCalendario();
+        requestQueue= Volley.newRequestQueue(getContext());
+
+
+        //boton para enviar los datos
+        btnSolicitarInformacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(validarCampo()){
+                    if(rbConsentimiento.isChecked()==true){
+                        solicitarInformacion();
+                     }
+
+                }
+            }
+        });
+        //llamarNombresSedes();
+        //llamarNombresCarreras();
         return vista;
     }
+
+    private void llamarNombresCarreras() {
+        String url = Util.RUTA_LLAMARNOMBRE_CARRERA;
+
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        List<String> nombresCarrera = new ArrayList<>();
+                        for(int i = 0; i < response.length(); i++){
+                            try{
+                                JSONObject carrera = response.getJSONObject(i);
+                                String nombreCarrera = carrera.getString("CaNombre");
+                                nombresCarrera.add(nombreCarrera);
+                            }catch (JSONException e){
+                                e.printStackTrace();
+                            }
+                        }
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, nombresCarrera);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spCarreras.setAdapter(adapter);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        requestQueue.add(request);
+    }
+
+    private void llamarNombresSedes() {
+        String url = Util.RUTA_LLAMARNOMBRE_SEDE;
+
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        List<String> nombresSede = new ArrayList<>();
+                        for(int i = 0; i < response.length(); i++){
+                            try{
+                                JSONObject sede = response.getJSONObject(i);
+                                String nombreSede = sede.getString("SeNombre");
+                                nombresSede.add(nombreSede);
+                            }catch (JSONException e){
+                                e.printStackTrace();
+                            }
+                        }
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, nombresSede);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spSedes.setAdapter(adapter);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        requestQueue.add(request);
+    }
+
     private boolean validarEmail(String email) {
         String expresion = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
         Pattern patterns = Pattern.compile(expresion, Pattern.CASE_INSENSITIVE);
         return patterns.matcher(email).matches();
     }
+    private void solicitarInformacion() {
+
+        LocalDateTime fechaActual = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        String fechaHoraActualString = fechaActual.format(formatter);
+
+        String url = Util.RUTA_SOLICITAR_INFORMACION;
+
+        StringRequest postResquest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Intent intent =new Intent(getContext(), PopupSolicitarInfo.class);
+                startActivity(intent);
+                edtSolInfoNombres.setText("");
+                edtSolInfoApellidoPaterno.setText("");
+                edtSolInfoApellidoMaterno.setText("");
+                edtSolInfoEmail.setText("");
+                edtSolInfoCelular.setText("");
+                edtSolInfoFechaNacimiento.setText("");
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("error",error.getMessage());
+            }
+        })
+        {
+            protected Map<String,String> getParams() throws AuthFailureError{
+                Map<String, String> params = new HashMap<>();
+                params.put("SiNombre",edtSolInfoNombres.getText().toString());
+                params.put("SiApellidoPaterno",edtSolInfoApellidoPaterno.getText().toString());
+                params.put("SiApellidoMaterno",edtSolInfoApellidoMaterno.getText().toString());
+                params.put("SiCorreo",edtSolInfoEmail.getText().toString());
+                params.put("SiTelefono",edtSolInfoCelular.getText().toString());
+                params.put("SiFechaNacimiento",edtSolInfoFechaNacimiento.getText().toString());
+                params.put("CaNombre",spCarreras.getSelectedItem().toString());
+                params.put("SeNombre",spSedes.getSelectedItem().toString());
+                params.put("SiModalidad","ModalidadInteres");
+                params.put("SiFechaSolicitud",fechaHoraActualString);
+                params.put("SiTipoContacto","MetodoContacto");
+                return params;
+            }
+        };
+        Volley.newRequestQueue(getContext()).add(postResquest);
+        }
+
     private boolean validarCampo() {
         boolean camposCompletos = true;
         if(edtSolInfoNombres.getText().toString().isEmpty()){
@@ -160,47 +301,6 @@ public class SolicitarInformacionFragment extends Fragment implements Response.L
 
         return camposCompletos;
     }
-
-    private void solicitarInformacion() {
-
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat dateFormat= new SimpleDateFormat("dd/MM/yyyy");
-
-        String SiNombre = edtSolInfoNombres.getText().toString();
-        String SiApellidoPaterno = edtSolInfoApellidoPaterno.getText().toString();
-        String SiApellidoMaterno = edtSolInfoApellidoMaterno.getText().toString();
-        String CaNombre = "";
-        String SeNombre = "";
-        String SiModalidad = ModalidadInteres;
-        String SiCorreo = edtSolInfoEmail.getText().toString();
-        String SiTelefono = edtSolInfoCelular.getText().toString();
-        String SiFechaNacimiento = edtSolInfoFechaNacimiento.getText().toString();
-        String SiFechaContacto = dateFormat.format(calendar.getTime());
-        String SiTipoContacto = MetodoContacto;
-        String URL = Util.RUTA_SOLICITAR_INFORMACION + "api" + "&SiNombre="+SiNombre+"&SiApellidoPaterno="+SiApellidoPaterno+"&CcApellidoMaterno="+SiApellidoMaterno+
-                "&CaNombre="+CaNombre+"&SeNombre="+SeNombre+"&SiModalidad"+SiModalidad+"&SiCorreo="+SiCorreo+"&SiTelefono="+SiTelefono
-                +"&SiFechaNacimiento="+SiFechaNacimiento+"&SiFechaContacto="+SiFechaContacto+"$SiTipoContacto"+SiTipoContacto;
-
-        jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,this,this);
-        requestQueue.add(jsonObjectRequest);
-        }
-    @Override
-    public void onResponse(JSONObject response) {
-        Toast.makeText(getContext(), "Registro correcto", Toast.LENGTH_SHORT).show();
-        edtSolInfoNombres.setText("");
-        edtSolInfoApellidoPaterno.setText("");
-        edtSolInfoApellidoMaterno.setText("");
-        edtSolInfoEmail.setText("");
-        edtSolInfoCelular.setText("");
-        edtSolInfoFechaNacimiento.setText("");
-    }
-
-    @Override
-    public void onErrorResponse(VolleyError error) {
-        Toast.makeText(getContext(), "Error de insercion", Toast.LENGTH_SHORT).show();
-        Log.i("error", error.toString());
-    }
-
     private void modalidad_metodoContacto() {
 
         switch (rgModalidad.getCheckedRadioButtonId()){
@@ -273,5 +373,6 @@ public class SolicitarInformacionFragment extends Fragment implements Response.L
             }
         });
     }
+
 }
 
