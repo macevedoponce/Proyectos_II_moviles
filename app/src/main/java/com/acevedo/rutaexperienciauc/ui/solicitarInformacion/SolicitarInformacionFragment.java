@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Pair;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,7 +71,7 @@ public class SolicitarInformacionFragment extends Fragment {
     Spinner spSedes, spCarreras;
 
     //Variables para utilizar internamente
-    String ModalidadInteres, MetodoContacto;
+    private boolean fechaSeleccionada = false;
 
     RequestQueue requestQueue;
 
@@ -103,8 +104,6 @@ public class SolicitarInformacionFragment extends Fragment {
         btnSolicitarInformacion =vista.findViewById(R.id.btnSolicitarInformacion);
         spSedes = vista.findViewById(R.id.spSedes);
         spCarreras = vista.findViewById(R.id.spCarreras);
-
-        modalidad_metodoContacto();
 
         //uso del spinner sedes
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.mis_sedes, android.R.layout.simple_spinner_item);
@@ -212,6 +211,10 @@ public class SolicitarInformacionFragment extends Fragment {
     }
     private void solicitarInformacion() {
 
+        Pair<String, String> result = modalidad_metodoContacto();
+        String modalidad = result.first;
+        String contacto = result.second;
+
         LocalDateTime fechaActual = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String fechaHoraActualString = fechaActual.format(formatter);
@@ -230,9 +233,9 @@ public class SolicitarInformacionFragment extends Fragment {
             datos.put("SiFechaNacimiento", edtSolInfoFechaNacimiento.getText().toString());
             datos.put("CaNombre", spCarreras.getSelectedItem().toString());
             datos.put("SeNombre", spSedes.getSelectedItem().toString());
-            datos.put("SiModalidad", "ModalidadInteres");
+            datos.put("SiModalidad", modalidad);
             datos.put("SiFechaSolicitud", fechaHoraActualString);
-            datos.put("SiTipoContacto", "MetodoContacto");
+            datos.put("SiTipoContacto", contacto);
         } catch (JSONException e){
             e.printStackTrace();
         }
@@ -295,10 +298,10 @@ public class SolicitarInformacionFragment extends Fragment {
             edtSolInfoCelular.setError("Ingrese su número de celular");
             camposCompletos = false;
         }
-//        if(edtSolInfoFechaNacimiento.getText().toString().isEmpty()){
-//            edtSolInfoFechaNacimiento.setError(("Campo Obligatorio"));
-//            camposCompletos = false;
-//        }
+        if(!fechaSeleccionada){
+            Toast.makeText(getContext(), "Seleccione una fecha de nacimiento", Toast.LENGTH_SHORT).show();
+            camposCompletos = false;
+        }
         if(rgModalidad.getCheckedRadioButtonId() == -1) {
             Toast.makeText(getContext(), "Seleccione modalidad", Toast.LENGTH_SHORT).show();
             camposCompletos = false;
@@ -314,7 +317,9 @@ public class SolicitarInformacionFragment extends Fragment {
 
         return camposCompletos;
     }
-    private void modalidad_metodoContacto() {
+    private Pair<String, String> modalidad_metodoContacto() {
+        String ModalidadInteres = null;
+        String MetodoContacto = null;
 
         switch (rgModalidad.getCheckedRadioButtonId()){
             case R.id.rbPresencial:
@@ -327,16 +332,6 @@ public class SolicitarInformacionFragment extends Fragment {
                 ModalidadInteres = "A distancia";
                 break;
         }
-//        if(rbPresencial.isChecked() == true){
-//            ModalidadInteres = "Presencial";
-//        }else
-//        if(rbSemiPresencial.isChecked() == true){
-//            ModalidadInteres = "SemiPresencial";
-//        }else{
-//            if(rbADistancia.isChecked() == true){
-//                ModalidadInteres= "A Distancia";
-//            }
-//        }
         switch (rgMetodoContacto.getCheckedRadioButtonId()){
             case R.id.rbCorreoElectronico:
                 MetodoContacto = "Correo Electronico";
@@ -348,17 +343,7 @@ public class SolicitarInformacionFragment extends Fragment {
                 MetodoContacto = "WhatsApp";
                 break;
         }
-
-//        if(rbCorreoElectronico.isChecked() == true){
-//            MetodoContacto = "Correo Electronico";
-//        }else
-//        if(rbCelular.isChecked() == true){
-//            MetodoContacto = "Celular";
-//        }else{
-//            if(rbWhatsApp.isChecked() == true){
-//                MetodoContacto= "WhatsApp";
-//            }
-//        }
+        return new Pair<>(ModalidadInteres, MetodoContacto);
     }
     private void implementarCalendario() {
         //Añadiendo calendario para que escoja su fecha de nacimiento
@@ -379,6 +364,7 @@ public class SolicitarInformacionFragment extends Fragment {
                                 // Actualizar el texto del EditText con la fecha seleccionada
                                 String date = year + "-" + (month + 1) + "-" + dayOfMonth;
                                 edtSolInfoFechaNacimiento.setText(date);
+                                fechaSeleccionada = true;
                             }
                         }, year, month, dayOfMonth);
                 // Mostrar el diálogo de selección de fecha
