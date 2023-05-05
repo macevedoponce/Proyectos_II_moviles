@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.sedes.carreras.rutaExperiencia.experiencia.DetalleExperienciaActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:padding="10dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/llVolver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                app:tint="@color/icon_selected"
+                android:layout_gravity="center"
+                android:src="@drawable/baseline_chevron_left_24"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/style_txt_voler"
+                android:text="Volver"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:padding="10dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/logo_uc_25"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <!-- Primer CardView -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
+        app:cardCornerRadius="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/cardView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/ivContenido"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:scaleType="centerCrop"
+            android:layout_height="match_parent" />
+
+        <WebView
+            android:id="@+id/wvContenido"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
+
+
+    </androidx.cardview.widget.CardView>
+
+    <!-- Segundo CardView -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:cardCornerRadius="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvTitulo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Fab Lab"
+                    android:fontFamily="@font/poppins_bold"
+                    android:textSize="24sp"
+                    android:textColor="@color/icon_selected"
+                    android:layout_marginStart="20dp"
+                    android:layout_weight="1"/>
+
+                <RatingBar
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:progressDrawable="@drawable/ic_favorite"
+                    android:layout_margin="10dp"
+                    />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvDescripcion"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:justificationMode="inter_word"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Fomentar la creatividad y la innovación para desarrollar proyectos con impacto social, es fundamental en la formación de los estudiantes universitarios. Por esta razón, la Universidad Continental ha implementado un Fab Lab en el interior del país, bajo el modelo del Massachusetts Institute of Technology (MIT). De esta manera, se convirtirtió en la primera universidad en descentralizar la fabricación digital en el Perú."
+                />
+
+            <TextView
+                android:id="@+id/tvVermas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_gravity="start"
+                android:textColor="@color/icon_selected"
+                android:justificationMode="inter_word"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Ver más"
+                />
+
+        </LinearLayout>
+
+
+
+
+    </androidx.cardview.widget.CardView>
+
+    <!-- CardView en la esquina superior derecha -->
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvFullScreen"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_margin="20dp"
+        app:cardCornerRadius="9dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" >
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_full_screen"
+            android:layout_gravity="center"/>
+
+
+
+    </androidx.cardview.widget.CardView>
+
+    <!-- CardView en la mitad del CardView 1 y 2 -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewMiddle"
+        android:layout_width="171dp"
+        android:layout_height="42dp"
+        app:cardBackgroundColor="#FFFFFF"
+        app:cardCornerRadius="16dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/cardView2"
+        app:layout_constraintEnd_toEndOf="@+id/cardView1"
+        app:layout_constraintTop_toBottomOf="@+id/cardView1">
+
+        <RatingBar
+            android:id="@+id/ratingBar"
+            style="@style/CustomRatingBar"
+            android:layout_width="146dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:numStars="5"
+            android:rating="1"
+            android:stepSize="1" />
+
+    </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

@@ -1,5 +1,6 @@
 package com.acevedo.rutaexperienciauc.ui.sedes;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -38,6 +39,8 @@ public class SedesFragment extends Fragment {
     List<Sede> listaSede;
     RequestQueue requestQueue;
 
+    ProgressDialog progreso;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,12 +63,18 @@ public class SedesFragment extends Fragment {
 
 
     private void cargarSedes() {
+
+        progreso = new ProgressDialog(getContext());
+        progreso.setMessage("Buscando Sedes");
+        progreso.setCancelable(false);
+        progreso.show();
+
         String url = Util.RUTA_SEDE;
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        List<SlideModel> slideModels = new ArrayList<>();
+                        progreso.dismiss();
                         for (int i = 0; i < response.length(); i++) {
                             try {
                                 JSONObject jsonObject = response.getJSONObject(i);
@@ -95,6 +104,7 @@ public class SedesFragment extends Fragment {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                progreso.hide();
                 error.printStackTrace();
             }
         });
