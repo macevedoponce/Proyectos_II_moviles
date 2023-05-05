@@ -8,11 +8,19 @@
         <item name="android:fontFamily">@font/poppins_semibold</item>
     </style>
 
+    <style name="style_txt_title">
+        <item name="android:textColor">@color/icon_selected_two</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:fontFamily">@font/poppins_bold</item>
+    </style>
+
     <style name="DialogAnimation">
         <item name="android:windowEnterAnimation">@anim/slide_in_bottom</item>
         <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
     </style>
 
+<<<<<<< HEAD
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
 
     </style>
@@ -24,4 +32,12 @@
 
     <style name="Base.Widget.MaterialComponents.TextInputLayout.OutLineBox"/>
 
+=======
+    <style name="CustomRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/ic_custom_star</item>
+        <item name="android:minHeight">30dp</item>
+        <item name="android:maxHeight">30dp</item>
+    </style>
+
+>>>>>>> b1682140c151ade2aec5b9be397a1d02be70ed80
 </resources>

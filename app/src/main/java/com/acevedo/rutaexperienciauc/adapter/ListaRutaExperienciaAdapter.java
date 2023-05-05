@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import java.util.List;
 
 public class ListaRutaExperienciaAdapter extends RecyclerView.Adapter<ListaRutaExperienciaAdapter.ViewHolder> {
     private List<ListaRutaExperiencia> ListaRuta;
+
 
     public ListaRutaExperienciaAdapter(List<ListaRutaExperiencia> itemList){
         this.ListaRuta = itemList;
@@ -39,11 +41,26 @@ public class ListaRutaExperienciaAdapter extends RecyclerView.Adapter<ListaRutaE
 
     public void setItems(List<ListaRutaExperiencia> items){ListaRuta = items;}
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         ImageView ivCiclo;
+
+        Context context;
+        Button btnExperienciaAleatoria, btnExperienciaMasInfo;
+
         ViewHolder(@NonNull View itemView){
             super(itemView);
+            context = itemView.getContext();
             ivCiclo = itemView.findViewById(R.id.ivciclo);
+            btnExperienciaAleatoria = itemView.findViewById(R.id.btnExperienciaAleatoria);
+            btnExperienciaMasInfo = itemView.findViewById(R.id.btnExperienciaMasInfo);
+        }
+        void setOnClickListener(){
+            btnExperienciaAleatoria.setOnClickListener(this);
+            btnExperienciaMasInfo.setOnClickListener(this);
+        }
+        @Override
+        public void onClick(View view){
+
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.acevedo.rutaexperienciauc.ui.ayuda;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,60 +8,44 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.acevedo.rutaexperienciauc.R;
+import com.acevedo.rutaexperienciauc.ui.sedes.carreras.rutaExperiencia.experiencia.ListExperienciasFragment;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link AyudaFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class AyudaFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    Button btnExperiencias;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public AyudaFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AyudaFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static AyudaFragment newInstance(String param1, String param2) {
-        AyudaFragment fragment = new AyudaFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_ayuda, container, false);
+        View vista = inflater.inflate(R.layout.fragment_ayuda, container, false);
+        btnExperiencias = vista.findViewById(R.id.btnExperienciasCarrera1);
+
+        btnExperiencias.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //codigo que reemplaza el fragment inicio por el fragment solicitar información
+                ListExperienciasFragment listExperienciasFragment = new ListExperienciasFragment(); // inicializa el fragment
+
+                Bundle args = new Bundle();
+                args.putInt("idCarrera",1);
+                args.putInt("exCiclo", 5);
+                listExperienciasFragment.setArguments(args);
+
+                getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment_activity_main,listExperienciasFragment).addToBackStack(null).commit(); // reemplaza el contenedor del fragment con el nuevo fragment
+
+            }
+        });
+        return vista;
     }
 }
