@@ -33,23 +33,20 @@ public class RutaExperiencia extends AppCompatActivity {
     private void initValues(){
         LinearLayoutManager manager = new LinearLayoutManager(this);
         rvListaRutaExperiencia.setLayoutManager(manager);
-        items = getItems();
+        items = getItems(10);
         adapter = new ListaRutaExperienciaAdapter(items);
         rvListaRutaExperiencia.setAdapter(adapter);
 
     }
-    private List<ListaRutaExperiencia> getItems(){
-        List<ListaRutaExperiencia> itemList = new ArrayList<>();
-        itemList.add(new ListaRutaExperiencia(R.drawable.ciclo_uno));
-        itemList.add(new ListaRutaExperiencia(R.drawable.ciclo_dos));
-        itemList.add(new ListaRutaExperiencia(R.drawable.ciclo_tres));
-        itemList.add(new ListaRutaExperiencia(R.drawable.ciclo_cuatro));
-        itemList.add(new ListaRutaExperiencia(R.drawable.ciclo_cinco));
-        itemList.add(new ListaRutaExperiencia(R.drawable.ciclo_seis));
-        itemList.add(new ListaRutaExperiencia(R.drawable.ciclo_siete));
-        itemList.add(new ListaRutaExperiencia(R.drawable.ciclo_ocho));
-        itemList.add(new ListaRutaExperiencia(R.drawable.ciclo_nueve));
-        itemList.add(new ListaRutaExperiencia(R.drawable.ciclo_diez));
-        return itemList;
+    private List<ListaRutaExperiencia> getItems(int cantCiclos){
+
+        int[] images = {R.drawable.ciclo_uno, R.drawable.ciclo_dos, R.drawable.ciclo_tres, R.drawable.ciclo_cuatro, R.drawable.ciclo_cinco, R.drawable.ciclo_seis, R.drawable.ciclo_siete, R.drawable.ciclo_ocho, R.drawable.ciclo_nueve, R.drawable.ciclo_diez};
+
+        List<ListaRutaExperiencia> rutaExperienciaList = new ArrayList<>();
+        for (int i = 0; i < cantCiclos; i++) {
+            rutaExperienciaList.add(new ListaRutaExperiencia(images[i]));
+        }
+        return rutaExperienciaList;
+
     }
 }
