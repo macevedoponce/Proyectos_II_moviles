@@ -12,9 +12,14 @@
         android:theme="@style/Theme.RutaExperienciaUC"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.sedes.experiencia.RutaExperiencia"
+            android:exported="false" >
+
+        </activity>
+        <activity
             android:name=".ui.solicitarInformacion.PopupSolicitarInfo"
             android:exported="false"
-            android:theme="@style/AppTheme.TemaPopup"/>
+            android:theme="@style/AppTheme.TemaPopup" />
         <activity
             android:name=".ui.splash"
             android:exported="true">
