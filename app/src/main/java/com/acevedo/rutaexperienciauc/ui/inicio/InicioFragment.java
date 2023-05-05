@@ -96,7 +96,7 @@ public class InicioFragment extends Fragment {
 //            @Override
 //            public void onClick(View view) {
 //                Intent i = new Intent(getContext(), SolicitarInformacionFragment.class);
-//                startActivity(i);
+////                startActivity(i);
 //            }
 //        });
 

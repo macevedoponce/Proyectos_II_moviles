@@ -15,6 +15,13 @@
         <item name="android:fontFamily">@font/poppins_bold</item>
     </style>
 
+    <style name="style_txt_voler">
+        <item name="android:textColor">@color/icon_selected</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">@font/poppins_medium</item>
+    </style>
+
     <style name="DialogAnimation">
         <item name="android:windowEnterAnimation">@anim/slide_in_bottom</item>
         <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
@@ -25,5 +32,7 @@
         <item name="android:minHeight">30dp</item>
         <item name="android:maxHeight">30dp</item>
     </style>
+
+
 
 </resources>

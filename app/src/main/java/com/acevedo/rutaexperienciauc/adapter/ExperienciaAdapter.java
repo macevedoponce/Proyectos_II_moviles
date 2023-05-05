@@ -41,7 +41,7 @@ public class ExperienciaAdapter extends RecyclerView.Adapter<ExperienciaAdapter.
     public void onBindViewHolder(@NonNull ExperienciaAdapter.ExperienciaHolder holder, int position) {
         Experiencia experiencia = experienciaList.get(position);
         holder.setIcono(experiencia.getExIconoUrl());
-        holder.setNombre(experiencia.getExNombre());
+        //holder.setNombre(experiencia.getExNombre());
     }
 
     @Override
@@ -74,9 +74,9 @@ public class ExperienciaAdapter extends RecyclerView.Adapter<ExperienciaAdapter.
             Glide.with(context).load(iconoUrl).into(ivIcono);
         }
 
-        public void setNombre(String nombre){
-            tvNombre = view.findViewById(R.id.tvNombre);
-            tvNombre.setText(nombre);
-        }
+//        public void setNombre(String nombre){
+//            tvNombre = view.findViewById(R.id.tvNombre);
+//            tvNombre.setText(nombre);
+//        }
     }
 }
