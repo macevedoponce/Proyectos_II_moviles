@@ -1,9 +1,9 @@
 package com.acevedo.rutaexperienciauc.ui.sedes;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.acevedo.rutaexperienciauc.R;
 import com.acevedo.rutaexperienciauc.adapter.SedeAdapter;
 import com.acevedo.rutaexperienciauc.clases.Sede;
+import com.acevedo.rutaexperienciauc.ui.sedes.carreras.ListaCarrerasFragment;
 import com.acevedo.rutaexperienciauc.util.Util;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -41,7 +42,6 @@ public class SedesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -106,12 +106,17 @@ public class SedesFragment extends Fragment {
         int id = listaSede.get(rvSedesAll.getChildAdapterPosition(view)).getId();
         String nombre = listaSede.get(rvSedesAll.getChildAdapterPosition(view)).getNombre();
 
-        Toast.makeText(getContext(), nombre+"", Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(getContext(), id+"", Toast.LENGTH_SHORT).show();
 
-        // activar cuando se tenga lista la interface de facultades y se debe de enviar el id para hacer la consulta en el api
-
-//        Intent i = new Intent(getContext(), carrerasFragment.class);
+//        Intent i = new Intent(getContext(), ListaCarrerasFragment.class);
 //        i.putExtra("sede_id",id);
 //        startActivity(i);
+        //codigo que reemplaza el fragment inicio por el fragment solicitar información
+        ListaCarrerasFragment listaCarrerasFragment = new ListaCarrerasFragment(); // inicializa el fragment
+        Bundle args = new Bundle();
+        args.putInt("idSede",id);
+        listaCarrerasFragment.setArguments(args);
+
+        getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment_activity_main,listaCarrerasFragment).addToBackStack(null).commit();
     }
 }
