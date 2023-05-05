@@ -15,6 +15,10 @@
             android:name=".ui.sedes.carreras.rutaExperiencia.experiencia.DetalleExperienciaActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.sedes.carreras.rutaExperiencia.experiencia.FullScreenActivity"
+            android:screenOrientation="landscape"
+            android:exported="false" />
+        <activity
             android:name=".ui.sedes.carreras.rutaExperiencia.experiencia.ListExperienciasActivity"
             android:exported="false" />
         <activity

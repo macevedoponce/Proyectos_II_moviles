@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -43,6 +44,8 @@ public class ListExperienciasActivity extends AppCompatActivity {
     LinearLayout llVolver;
 
     int idCarrera, exCiclo;
+
+    ProgressDialog progreso;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,10 +92,19 @@ public class ListExperienciasActivity extends AppCompatActivity {
     }
 
     private void cargarExperiencias() {
-        String url = Util.RUTA_EXPERIENCIA + "/"+ idCarrera + "/" + exCiclo;
+
+        progreso = new ProgressDialog(this);
+        progreso.setMessage("Buscando Experiencias");
+        progreso.setCancelable(false);
+        progreso.show();
+
+
+        //String url = Util.RUTA_EXPERIENCIA + "/"+ idCarrera + "/" + exCiclo;
+        String url = Util.RUTA_EXPERIENCIA;
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
+                progreso.dismiss();
                 for (int i = 0; i < response.length(); i++) {
                     try {
                         JSONObject jsonObject = response.getJSONObject(i);
@@ -108,6 +120,7 @@ public class ListExperienciasActivity extends AppCompatActivity {
                         listaExperiencia.add(experiencia);
 
                     } catch (JSONException e) {
+                        progreso.hide();
                         e.printStackTrace();
                     }
                 }
