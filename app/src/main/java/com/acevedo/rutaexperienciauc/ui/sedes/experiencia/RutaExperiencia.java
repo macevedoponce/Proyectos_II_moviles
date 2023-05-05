@@ -33,7 +33,8 @@ public class RutaExperiencia extends AppCompatActivity {
     private void initValues(){
         LinearLayoutManager manager = new LinearLayoutManager(this);
         rvListaRutaExperiencia.setLayoutManager(manager);
-        items = getItems(10);
+        int cantidadCiclos = getIntent().getIntExtra("cantidadCiclos",0);
+        items = getItems(cantidadCiclos);
         adapter = new ListaRutaExperienciaAdapter(items);
         rvListaRutaExperiencia.setAdapter(adapter);
 
