@@ -105,17 +105,6 @@ public class SolicitarInformacionFragment extends Fragment {
         spSedes = vista.findViewById(R.id.spSedes);
         spCarreras = vista.findViewById(R.id.spCarreras);
 
-        //uso del spinner sedes
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.mis_sedes, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spSedes.setAdapter(adapter);
-
-        //uso del spinner carreras
-        ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getContext(),R.array.mis_carreras, android.R.layout.simple_spinner_item);
-        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spCarreras.setAdapter(adapter1);
-
-
         edtSolInfoNombres = tilSolInfoNombres.getEditText().findViewById(R.id.edtSolInfoNombres);
         edtSolInfoApellidoPaterno = tilSolInfoApellidoPaterno.getEditText().findViewById(R.id.edtSolInfoApellidoPaterno);
         edtSolInfoApellidoMaterno = tilSolInfoApellidoMaterno.getEditText().findViewById(R.id.edtSolInfoApellidoMaterno);
@@ -126,6 +115,8 @@ public class SolicitarInformacionFragment extends Fragment {
         implementarCalendario();
         requestQueue= Volley.newRequestQueue(getContext());
 
+        llamarNombresSedes();
+        llamarNombresCarreras();
 
         //boton para enviar los datos
         btnSolicitarInformacion.setOnClickListener(new View.OnClickListener() {
@@ -139,8 +130,6 @@ public class SolicitarInformacionFragment extends Fragment {
                 }
             }
         });
-        //llamarNombresSedes();
-        //llamarNombresCarreras();
         return vista;
     }
 
