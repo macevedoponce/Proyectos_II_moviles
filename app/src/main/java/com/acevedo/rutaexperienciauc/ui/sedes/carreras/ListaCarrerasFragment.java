@@ -41,15 +41,12 @@ public class ListaCarrerasFragment extends Fragment {
 
     RecyclerView rvCarrerasAll;
     List<Carrera> listaCarrera;
-    List<Carrera> listaCarreraFiltrada;
     RequestQueue requestQueue;
     private EditText edtBuscarCarreraNombre;
     private Button btnBuscarCarrera;
-    private CarreraAdapter adapter;
 
 
     public ListaCarrerasFragment() {
-        // Required empty public constructor
     }
 
 
@@ -114,7 +111,6 @@ public class ListaCarrerasFragment extends Fragment {
         int idSedeRecibido = 0;
         if (args != null) {
             idSedeRecibido = args.getInt("idSede");
-            // Usa el texto como quieras
         }
         String url = Util.RUTA_CARRERAS + "/" + idSedeRecibido;
 
