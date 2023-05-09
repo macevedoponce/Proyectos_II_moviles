@@ -12,14 +12,11 @@
         android:theme="@style/Theme.RutaExperienciaUC"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.sedes.carreras.rutaExperiencia.experiencia.ListExperienciasActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.sedes.experiencia.RutaExperiencia"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".ui.solicitarInformacion.PopupSolicitarInfo"
             android:exported="false"
@@ -27,7 +24,11 @@
         <activity
             android:name=".ui.splash"
             android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".MainActivity"

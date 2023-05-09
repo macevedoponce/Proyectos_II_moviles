@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.acevedo.rutaexperienciauc.R;
 import com.acevedo.rutaexperienciauc.adapter.CarreraAdapter;
 import com.acevedo.rutaexperienciauc.clases.Carrera;
+import com.acevedo.rutaexperienciauc.ui.sedes.experiencia.RutaExperiencia;
 import com.acevedo.rutaexperienciauc.util.Util;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -149,13 +150,13 @@ public class ListaCarrerasFragment extends Fragment {
     private void selectCarrera(View view) {
         int id = listaCarrera.get(rvCarrerasAll.getChildAdapterPosition(view)).getId();
         int cantidadCiclos = listaCarrera.get(rvCarrerasAll.getChildAdapterPosition(view)).getCantidadCiclos();
-
         String nombre = listaCarrera.get(rvCarrerasAll.getChildAdapterPosition(view)).getNombre();
 
-        Toast.makeText(getContext(), id + "----" + cantidadCiclos, Toast.LENGTH_SHORT).show();
-
-//        Intent i = new Intent(getContext(), RutaExperiencias.class);
-//        i.putExtra("sede_id",id);
-//        startActivity(i);
+        Intent i = new Intent(getContext(), RutaExperiencia.class);
+        i.putExtra("idCarrera",id);
+        i.putExtra("cantidadCiclos", cantidadCiclos);
+        startActivity(i);
     }
+
+
 }
