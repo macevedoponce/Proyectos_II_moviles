@@ -10,6 +10,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.acevedo.rutaexperienciauc.R;
 import com.bumptech.glide.Glide;
@@ -20,7 +21,7 @@ import java.util.regex.Pattern;
 
 public class FullScreenActivity extends AppCompatActivity {
 
-    CardView cvVolver;
+    CardView cvVolver,cvX;
     ImageView ivFullScreen;
     WebView wvFullScreen;
     YouTubePlayerView ypContenido;
@@ -32,9 +33,15 @@ public class FullScreenActivity extends AppCompatActivity {
         cvVolver = findViewById(R.id.cvVolver);
         wvFullScreen = findViewById(R.id.wvFullScreen);
         ivFullScreen = findViewById(R.id.ivFullScreen);
+        cvX = findViewById(R.id.cvX);
         cargarContenido();
 
-
+        cvX.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         cvVolver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,7 +60,7 @@ public class FullScreenActivity extends AppCompatActivity {
                 Glide.with(this).load(coUrlMedia).into(ivFullScreen);
                 break;
             case 2:
-
+                cvVolver.setVisibility(View.VISIBLE);
                 wvFullScreen.setVisibility(View.VISIBLE);
                 ypContenido = new YouTubePlayerView(this);
                 wvFullScreen.getSettings().setJavaScriptEnabled(true);

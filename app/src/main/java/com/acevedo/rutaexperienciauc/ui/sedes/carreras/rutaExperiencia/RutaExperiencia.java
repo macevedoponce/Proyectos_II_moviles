@@ -1,4 +1,4 @@
-package com.acevedo.rutaexperienciauc.ui.sedes.experiencia;
+package com.acevedo.rutaexperienciauc.ui.sedes.carreras.rutaExperiencia;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;

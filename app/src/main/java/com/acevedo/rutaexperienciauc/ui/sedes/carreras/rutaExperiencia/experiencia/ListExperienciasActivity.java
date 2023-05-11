@@ -65,7 +65,7 @@ public class ListExperienciasActivity extends AppCompatActivity {
         llVolver = findViewById(R.id.llVolver);
         ivCiclo = findViewById(R.id.ivCiclo);
         rvExperiencias = findViewById(R.id.rvExperiencias);
-        //pbBeneficio = findViewById(R.id.pbBeneficio);
+        pbBeneficio = findViewById(R.id.pbBeneficio);
         rvExperiencias.setHasFixedSize(true);
         rvExperiencias.setLayoutManager(new GridLayoutManager(this,2));
         requestQueue = Volley.newRequestQueue(this);
@@ -166,7 +166,7 @@ public class ListExperienciasActivity extends AppCompatActivity {
         String coDescripcion = listaExperiencia.get(rvExperiencias.getChildAdapterPosition(view)).getCoDescripcion();
         String coUrlMedia = listaExperiencia.get(rvExperiencias.getChildAdapterPosition(view)).getCoUrlMedia();
 
-        Intent i = new Intent(this, DetalleExperienciaActivity.class);
+        Intent i = new Intent(ListExperienciasActivity.this, DetalleExperienciaActivity.class);
         i.putExtra("idContenido",idContenido);
         i.putExtra("idTipoMedia",idTipoMedia);
         i.putExtra("coTitulo",coTitulo);
