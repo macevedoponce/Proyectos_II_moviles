@@ -1,7 +1,7 @@
 package com.acevedo.rutaexperienciauc.ui.inicio;
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -26,9 +26,11 @@ import android.widget.Toast;
 import com.acevedo.rutaexperienciauc.R;
 import com.acevedo.rutaexperienciauc.adapter.SedeAdapter;
 import com.acevedo.rutaexperienciauc.clases.Sede;
+
 import com.acevedo.rutaexperienciauc.ui.sedes.SedesFragment;
 
 import com.acevedo.rutaexperienciauc.ui.solicitarInformacion.SolicitarInformacionFragment;
+
 import com.acevedo.rutaexperienciauc.util.Util;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -56,7 +58,6 @@ public class InicioFragment extends Fragment {
     CardView cvPensamiento, cvComunidades, cvBienestar, cvEscribenos;
     List<Sede> listaSede;
 
-    ProgressDialog progreso;
     RequestQueue requestQueue;
 
 
@@ -188,19 +189,12 @@ public class InicioFragment extends Fragment {
     }
 
     private void cargarSedes() {
-
-        progreso = new ProgressDialog(getContext());
-        progreso.setMessage("Buscando Sedes");
-        progreso.setCancelable(false);
-        progreso.show();
-
-
         String url = Util.RUTA_SEDE_RANDOM;
+
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        progreso.dismiss();
                         List<SlideModel> slideModels = new ArrayList<>();
                         for (int i = 0; i < response.length(); i++) {
                             try {
@@ -219,21 +213,19 @@ public class InicioFragment extends Fragment {
                         }
 
                         SedeAdapter adapter = new SedeAdapter(getContext(),listaSede);
-                    adapter.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            selectSede(view);
-                        }
-                    });
+                        adapter.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                selectSede(view);
+                            }
+                        });
 
-                    rvSedes.setAdapter(adapter);
-                    adapter.notifyDataSetChanged();
-
+                        rvSedes.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                progreso.hide();
                 error.printStackTrace();
             }
         });

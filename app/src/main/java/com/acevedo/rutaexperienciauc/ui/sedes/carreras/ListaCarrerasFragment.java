@@ -67,14 +67,14 @@ public class ListaCarrerasFragment extends Fragment {
         edtBuscarCarreraNombre = vista.findViewById(R.id.edtBuscarCarreraNombre);
         btnBuscarCarrera = vista.findViewById(R.id.btnBuscarCarrera);
         listaCarrera = new ArrayList<>();
-        
+
         listaFiltrada = new ArrayList<>();
 
         btnBuscarCarrera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String searchText = edtBuscarCarreraNombre.getText().toString().toLowerCase();
-              filtrarCarreras(searchText);
+                filtrarCarreras(searchText);
             }
         });
 //
@@ -150,14 +150,13 @@ public class ListaCarrerasFragment extends Fragment {
     private void selectCarrera(View view) {
         int id = listaCarrera.get(rvCarrerasAll.getChildAdapterPosition(view)).getId();
         int cantidadCiclos = listaCarrera.get(rvCarrerasAll.getChildAdapterPosition(view)).getCantidadCiclos();
-
         String nombre = listaCarrera.get(rvCarrerasAll.getChildAdapterPosition(view)).getNombre();
 
-        //Toast.makeText(getContext(), id + "----" + cantidadCiclos, Toast.LENGTH_SHORT).show();
-
         Intent i = new Intent(getContext(), RutaExperiencia.class);
-        i.putExtra("idSede",id);
-        i.putExtra("cantidadCiclos",cantidadCiclos);
+        i.putExtra("idCarrera",id);
+        i.putExtra("cantidadCiclos", cantidadCiclos);
         startActivity(i);
     }
+
+
 }

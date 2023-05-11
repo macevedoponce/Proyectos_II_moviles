@@ -27,8 +27,9 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 app:tint="@color/icon_selected"
+                android:src="@drawable/baseline_chevron_left_24"
                 android:layout_gravity="center"
-                android:src="@drawable/baseline_chevron_left_24"/>
+                />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -95,11 +96,11 @@
                 android:id="@+id/rvExperiencias"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-            
+
         </LinearLayout>
-        
+
     </androidx.cardview.widget.CardView>
-    
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -107,11 +108,11 @@
         android:layout_margin="20dp"
         android:orientation="vertical">
 
-<!--        <androidx.recyclerview.widget.RecyclerView-->
-<!--            android:id="@+id/rvBeneficios"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"/>-->
-        
+        <!--        <androidx.recyclerview.widget.RecyclerView-->
+        <!--            android:id="@+id/rvBeneficios"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"/>-->
+
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -188,10 +189,10 @@
                 android:text="Click Aquí para ver que desbloqueaste"/>
 
         </androidx.cardview.widget.CardView>
-        
+
     </LinearLayout>
 
-    
+
 
 
 

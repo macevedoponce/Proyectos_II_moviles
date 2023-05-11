@@ -27,7 +27,6 @@
     <string name="dif_comunidades_desc">Generamos comunidades colaborativas que se nutren de otras perspectivas, para innovar y emprender y así contribuir activamente a un beneficio colectivo para lograr cambio y acelerar el aprendizaje.</string>
 
     <!-- Solicitar informacion -->
-
     <string name="title_solicitar_informacion">Solicitar Información</string>
     <string name="soli_info_nombres"><small>Nombres*</small></string>
     <string name="soli_info_apellido_paterno"><small>Apellido Paterno*</small></string>
@@ -65,8 +64,6 @@
         <item>Ingenieria Civil</item>
         <item>Ingenieria Ambiental</item>
     </string-array>
-
-
 
     <!-- Buscar carrera -->
     <string name="hint_ingresar_carrera_pref">Ingrese la carrera de su preferencia</string>

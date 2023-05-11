@@ -17,10 +17,19 @@ public class RutaExperiencia extends AppCompatActivity {
     RecyclerView rvListaRutaExperiencia;
     ListaRutaExperienciaAdapter adapter;
     List<ListaRutaExperiencia> items;
+
+    int cantidadCiclos;
+    int idCarrera;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ruta_experiencia);
+
+
+        //recibimos los datos enviados de la lista de carreras
+        //idCarrera = getIntent().getIntExtra("idCarrera", 0);
+        idCarrera = getIntent().getIntExtra("idCarrera", 0);
+        cantidadCiclos = getIntent().getIntExtra("cantidadCiclos", 0);
 
         initView();
         initValues();
@@ -33,9 +42,8 @@ public class RutaExperiencia extends AppCompatActivity {
     private void initValues(){
         LinearLayoutManager manager = new LinearLayoutManager(this);
         rvListaRutaExperiencia.setLayoutManager(manager);
-        int cantidadCiclos = getIntent().getIntExtra("cantidadCiclos",0);
         items = getItems(cantidadCiclos);
-        adapter = new ListaRutaExperienciaAdapter(items);
+        adapter = new ListaRutaExperienciaAdapter(items, idCarrera);
         rvListaRutaExperiencia.setAdapter(adapter);
 
     }

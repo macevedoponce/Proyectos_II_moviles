@@ -6,13 +6,16 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.animation.ObjectAnimator;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.acevedo.rutaexperienciauc.R;
@@ -47,22 +50,33 @@ public class ListExperienciasActivity extends AppCompatActivity {
 
     ProgressDialog progreso;
 
+    //progressBeneficio
+    ProgressBar pbBeneficio;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_experiencias);
 
         idCarrera = getIntent().getIntExtra("idCarrera",0);
-        exCiclo = getIntent().getIntExtra("exCiclo",0);
+        exCiclo = getIntent().getIntExtra("idCiclo",0);
+
 
         llVolver = findViewById(R.id.llVolver);
         ivCiclo = findViewById(R.id.ivCiclo);
         rvExperiencias = findViewById(R.id.rvExperiencias);
+        //pbBeneficio = findViewById(R.id.pbBeneficio);
         rvExperiencias.setHasFixedSize(true);
         rvExperiencias.setLayoutManager(new GridLayoutManager(this,2));
         requestQueue = Volley.newRequestQueue(this);
         listaExperiencia = new ArrayList<>();
         cargarExperiencias();
+
+        //animacion al progressbarBeneficio
+        ObjectAnimator progressAnimator = ObjectAnimator.ofInt(pbBeneficio, "progress",0,100);//el ultimo 100 es el progresso
+        progressAnimator.setDuration(4000);
+        progressAnimator.setInterpolator(new LinearInterpolator());
+        progressAnimator.start();
 
         //icono de ciclo en activity
         String cicloName = getCicloName(exCiclo);
@@ -99,7 +113,7 @@ public class ListExperienciasActivity extends AppCompatActivity {
         progreso.show();
 
 
-        String url = Util.RUTA_EXPERIENCIA + "/"+ idCarrera + "/" + exCiclo;
+        String url = Util.RUTA_EXPERIENCIA + "/"+ idCarrera + "/" + exCiclo+ "/" + exCiclo;
         //String url = Util.RUTA_EXPERIENCIA;
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
