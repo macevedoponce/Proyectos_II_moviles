@@ -7,11 +7,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.acevedo.rutaexperienciauc.R;
 import com.acevedo.rutaexperienciauc.adapter.CarreraAdapter;
@@ -31,21 +34,18 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ListaCarrerasFragment extends Fragment {
 
     RecyclerView rvCarrerasAll;
     List<Carrera> listaCarrera;
-    private List<Carrera> listaFiltrada;
     RequestQueue requestQueue;
-    private int sedeId;
     private EditText edtBuscarCarreraNombre;
     private Button btnBuscarCarrera;
-    private CarreraAdapter adapter;
 
 
     public ListaCarrerasFragment() {
-        // Required empty public constructor
     }
 
 
@@ -64,39 +64,65 @@ public class ListaCarrerasFragment extends Fragment {
         edtBuscarCarreraNombre = vista.findViewById(R.id.edtBuscarCarreraNombre);
         btnBuscarCarrera = vista.findViewById(R.id.btnBuscarCarrera);
         listaCarrera = new ArrayList<>();
-
-        listaFiltrada = new ArrayList<>();
-
-        btnBuscarCarrera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String searchText = edtBuscarCarreraNombre.getText().toString().toLowerCase();
-                filtrarCarreras(searchText);
-            }
-        });
+//<<<<<<< HEAD
+//
+//        listaFiltrada = new ArrayList<>();
+//
+//        btnBuscarCarrera.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String searchText = edtBuscarCarreraNombre.getText().toString().toLowerCase();
+//                filtrarCarreras(searchText);
+//            }
+//        });
+//=======
+//
+//>>>>>>> mauricio
 //
         rvCarrerasAll.setHasFixedSize(true);
         rvCarrerasAll.setLayoutManager(new LinearLayoutManager(getContext()));
         requestQueue = Volley.newRequestQueue(getContext());
 
         cargarCarreras();
+
+        btnBuscarCarrera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Obtener el texto del EditText y filtrar la lista de carreras
+                String query = edtBuscarCarreraNombre.getText().toString().toLowerCase();
+                List<Carrera> filteredList = new ArrayList<>();
+                for (Carrera carrera : listaCarrera) {
+                    String nombre = carrera.getNombre().toLowerCase();
+                    if (nombre.contains(query)) {
+                        filteredList.add(carrera);
+                    }
+                }
+                // Actualizar el RecyclerView con la lista filtrada o mostrar un Toast si no hay resultados
+                if (filteredList.isEmpty()) {
+                    Toast.makeText(getContext(), "No se encontraron carreras", Toast.LENGTH_SHORT).show();
+                } else {
+                    CarreraAdapter adapter = new CarreraAdapter(getContext(), filteredList);
+                    adapter.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            selectCarrera(view);
+                        }
+                    });
+                    rvCarrerasAll.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        });
+
+        setUpSearch();
         return vista;
     }
 
-    private void filtrarCarreras(String texto) {
-        listaFiltrada.clear();
-        for (Carrera carrera : listaCarrera) {
-            if (carrera.getNombre().toLowerCase().contains(texto.toLowerCase())) {
-                listaFiltrada.add(carrera);
-            }
-        }
-    }
     private void cargarCarreras() {
         Bundle args = getArguments();
         int idSedeRecibido = 0;
         if (args != null) {
             idSedeRecibido = args.getInt("idSede");
-            // Usa el texto como quieras
         }
         String url = Util.RUTA_CARRERAS + "/" + idSedeRecibido;
 
@@ -143,7 +169,41 @@ public class ListaCarrerasFragment extends Fragment {
         requestQueue.add(request);
 
     }
+    private void setUpSearch() {
+        edtBuscarCarreraNombre.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String query = charSequence.toString().toLowerCase();
+                List<Carrera> filteredList = new ArrayList<>();
+                for (Carrera carrera : listaCarrera) {
+                    String nombre = carrera.getNombre().toLowerCase();
+                    if (nombre.contains(query)) {
+                        filteredList.add(carrera);
+                    }
+                }
+                // Actualizar el RecyclerView con la lista filtrada
+                CarreraAdapter adapter = new CarreraAdapter(getContext(), filteredList);
+                adapter.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        selectCarrera(view);
+                    }
+                });
+                rvCarrerasAll.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+    }
     private void selectCarrera(View view) {
         int id = listaCarrera.get(rvCarrerasAll.getChildAdapterPosition(view)).getId();
         int cantidadCiclos = listaCarrera.get(rvCarrerasAll.getChildAdapterPosition(view)).getCantidadCiclos();

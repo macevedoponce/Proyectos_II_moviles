@@ -3,6 +3,7 @@
   <component name="deploymentTargetDropDown">
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     <runningDeviceTargetsSelectedWithDialog>
 =======
     <runningDeviceTargetSelectedWithDropDown>
@@ -26,6 +27,8 @@
     </runningDeviceTargetSelectedWithDropDown>
 =======
 >>>>>>> garcia
+=======
+>>>>>>> mauricio
     <targetSelectedWithDropDown>
       <Target>
         <type value="QUICK_BOOT_TARGET" />
@@ -37,7 +40,11 @@
         </deviceKey>
       </Target>
     </targetSelectedWithDropDown>
+<<<<<<< HEAD
     <timeTargetWasSelectedWithDropDown value="2023-05-05T22:12:40.755861600Z" />
+>>>>>>> mauricio
+=======
+    <timeTargetWasSelectedWithDropDown value="2023-05-05T23:36:03.002615300Z" />
 >>>>>>> mauricio
   </component>
 </project>
