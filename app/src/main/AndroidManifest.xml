@@ -12,6 +12,9 @@
         android:theme="@style/Theme.RutaExperienciaUC"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.solicitarInformacion.SolicitarInformacionActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.sedes.carreras.ListaCarrerasActivity"
             android:exported="false" />
         <activity

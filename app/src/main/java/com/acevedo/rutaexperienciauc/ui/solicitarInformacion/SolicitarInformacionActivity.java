@@ -1,65 +1,45 @@
 package com.acevedo.rutaexperienciauc.ui.solicitarInformacion;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.app.DatePickerDialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
-import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
-import android.util.Patterns;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.acevedo.rutaexperienciauc.R;
-import com.acevedo.rutaexperienciauc.adapter.SedeAdapter;
-import com.acevedo.rutaexperienciauc.clases.Sede;
-import com.android.volley.AuthFailureError;
+import com.acevedo.rutaexperienciauc.util.Util;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.ResultSet;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
-import com.acevedo.rutaexperienciauc.util.Util;
-import com.denzcoskun.imageslider.models.SlideModel;
-import com.google.android.material.textfield.TextInputLayout;
-
-
-public class SolicitarInformacionFragment extends Fragment {
+public class SolicitarInformacionActivity extends AppCompatActivity {
 
     //Variables del layout
     TextInputLayout tilSolInfoNombres,tilSolInfoApellidoPaterno,tilSolInfoApellidoMaterno,tilSolInfoEmail,tilSolInfoCelular,tilSolInfoFechaNacimiento;
@@ -76,34 +56,28 @@ public class SolicitarInformacionFragment extends Fragment {
     RequestQueue requestQueue;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View vista = inflater.inflate(R.layout.fragment_solicitar_informacion, container, false);
-        tilSolInfoNombres = vista.findViewById(R.id.tilSolInfoNombres);
-        tilSolInfoApellidoPaterno = vista.findViewById(R.id.tilSolInfoApellidoPaterno);
-        tilSolInfoApellidoMaterno = vista.findViewById(R.id.tilSolInfoApellidoMaterno);
-        tilSolInfoEmail = vista.findViewById(R.id.tilSolInfoEmail);
-        tilSolInfoCelular = vista.findViewById(R.id.tilSolInfoCelular);
-        tilSolInfoFechaNacimiento = vista.findViewById(R.id.tilSolInfoFechaNacimiento);
-        rgModalidad = vista.findViewById(R.id.rgModalidad);
-        rbPresencial = vista.findViewById(R.id.rbPresencial);
-        rbSemiPresencial = vista.findViewById(R.id.rbSemiPresencial);
-        rbADistancia = vista.findViewById(R.id.rbADistancia);
-        rgMetodoContacto = vista.findViewById(R.id.rgMetodoContacto);
-        rbCorreoElectronico = vista.findViewById(R.id.rbCorreoElectronico);
-        rbCelular = vista.findViewById(R.id.rbCelular);
-        rbWhatsApp = vista.findViewById(R.id.rbWhatsApp);
-        rgConsentimiento = vista.findViewById(R.id.rgConsentimiento);
-        rbConsentimiento = vista.findViewById(R.id.rbConsentimiento);
-        btnSolicitarInformacion =vista.findViewById(R.id.btnSolicitarInformacion);
-        spSedes = vista.findViewById(R.id.spSedes);
-        spCarreras = vista.findViewById(R.id.spCarreras);
+        setContentView(R.layout.activity_solicitar_informacion);
+        tilSolInfoNombres = findViewById(R.id.tilSolInfoNombres);
+        tilSolInfoApellidoPaterno = findViewById(R.id.tilSolInfoApellidoPaterno);
+        tilSolInfoApellidoMaterno = findViewById(R.id.tilSolInfoApellidoMaterno);
+        tilSolInfoEmail = findViewById(R.id.tilSolInfoEmail);
+        tilSolInfoCelular = findViewById(R.id.tilSolInfoCelular);
+        tilSolInfoFechaNacimiento = findViewById(R.id.tilSolInfoFechaNacimiento);
+        rgModalidad = findViewById(R.id.rgModalidad);
+        rbPresencial = findViewById(R.id.rbPresencial);
+        rbSemiPresencial = findViewById(R.id.rbSemiPresencial);
+        rbADistancia = findViewById(R.id.rbADistancia);
+        rgMetodoContacto = findViewById(R.id.rgMetodoContacto);
+        rbCorreoElectronico = findViewById(R.id.rbCorreoElectronico);
+        rbCelular = findViewById(R.id.rbCelular);
+        rbWhatsApp = findViewById(R.id.rbWhatsApp);
+        rgConsentimiento = findViewById(R.id.rgConsentimiento);
+        rbConsentimiento = findViewById(R.id.rbConsentimiento);
+        btnSolicitarInformacion =findViewById(R.id.btnSolicitarInformacion);
+        spSedes = findViewById(R.id.spSedes);
+        spCarreras = findViewById(R.id.spCarreras);
 
         edtSolInfoNombres = tilSolInfoNombres.getEditText().findViewById(R.id.edtSolInfoNombres);
         edtSolInfoApellidoPaterno = tilSolInfoApellidoPaterno.getEditText().findViewById(R.id.edtSolInfoApellidoPaterno);
@@ -113,7 +87,7 @@ public class SolicitarInformacionFragment extends Fragment {
         edtSolInfoFechaNacimiento = tilSolInfoFechaNacimiento.getEditText().findViewById(R.id.edtSolInfoFechaNacimiento);
 
         implementarCalendario();
-        requestQueue= Volley.newRequestQueue(getContext());
+        requestQueue= Volley.newRequestQueue(this);
 
         llamarNombresSedes();
         llamarNombresCarreras();
@@ -125,12 +99,11 @@ public class SolicitarInformacionFragment extends Fragment {
                 if(validarCampo()){
                     if(rbConsentimiento.isChecked()==true){
                         solicitarInformacion();
-                     }
+                    }
 
                 }
             }
         });
-        return vista;
     }
 
     private void llamarNombresCarreras() {
@@ -150,7 +123,7 @@ public class SolicitarInformacionFragment extends Fragment {
                                 e.printStackTrace();
                             }
                         }
-                        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, nombresCarrera);
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(SolicitarInformacionActivity.this, android.R.layout.simple_spinner_item, nombresCarrera);
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         spCarreras.setAdapter(adapter);
                     }
@@ -180,7 +153,7 @@ public class SolicitarInformacionFragment extends Fragment {
                                 e.printStackTrace();
                             }
                         }
-                        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, nombresSede);
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(SolicitarInformacionActivity.this, android.R.layout.simple_spinner_item, nombresSede);
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         spSedes.setAdapter(adapter);
                     }
@@ -211,7 +184,7 @@ public class SolicitarInformacionFragment extends Fragment {
         //Construir el objeto JSON con los datos
         JSONObject datos = new JSONObject();
         String url = Util.RUTA_SOLICITAR_INFORMACION;
-        requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue = Volley.newRequestQueue(SolicitarInformacionActivity.this);
 
         try{
             datos.put("SiNombre", edtSolInfoNombres.getText().toString());
@@ -234,7 +207,7 @@ public class SolicitarInformacionFragment extends Fragment {
                     @Override
                     public void onResponse(JSONObject response) {
                         //Mostrar mensaje de exito
-                        Intent intent =new Intent(getContext(), PopupSolicitarInfo.class);
+                        Intent intent =new Intent(SolicitarInformacionActivity.this, PopupSolicitarInfo.class);
                         startActivity(intent);
                         //Limpiar los datos del texto
                         edtSolInfoNombres.setText("");
@@ -251,9 +224,9 @@ public class SolicitarInformacionFragment extends Fragment {
                         if (error.networkResponse != null && error.networkResponse.data != null) {
                             String errorResponse = new String(error.networkResponse.data);
                             Log.e("Volley Error", errorResponse);
-                            Toast.makeText(getContext(), "E1: " + errorResponse, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SolicitarInformacionActivity.this, "E1: " + errorResponse, Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(getContext(), "Error al insertar los datos", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SolicitarInformacionActivity.this, "Error al insertar los datos", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -288,19 +261,19 @@ public class SolicitarInformacionFragment extends Fragment {
             camposCompletos = false;
         }
         if(!fechaSeleccionada){
-            Toast.makeText(getContext(), "Seleccione una fecha de nacimiento", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SolicitarInformacionActivity.this, "Seleccione una fecha de nacimiento", Toast.LENGTH_SHORT).show();
             camposCompletos = false;
         }
         if(rgModalidad.getCheckedRadioButtonId() == -1) {
-            Toast.makeText(getContext(), "Seleccione modalidad", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SolicitarInformacionActivity.this, "Seleccione modalidad", Toast.LENGTH_SHORT).show();
             camposCompletos = false;
         }
         if(rgMetodoContacto.getCheckedRadioButtonId() == -1) {
-            Toast.makeText(getContext(), "Seleccione metodo de contacto", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SolicitarInformacionActivity.this, "Seleccione metodo de contacto", Toast.LENGTH_SHORT).show();
             camposCompletos = false;
         }
         if(rgConsentimiento.getCheckedRadioButtonId() == -1) {
-            Toast.makeText(getContext(), "Marque consentimiento", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SolicitarInformacionActivity.this, "Marque consentimiento", Toast.LENGTH_SHORT).show();
             camposCompletos = false;
         }
 
@@ -346,7 +319,7 @@ public class SolicitarInformacionFragment extends Fragment {
                 int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
 
                 // Crear una instancia de DatePickerDialog
-                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
+                DatePickerDialog datePickerDialog = new DatePickerDialog(SolicitarInformacionActivity.this,
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -361,6 +334,4 @@ public class SolicitarInformacionFragment extends Fragment {
             }
         });
     }
-
 }
-
