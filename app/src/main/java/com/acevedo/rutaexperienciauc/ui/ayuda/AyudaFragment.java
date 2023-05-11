@@ -37,9 +37,8 @@ public class AyudaFragment extends Fragment {
 
                 Intent i = new Intent(getContext(), ListExperienciasActivity.class);
                 i.putExtra("idCarrera",1);
-                i.putExtra("exCiclo",5);
+                i.putExtra("exCiclo",4);
                 startActivity(i);
-
             }
         });
         return vista;

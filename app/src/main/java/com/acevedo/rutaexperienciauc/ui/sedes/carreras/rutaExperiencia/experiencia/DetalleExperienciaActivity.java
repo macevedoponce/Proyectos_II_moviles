@@ -4,14 +4,21 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -66,9 +73,45 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
             }
         });
 
-
         cargarExperiencia();
 
+    }
+
+    private void dialogDetalle(String titulo, String detalle) {
+
+        final Dialog dialog = new Dialog(this);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_diferencial);
+
+        TextView txtDesc = dialog.findViewById(R.id.txtDescripcion);
+        TextView tvTitle1 = dialog.findViewById(R.id.tvTitle1);
+        TextView tvTitle2 = dialog.findViewById(R.id.tvTitle2);
+        ImageView btnClose = dialog.findViewById(R.id.btnClose);
+        Button btnAceptar = dialog.findViewById(R.id.btnAceptar);
+        tvTitle2.setVisibility(View.GONE);
+
+
+        tvTitle1.setText(titulo);
+        txtDesc.setText(detalle);
+
+        btnAceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {dialog.dismiss();
+            }
+        });
+
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
     private void cargarExperiencia() {
@@ -95,7 +138,7 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
                 wvContenido.getSettings().setDomStorageEnabled(true);
                 wvContenido.setWebChromeClient(new WebChromeClient());
 
-                wvContenido.addJavascriptInterface(ypContenido,"YouTubePlayer");
+                wvContenido.addJavascriptInterface(ypContenido,"YouTubePlayer"); //contenido 360
                 String idVideo = getYoutubeId(coUrlMedia);
                 wvContenido.loadDataWithBaseURL("https://www.youtube.com", getHTMLString(idVideo), "text/html", "UTF-8", null);
 
@@ -112,6 +155,13 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
 
                 break;
         }
+
+        tvVermas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogDetalle(coTitulo, coDescripcion);
+            }
+        });
 
         cvFullScreen.setOnClickListener(new View.OnClickListener() {
             @Override
