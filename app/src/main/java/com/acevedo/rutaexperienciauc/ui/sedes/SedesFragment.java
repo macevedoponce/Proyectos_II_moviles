@@ -3,6 +3,7 @@ package com.acevedo.rutaexperienciauc.ui.sedes;
 
 import android.app.ProgressDialog;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,12 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.acevedo.rutaexperienciauc.R;
 import com.acevedo.rutaexperienciauc.adapter.SedeAdapter;
 import com.acevedo.rutaexperienciauc.clases.Sede;
-import com.acevedo.rutaexperienciauc.ui.sedes.carreras.ListaCarrerasFragment;
+import com.acevedo.rutaexperienciauc.ui.sedes.carreras.ListaCarrerasActivity;
 import com.acevedo.rutaexperienciauc.util.Util;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -25,7 +25,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
-import com.denzcoskun.imageslider.models.SlideModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -119,15 +118,15 @@ public class SedesFragment extends Fragment {
 
       //  Toast.makeText(getContext(), id+"", Toast.LENGTH_SHORT).show();
 
-//        Intent i = new Intent(getContext(), ListaCarrerasFragment.class);
-//        i.putExtra("sede_id",id);
-//        startActivity(i);
+        Intent i = new Intent(getContext(), ListaCarrerasActivity.class);
+        i.putExtra("idSede",id);
+        startActivity(i);
         //codigo que reemplaza el fragment inicio por el fragment solicitar información
-        ListaCarrerasFragment listaCarrerasFragment = new ListaCarrerasFragment(); // inicializa el fragment
-        Bundle args = new Bundle();
-        args.putInt("idSede",id);
-        listaCarrerasFragment.setArguments(args);
-
-        getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment_activity_main,listaCarrerasFragment).addToBackStack(null).commit();
+//        ListaCarrerasFragment listaCarrerasFragment = new ListaCarrerasFragment(); // inicializa el fragment
+//        Bundle args = new Bundle();
+//        args.putInt("idSede",id);
+//        listaCarrerasFragment.setArguments(args);
+//
+//        getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment_activity_main,listaCarrerasFragment).addToBackStack(null).commit();
     }
 }
