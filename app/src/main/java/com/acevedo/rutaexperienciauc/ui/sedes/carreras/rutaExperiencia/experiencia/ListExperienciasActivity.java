@@ -99,8 +99,8 @@ public class ListExperienciasActivity extends AppCompatActivity {
         progreso.show();
 
 
-        //String url = Util.RUTA_EXPERIENCIA + "/"+ idCarrera + "/" + exCiclo;
-        String url = Util.RUTA_EXPERIENCIA;
+        String url = Util.RUTA_EXPERIENCIA + "/"+ idCarrera + "/" + exCiclo+ "/" + exCiclo;
+        //String url = Util.RUTA_EXPERIENCIA;
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {

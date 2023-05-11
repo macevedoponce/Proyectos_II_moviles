@@ -40,7 +40,6 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
     ImageView ivContenido;
     WebView wvContenido;
     YouTubePlayerView ypContenido;
-    private static final String mApiKey = "AIzaSyAWWM30rvrAx-80fqgVqrwIW2Seg-cgkX0";
 
     RatingBar ratingBar;
 
