@@ -5,6 +5,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -31,6 +33,7 @@ import java.util.List;
 public class RutaExperiencia extends AppCompatActivity {
     RecyclerView rvListaRutaExperiencia;
     ListaRutaExperienciaAdapter adapter;
+    ArrayAdapter<String> spinnerAdapter;
     List<ListaRutaExperiencia> items;
 
     Spinner spCarreras;
@@ -59,6 +62,7 @@ public class RutaExperiencia extends AppCompatActivity {
 
         initView();
         initValues();
+
     }
 
     private void cargarCarreras() {
@@ -68,19 +72,43 @@ public class RutaExperiencia extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray response) {
                         List<String> nombresCarrera = new ArrayList<>();
+                        final List<Integer> idsCarrera = new ArrayList<>();
+                        final List<Integer> cantCiclosCarrera = new ArrayList<>();
                         for(int i = 0; i < response.length(); i++){
                             try{
                                 JSONObject jsonObject = response.getJSONObject(i);
+                                int id =jsonObject.getInt("IdCarrera");
                                 String nombreCarrera = jsonObject.getString("CaNombre");
                                 nombresCarrera.add(nombreCarrera);
+                                int cantidadCiclos = jsonObject.getInt("CaCantidadCiclos");
+                                idsCarrera.add(id);
+                                cantCiclosCarrera.add(cantidadCiclos);
                             }catch (JSONException e){
                                 e.printStackTrace();
                             }
                         }
-                        ArrayAdapter<String> adapter = new ArrayAdapter<>(RutaExperiencia.this, R.layout.spinner_item, nombresCarrera);
-                        adapter.setDropDownViewResource(R.layout.spinner_item);
-                        spCarreras.setAdapter(adapter);
+                        spinnerAdapter = new ArrayAdapter<>(RutaExperiencia.this, R.layout.spinner_item, nombresCarrera);
+                        spinnerAdapter.setDropDownViewResource(R.layout.spinner_item);
+                        spCarreras.setAdapter(spinnerAdapter);
 
+                        spCarreras.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                //obteniendo id carrera seleccionada
+                                idCarrera = idsCarrera.get(i);
+                                //obteniendo cantidad de ciclos de la carrera seleccioanda
+                                cantidadCiclos = cantCiclosCarrera.get(i);
+                                items = getItems(cantidadCiclos);
+                                adapter = new ListaRutaExperienciaAdapter(items,idCarrera);
+                                rvListaRutaExperiencia.setAdapter(adapter);
+
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> adapterView) {
+
+                            }
+                        });
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -103,7 +131,7 @@ public class RutaExperiencia extends AppCompatActivity {
     }
     private List<ListaRutaExperiencia> getItems(int cantCiclos){
 
-        int[] images = {R.drawable.ciclo_uno, R.drawable.ciclo_dos, R.drawable.ciclo_tres, R.drawable.ciclo_cuatro, R.drawable.ciclo_cinco, R.drawable.ciclo_seis, R.drawable.ciclo_siete, R.drawable.ciclo_ocho, R.drawable.ciclo_nueve, R.drawable.ciclo_diez};
+        int[] images = {R.drawable.ciclo_uno, R.drawable.ciclo_dos, R.drawable.ciclo_tres, R.drawable.ciclo_cuatro, R.drawable.ciclo_cinco, R.drawable.ciclo_seis, R.drawable.ciclo_siete, R.drawable.ciclo_ocho, R.drawable.ciclo_nueve, R.drawable.ciclo_diez, R.drawable.ciclo_uno, R.drawable.ciclo_dos, R.drawable.ciclo_tres, R.drawable.ciclo_cuatro};
 
         List<ListaRutaExperiencia> rutaExperienciaList = new ArrayList<>();
         for (int i = 0; i < cantCiclos; i++) {

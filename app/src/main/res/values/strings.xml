@@ -68,4 +68,8 @@
     <!-- Buscar carrera -->
     <string name="hint_ingresar_carrera_pref">Ingrese la carrera de su preferencia</string>
 
+    <!-- Ruta Experiencia -->
+    <string name="title_popup_ruta_experiencia">Ruta de Experiencia UC</string>
+    <string name="btn_more_info">More Info</string>
+
 </resources>

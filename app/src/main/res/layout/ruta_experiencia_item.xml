@@ -56,7 +56,7 @@
                     android:id="@+id/btnExperienciaMasInfo"
                     android:layout_width="100dp"
                     android:layout_height="45dp"
-                    android:text="More info"
+                    android:text="@string/btn_more_info"
                     android:textSize="10dp"></Button>
             </LinearLayout>
 
