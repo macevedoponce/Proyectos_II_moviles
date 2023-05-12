@@ -1,25 +1,23 @@
 package com.acevedo.rutaexperienciauc.ui.sedes.carreras;
 
-import android.content.Intent;
-import android.os.Bundle;
-
-import androidx.appcompat.view.menu.MenuBuilder;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.acevedo.rutaexperienciauc.R;
 import com.acevedo.rutaexperienciauc.adapter.CarreraAdapter;
 import com.acevedo.rutaexperienciauc.clases.Carrera;
+import com.acevedo.rutaexperienciauc.ui.sedes.carreras.rutaExperiencia.RutaExperiencia;
 import com.acevedo.rutaexperienciauc.util.Util;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -27,7 +25,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
-import com.denzcoskun.imageslider.models.SlideModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,41 +32,35 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
-public class ListaCarrerasFragment extends Fragment {
+public class ListaCarrerasActivity extends AppCompatActivity {
 
     RecyclerView rvCarrerasAll;
     List<Carrera> listaCarrera;
     RequestQueue requestQueue;
+    LinearLayout llVolver;
     private EditText edtBuscarCarreraNombre;
     private Button btnBuscarCarrera;
 
-
-    public ListaCarrerasFragment() {
-    }
-
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View vista = inflater.inflate(R.layout.fragment_lista_carreras, container, false);
-        rvCarrerasAll = vista.findViewById(R.id.rvCarrerasall);
-        edtBuscarCarreraNombre = vista.findViewById(R.id.edtBuscarCarreraNombre);
-        btnBuscarCarrera = vista.findViewById(R.id.btnBuscarCarrera);
+        setContentView(R.layout.activity_lista_carreras);
+        rvCarrerasAll = findViewById(R.id.rvCarrerasall);
+        edtBuscarCarreraNombre = findViewById(R.id.edtBuscarCarreraNombre);
+        btnBuscarCarrera = findViewById(R.id.btnBuscarCarrera);
         listaCarrera = new ArrayList<>();
-
-//
         rvCarrerasAll.setHasFixedSize(true);
-        rvCarrerasAll.setLayoutManager(new LinearLayoutManager(getContext()));
-        requestQueue = Volley.newRequestQueue(getContext());
+        rvCarrerasAll.setLayoutManager(new LinearLayoutManager(this));
+        requestQueue = Volley.newRequestQueue(this);
+        llVolver = findViewById(R.id.llVolver);
+
+        llVolver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         cargarCarreras();
 
@@ -87,9 +78,9 @@ public class ListaCarrerasFragment extends Fragment {
                 }
                 // Actualizar el RecyclerView con la lista filtrada o mostrar un Toast si no hay resultados
                 if (filteredList.isEmpty()) {
-                    Toast.makeText(getContext(), "No se encontraron carreras", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ListaCarrerasActivity.this, "No se encontraron carreras", Toast.LENGTH_SHORT).show();
                 } else {
-                    CarreraAdapter adapter = new CarreraAdapter(getContext(), filteredList);
+                    CarreraAdapter adapter = new CarreraAdapter(ListaCarrerasActivity.this, filteredList);
                     adapter.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -103,15 +94,12 @@ public class ListaCarrerasFragment extends Fragment {
         });
 
         setUpSearch();
-        return vista;
     }
 
     private void cargarCarreras() {
-        Bundle args = getArguments();
-        int idSedeRecibido = 0;
-        if (args != null) {
-            idSedeRecibido = args.getInt("idSede");
-        }
+
+        int idSedeRecibido = getIntent().getIntExtra("idSede",0);
+
         String url = Util.RUTA_CARRERAS + "/" + idSedeRecibido;
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
@@ -137,7 +125,7 @@ public class ListaCarrerasFragment extends Fragment {
 
 
 
-                        CarreraAdapter adapter = new CarreraAdapter(getContext(),listaCarrera);
+                        CarreraAdapter adapter = new CarreraAdapter(ListaCarrerasActivity.this,listaCarrera);
                         adapter.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -175,7 +163,7 @@ public class ListaCarrerasFragment extends Fragment {
                     }
                 }
                 // Actualizar el RecyclerView con la lista filtrada
-                CarreraAdapter adapter = new CarreraAdapter(getContext(), filteredList);
+                CarreraAdapter adapter = new CarreraAdapter(ListaCarrerasActivity.this, filteredList);
                 adapter.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -195,13 +183,11 @@ public class ListaCarrerasFragment extends Fragment {
     private void selectCarrera(View view) {
         int id = listaCarrera.get(rvCarrerasAll.getChildAdapterPosition(view)).getId();
         int cantidadCiclos = listaCarrera.get(rvCarrerasAll.getChildAdapterPosition(view)).getCantidadCiclos();
-
         String nombre = listaCarrera.get(rvCarrerasAll.getChildAdapterPosition(view)).getNombre();
 
-        Toast.makeText(getContext(), id + "----" + cantidadCiclos, Toast.LENGTH_SHORT).show();
-
-//        Intent i = new Intent(getContext(), RutaExperiencias.class);
-//        i.putExtra("sede_id",id);
-//        startActivity(i);
+        Intent i = new Intent(this, RutaExperiencia.class);
+        i.putExtra("idCarrera",id);
+        i.putExtra("cantidadCiclos", cantidadCiclos);
+        startActivity(i);
     }
 }

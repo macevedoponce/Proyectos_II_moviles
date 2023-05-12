@@ -12,6 +12,29 @@
         android:theme="@style/Theme.RutaExperienciaUC"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.solicitarInformacion.SolicitarInformacionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.sedes.carreras.ListaCarrerasActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.sedes.carreras.rutaExperiencia.experiencia.ListExperienciasActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.sedes.carreras.rutaExperiencia.experiencia.DetalleExperienciaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.sedes.carreras.rutaExperiencia.experiencia.FullScreenActivity"
+            android:exported="false"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".ui.sedes.carreras.rutaExperiencia.RutaExperiencia"
+            android:exported="true" />
+        <activity
+            android:name=".ui.solicitarInformacion.PopupSolicitarInfo"
+            android:exported="false"
+            android:theme="@style/AppTheme.TemaPopup" />
+        <activity
             android:name=".ui.splash"
             android:exported="true">
             <intent-filter>

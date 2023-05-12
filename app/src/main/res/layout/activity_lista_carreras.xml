@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.sedes.carreras.ListaCarrerasActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:padding="10dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/llVolver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                app:tint="@color/icon_selected"
+                android:src="@drawable/baseline_chevron_left_24"
+                android:layout_gravity="center"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/style_txt_voler"
+                android:text="Volver"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:padding="10dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/logo_uc_25"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/edtSolassdInfoNombres"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="56dp"
+        android:padding="16dp"
+        android:hint="@string/hint_ingresar_carrera_pref"
+        android:layout_margin="24dp"
+        android:elevation="4dp"
+        android:textSize="14dp"
+        android:fontFamily="@font/poppins"
+        android:background="@drawable/borde_buscar_carrera">
+        <EditText
+            android:id="@+id/edtBuscarCarreraNombre"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_weight="3"
+            android:hint="@string/hint_ingresar_carrera_pref"
+            android:layout_marginTop="-10dp"
+            android:textSize="14dp"
+            android:fontFamily="@font/poppins"
+            android:background="@drawable/borde_buscar_carrera" />
+        <Button
+            android:id="@+id/btnBuscarCarrera"
+            android:layout_weight="1"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="-4dp"
+            android:background="@drawable/ic_buscar"/>
+    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvCarrerasall"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>
