@@ -47,6 +47,12 @@ public class RutaExperiencia extends AppCompatActivity {
     int idSede;
 
     LinearLayout llVolver;
+
+    //spinner
+    final List<Integer> idsCarrera = new ArrayList<>();
+    final List<Integer> cantCiclosCarrera = new ArrayList<>();
+    List<String> nombresCarrera = new ArrayList<>();
+    boolean spinnerClicked = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,8 +68,36 @@ public class RutaExperiencia extends AppCompatActivity {
         idSede = getIntent().getIntExtra("idSede",0);
 
         requestQueue = Volley.newRequestQueue(this);
+
+        nombresCarrera.add(0, "Selecciona una carrera");
+
         cargarCarreras();
 
+        // Crear adaptador del spinner con la lista actualizada de nombres de carreras
+        spinnerAdapter = new ArrayAdapter<>(RutaExperiencia.this, R.layout.spinner_item, nombresCarrera);
+        spinnerAdapter.setDropDownViewResource(R.layout.spinner_item);
+        spCarreras.setAdapter(spinnerAdapter);
+
+        spCarreras.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                //obteniendo id carrera seleccionada
+                if (i == 0) {
+                    return;
+                }
+                idCarrera = idsCarrera.get(i-1);
+                //obteniendo cantidad de ciclos de la carrera seleccioanda
+                cantidadCiclos = cantCiclosCarrera.get(i-1);
+                items = getItems(cantidadCiclos);
+                adapter = new ListaRutaExperienciaAdapter(items,idCarrera);
+                rvListaRutaExperiencia.setAdapter(adapter);
+
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
         initView();
         initValues();
 
@@ -81,9 +115,6 @@ public class RutaExperiencia extends AppCompatActivity {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        List<String> nombresCarrera = new ArrayList<>();
-                        final List<Integer> idsCarrera = new ArrayList<>();
-                        final List<Integer> cantCiclosCarrera = new ArrayList<>();
                         for(int i = 0; i < response.length(); i++){
                             try{
                                 JSONObject jsonObject = response.getJSONObject(i);
@@ -97,28 +128,9 @@ public class RutaExperiencia extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                         }
-                        spinnerAdapter = new ArrayAdapter<>(RutaExperiencia.this, R.layout.spinner_item, nombresCarrera);
-                        spinnerAdapter.setDropDownViewResource(R.layout.spinner_item);
-                        spCarreras.setAdapter(spinnerAdapter);
-
-                        spCarreras.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                            @Override
-                            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                //obteniendo id carrera seleccionada
-                                idCarrera = idsCarrera.get(i);
-                                //obteniendo cantidad de ciclos de la carrera seleccioanda
-                                cantidadCiclos = cantCiclosCarrera.get(i);
-                                items = getItems(cantidadCiclos);
-                                adapter = new ListaRutaExperienciaAdapter(items,idCarrera);
-                                rvListaRutaExperiencia.setAdapter(adapter);
-
-                            }
-
-                            @Override
-                            public void onNothingSelected(AdapterView<?> adapterView) {
-
-                            }
-                        });
+//                        spinnerAdapter = new ArrayAdapter<>(RutaExperiencia.this, R.layout.spinner_item, nombresCarrera);
+//                        spinnerAdapter.setDropDownViewResource(R.layout.spinner_item);
+//                        spCarreras.setAdapter(spinnerAdapter);
                     }
                 }, new Response.ErrorListener() {
             @Override
