@@ -12,6 +12,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -40,6 +42,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class SolicitarInformacionActivity extends AppCompatActivity {
+
     //Variables del layout
     TextInputLayout tilSolInfoNombres,tilSolInfoApellidoPaterno,tilSolInfoApellidoMaterno,tilSolInfoEmail,tilSolInfoCelular,tilSolInfoFechaNacimiento;
     EditText edtSolInfoNombres, edtSolInfoApellidoPaterno, edtSolInfoApellidoMaterno, edtSolInfoEmail, edtSolInfoCelular, edtSolInfoFechaNacimiento;
@@ -48,6 +51,8 @@ public class SolicitarInformacionActivity extends AppCompatActivity {
     RadioGroup rgModalidad,rgMetodoContacto,rgConsentimiento;
 
     Spinner spSedes, spCarreras;
+
+    LinearLayout llVolver;
 
     //Variables para utilizar internamente
     private boolean fechaSeleccionada = false;
@@ -75,9 +80,11 @@ public class SolicitarInformacionActivity extends AppCompatActivity {
         rbWhatsApp = findViewById(R.id.rbWhatsApp);
         rgConsentimiento = findViewById(R.id.rgConsentimiento);
         rbConsentimiento = findViewById(R.id.rbConsentimiento);
-        btnSolicitarInformacion = findViewById(R.id.btnSolicitarInformacion);
+
+        btnSolicitarInformacion =findViewById(R.id.btnSolicitarInformacion);
         spSedes = findViewById(R.id.spSedes);
         spCarreras = findViewById(R.id.spCarreras);
+        llVolver = findViewById(R.id.llVolver);
 
         edtSolInfoNombres = tilSolInfoNombres.getEditText().findViewById(R.id.edtSolInfoNombres);
         edtSolInfoApellidoPaterno = tilSolInfoApellidoPaterno.getEditText().findViewById(R.id.edtSolInfoApellidoPaterno);
@@ -87,10 +94,18 @@ public class SolicitarInformacionActivity extends AppCompatActivity {
         edtSolInfoFechaNacimiento = tilSolInfoFechaNacimiento.getEditText().findViewById(R.id.edtSolInfoFechaNacimiento);
 
         implementarCalendario();
-        requestQueue= Volley.newRequestQueue(SolicitarInformacionActivity.this);
 
-        cargarSedes();
+        requestQueue= Volley.newRequestQueue(this);
 
+        llamarNombresSedes();
+        llamarNombresCarreras();
+
+        llVolver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         //boton para enviar los datos
         btnSolicitarInformacion.setOnClickListener(new View.OnClickListener() {
@@ -106,9 +121,9 @@ public class SolicitarInformacionActivity extends AppCompatActivity {
         });
     }
 
-    private void cargarCarreras() {
-
-        String url = Util.RUTA_CARRERAS + "/" + idSede;
+    private void llamarNombresCarreras() {
+        //String url = Util.RUTA_LLAMARNOMBRE_CARRERA;
+        String url = Util.RUTA_CARRERAS+"/"+1;
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
@@ -137,7 +152,9 @@ public class SolicitarInformacionActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
 
-    private void cargarSedes() {
+    private void llamarNombresSedes() {
+        //String url = Util.RUTA_LLAMARNOMBRE_SEDE;
+
         String url = Util.RUTA_SEDE;
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
@@ -158,7 +175,6 @@ public class SolicitarInformacionActivity extends AppCompatActivity {
                         ArrayAdapter<String> adapter = new ArrayAdapter<>(SolicitarInformacionActivity.this, android.R.layout.simple_spinner_item, nombresSede);
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         spSedes.setAdapter(adapter);
-                        cargarCarreras();
                     }
                 }, new Response.ErrorListener() {
             @Override

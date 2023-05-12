@@ -19,11 +19,13 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.acevedo.rutaexperienciauc.R;
 import com.acevedo.rutaexperienciauc.adapter.SedeAdapter;
 import com.acevedo.rutaexperienciauc.clases.Sede;
+
+
+import com.acevedo.rutaexperienciauc.ui.sedes.carreras.ListaCarrerasActivity;
 
 import com.acevedo.rutaexperienciauc.ui.solicitarInformacion.SolicitarInformacionActivity;
 
@@ -99,8 +101,32 @@ public class InicioFragment extends Fragment {
         cvEscribenos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), SolicitarInformacionActivity.class);
-                startActivity(intent);
+
+                Intent i = new Intent(getContext(), SolicitarInformacionActivity.class);
+                startActivity(i);
+//                // Obtener instancia del FragmentManager
+//                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+//
+//                //Crear instancia del Fragment que deseas mostrar
+//                SolicitarInformacionFragment fragment = new SolicitarInformacionFragment();
+//
+//                //Crear una instancia de la clase FragmentTransaction
+//                FragmentTransaction transaction = fragmentManager.beginTransaction();
+//
+//                // Reemplazar el contenido del contenedor de fragmentos con el Fragment que deseas mostrar
+//                transaction.replace(R.id.frameLayoutInicio, fragment);
+//
+//                // Agregar el Fragment actual a la pila de retroceso
+//                transaction.addToBackStack("null");
+//
+//                // Finalizar la transacción
+//                transaction.commit();
+//                imageSlider.setVisibility(View.GONE);
+//                cvPensamiento.setVisibility(View.GONE);
+//                cvComunidades.setVisibility(View.GONE);
+//                cvBienestar.setVisibility(View.GONE);
+//                cvEscribenos.setVisibility(View.GONE);
+
             }
         });
 
@@ -170,7 +196,6 @@ public class InicioFragment extends Fragment {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        List<SlideModel> slideModels = new ArrayList<>();
                         for (int i = 0; i < response.length(); i++) {
                             try {
                                 JSONObject jsonObject = response.getJSONObject(i);
@@ -178,7 +203,6 @@ public class InicioFragment extends Fragment {
                                 String nombre = jsonObject.getString("SeNombre");
                                 String adress =jsonObject.getString("SeDireccion");
                                 String image_url = jsonObject.getString("SeUrlImagen");
-                                //Sede sede = new Sede(id, nombre, adress, phone, Util.RUTA +image_url);
                                 Sede sede = new Sede(id, nombre, adress, image_url);
                                 listaSede.add(sede);
 
@@ -188,15 +212,15 @@ public class InicioFragment extends Fragment {
                         }
 
                         SedeAdapter adapter = new SedeAdapter(getContext(),listaSede);
-                    adapter.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            selectSede(view);
-                        }
-                    });
+                        adapter.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                selectSede(view);
+                            }
+                        });
 
-                    rvSedes.setAdapter(adapter);
-                    adapter.notifyDataSetChanged();
+                        rvSedes.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -210,31 +234,10 @@ public class InicioFragment extends Fragment {
 
     private void selectSede(View view) {
         int id = listaSede.get(rvSedes.getChildAdapterPosition(view)).getId();
-        String nombre = listaSede.get(rvSedes.getChildAdapterPosition(view)).getNombre();
-
-        Toast.makeText(getContext(), nombre+"", Toast.LENGTH_SHORT).show();
-
-        // activar cuando se tenga lista la interface de facultades y se debe de enviar el id para hacer la consulta en el api
-
-//        Intent i = new Intent(getContext(), carrerasFragment.class);
-//        i.putExtra("sede_id",id);
-//        startActivity(i);
+        Intent i = new Intent(getContext(), ListaCarrerasActivity.class);
+        i.putExtra("idSede",id);
+        startActivity(i);
     }
-
-
-    //funcion que muestra imagenes solo ingresando las urls en este apartado
-    private void cargarSlider(){
-
-        ArrayList<SlideModel> slideModels = new ArrayList<>();
-        slideModels.add(new SlideModel("https://ucontinental.edu.pe/www/wp-content/uploads/2023/02/uc-017-16_02_2023.jpg", ScaleTypes.FIT));
-        slideModels.add(new SlideModel("https://ucontinental.edu.pe/www/wp-content/uploads/2022/07/Fernando-Barrios-Ipenza-Universidad-Continental-24-anios-descentralizando-la-educacion-del-pais.jpg", ScaleTypes.FIT));
-        slideModels.add(new SlideModel("https://ucontinental.edu.pe/www/wp-content/uploads/2023/01/uc-017-31_01_2023.jpg", ScaleTypes.FIT));
-        slideModels.add(new SlideModel("https://ucontinental.edu.pe/www/wp-content/uploads/2022/10/uc.jpeg", ScaleTypes.FIT));
-        slideModels.add(new SlideModel("https://pbs.twimg.com/profile_banners/111604052/1680652709/1500x500", ScaleTypes.FIT));
-
-        imageSlider.setImageList(slideModels, ScaleTypes.CENTER_CROP);
-    }
-
 
     //función que recepciona imagenes desde api
     private void obtenerImagenesSlider() {

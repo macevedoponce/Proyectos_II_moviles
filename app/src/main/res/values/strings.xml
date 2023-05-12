@@ -65,7 +65,6 @@
         <item>Ingenieria Ambiental</item>
     </string-array>
 
-
     <!-- Buscar carrera -->
     <string name="hint_ingresar_carrera_pref">Ingrese la carrera de su preferencia</string>
 

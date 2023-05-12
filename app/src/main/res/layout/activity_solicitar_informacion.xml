@@ -1,11 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ui.solicitarInformacion.SolicitarInformacionActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:padding="10dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/llVolver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                app:tint="@color/icon_selected"
+                android:src="@drawable/baseline_chevron_left_24"
+                android:layout_gravity="center"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/style_txt_voler"
+                android:text="Volver"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:padding="10dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/logo_uc_25"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+>>>>>>> dev
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,8 +76,9 @@
                     android:layout_marginTop="10dp"
                     android:layout_gravity="center"
                     android:text="@string/title_solicitar_informacion"
+                    android:fontFamily="@font/poppins_bold"
                     android:textColor="@color/icon_selected"
-                    android:textSize="20dp"></TextView>
+                    android:textSize="20dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -312,6 +363,7 @@
             android:id="@+id/btnSolicitarInformacion"
             android:layout_width="match_parent"
             android:layout_height="37dp"
+            android:layout_margin="10dp"
             app:backgroundTint="@null"
             android:layout_marginTop="10dp"
             style="@style/style_txt_btn"
@@ -319,8 +371,7 @@
             android:text="@string/btn_enviar"
             android:layout_marginRight="20dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginBottom="10dp"
-            ></Button>
+            />
     </LinearLayout>
+</LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
