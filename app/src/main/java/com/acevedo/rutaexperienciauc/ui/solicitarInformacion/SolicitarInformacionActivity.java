@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -50,6 +51,8 @@ public class SolicitarInformacionActivity extends AppCompatActivity {
 
     Spinner spSedes, spCarreras;
 
+    LinearLayout llVolver;
+
     //Variables para utilizar internamente
     private boolean fechaSeleccionada = false;
 
@@ -78,6 +81,7 @@ public class SolicitarInformacionActivity extends AppCompatActivity {
         btnSolicitarInformacion =findViewById(R.id.btnSolicitarInformacion);
         spSedes = findViewById(R.id.spSedes);
         spCarreras = findViewById(R.id.spCarreras);
+        llVolver = findViewById(R.id.llVolver);
 
         edtSolInfoNombres = tilSolInfoNombres.getEditText().findViewById(R.id.edtSolInfoNombres);
         edtSolInfoApellidoPaterno = tilSolInfoApellidoPaterno.getEditText().findViewById(R.id.edtSolInfoApellidoPaterno);
@@ -91,6 +95,13 @@ public class SolicitarInformacionActivity extends AppCompatActivity {
 
         llamarNombresSedes();
         llamarNombresCarreras();
+
+        llVolver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         //boton para enviar los datos
         btnSolicitarInformacion.setOnClickListener(new View.OnClickListener() {
