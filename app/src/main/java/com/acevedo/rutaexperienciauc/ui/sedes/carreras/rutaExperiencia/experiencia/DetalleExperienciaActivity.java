@@ -6,11 +6,13 @@ import androidx.cardview.widget.CardView;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -49,6 +52,8 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
     YouTubePlayerView ypContenido;
 
     RatingBar ratingBar;
+    ImageButton customFavoriteButton;
+    SharedPreferences sharedPreferences;
 
 
     @Override
@@ -65,6 +70,8 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
         ivContenido = findViewById(R.id.ivContenido);
         wvContenido = findViewById(R.id.wvContenido);
         //ypContenido = findViewById(R.id.ypContenido);
+        customFavoriteButton = findViewById(R.id.custom_favorite_button);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         llVolver.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,7 +179,27 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        GuardarExperienciaFavorito(Integer.toString(idContenido));
 
+    }
+
+    private void GuardarExperienciaFavorito(String rutaTitulo){
+        customFavoriteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean isFavorite = sharedPreferences.getBoolean("rutaExperiencia" + rutaTitulo, false);
+                if (isFavorite) {
+                    customFavoriteButton.setSelected(false);
+                    sharedPreferences.edit().remove("rutaExperiencia" + rutaTitulo).apply();
+                } else {
+                    customFavoriteButton.setSelected(true);
+                    sharedPreferences.edit().putBoolean("rutaExperiencia" + rutaTitulo, true).apply();
+                    Toast.makeText(getApplicationContext(),rutaTitulo , Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        boolean isFavorite = sharedPreferences.getBoolean("rutaExperiencia" + rutaTitulo, false);
+        customFavoriteButton.setSelected(isFavorite);
     }
 
     private String getHTMLString(String mVideoId) {
