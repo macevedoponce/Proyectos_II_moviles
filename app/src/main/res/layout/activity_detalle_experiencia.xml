@@ -121,11 +121,14 @@
                     android:layout_marginStart="20dp"
                     android:layout_weight="1"/>
 
-                <RatingBar
+                <ImageButton
+                    android:id="@+id/custom_favorite_button"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:progressDrawable="@drawable/ic_favorite"
                     android:layout_margin="10dp"
+                    android:background="@null"
+                    android:src="@drawable/custom_favorite_button"
+                    style="@style/Widget.AppCompat.Button.Borderless"
                     />
 
             </LinearLayout>
