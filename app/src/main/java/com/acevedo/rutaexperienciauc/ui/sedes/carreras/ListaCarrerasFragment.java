@@ -118,14 +118,10 @@ public class ListaCarrerasFragment extends Fragment {
                                 int idSede =jsonObject.getInt("IdSede");
                                 Carrera carrera = new Carrera(id, nombre, descripcion, planEstudiosUrl, cantidadCiclos,idSede);
                                 listaCarrera.add(carrera);
-
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
-
-
-
                         CarreraAdapter adapter = new CarreraAdapter(getContext(),listaCarrera);
                         adapter.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -133,7 +129,6 @@ public class ListaCarrerasFragment extends Fragment {
                                 selectCarrera(view);
                             }
                         });
-
                         rvCarrerasAll.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
                     }
@@ -144,18 +139,23 @@ public class ListaCarrerasFragment extends Fragment {
             }
         });
         requestQueue.add(request);
-
     }
 
     private void selectCarrera(View view) {
         int id = listaCarrera.get(rvCarrerasAll.getChildAdapterPosition(view)).getId();
         int cantidadCiclos = listaCarrera.get(rvCarrerasAll.getChildAdapterPosition(view)).getCantidadCiclos();
+        int idSede = listaCarrera.get(rvCarrerasAll.getChildAdapterPosition(view)).getIdSede();
+        String planEstudiosUrl = listaCarrera.get(rvCarrerasAll.getChildAdapterPosition(view)).getPlanEstudios_url();
         String nombre = listaCarrera.get(rvCarrerasAll.getChildAdapterPosition(view)).getNombre();
 
         Intent i = new Intent(getContext(), RutaExperiencia.class);
         i.putExtra("idCarrera",id);
         i.putExtra("cantidadCiclos", cantidadCiclos);
+        i.putExtra("idSede", idSede);
+        i.putExtra("planEstudiosUrl", planEstudiosUrl);
+
         startActivity(i);
+
     }
 
 

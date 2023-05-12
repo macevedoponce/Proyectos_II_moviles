@@ -5,10 +5,25 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.acevedo.rutaexperienciauc.R;
 import com.acevedo.rutaexperienciauc.adapter.ListaRutaExperienciaAdapter;
+import com.acevedo.rutaexperienciauc.clases.Carrera;
 import com.acevedo.rutaexperienciauc.clases.ListaRutaExperiencia;
+import com.acevedo.rutaexperienciauc.ui.solicitarInformacion.SolicitarInformacionActivity;
+import com.acevedo.rutaexperienciauc.util.Util;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,22 +33,62 @@ public class RutaExperiencia extends AppCompatActivity {
     ListaRutaExperienciaAdapter adapter;
     List<ListaRutaExperiencia> items;
 
+    Spinner spCarreras;
+    RequestQueue requestQueue;
+
     int cantidadCiclos;
     int idCarrera;
+    String planEstudiosUrl;
+
+    int idSede;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ruta_experiencia);
 
+        spCarreras = findViewById(R.id.spListaCarreras);
 
         //recibimos los datos enviados de la lista de carreras
-        //idCarrera = getIntent().getIntExtra("idCarrera", 0);
         idCarrera = getIntent().getIntExtra("idCarrera", 0);
         cantidadCiclos = getIntent().getIntExtra("cantidadCiclos", 0);
+        planEstudiosUrl = getIntent().getStringExtra("planEstudiosUrl");
+        idSede = getIntent().getIntExtra("idSede",0);
+
+        requestQueue = Volley.newRequestQueue(this);
+        cargarCarreras();
 
         initView();
         initValues();
+    }
 
+    private void cargarCarreras() {
+        String url = Util.RUTA_CARRERAS + "/" + idSede;
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        List<String> nombresCarrera = new ArrayList<>();
+                        for(int i = 0; i < response.length(); i++){
+                            try{
+                                JSONObject jsonObject = response.getJSONObject(i);
+                                String nombreCarrera = jsonObject.getString("CaNombre");
+                                nombresCarrera.add(nombreCarrera);
+                            }catch (JSONException e){
+                                e.printStackTrace();
+                            }
+                        }
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(RutaExperiencia.this, R.layout.spinner_item, nombresCarrera);
+                        adapter.setDropDownViewResource(R.layout.spinner_item);
+                        spCarreras.setAdapter(adapter);
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        requestQueue.add(request);
     }
 
     private void initView(){
@@ -45,7 +100,6 @@ public class RutaExperiencia extends AppCompatActivity {
         items = getItems(cantidadCiclos);
         adapter = new ListaRutaExperienciaAdapter(items, idCarrera);
         rvListaRutaExperiencia.setAdapter(adapter);
-
     }
     private List<ListaRutaExperiencia> getItems(int cantCiclos){
 
@@ -56,6 +110,5 @@ public class RutaExperiencia extends AppCompatActivity {
             rutaExperienciaList.add(new ListaRutaExperiencia(images[i]));
         }
         return rutaExperienciaList;
-
     }
 }
