@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import com.acevedo.rutaexperienciauc.R;
@@ -44,12 +45,15 @@ public class RutaExperiencia extends AppCompatActivity {
     String planEstudiosUrl;
 
     int idSede;
+
+    LinearLayout llVolver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ruta_experiencia);
 
         spCarreras = findViewById(R.id.spListaCarreras);
+        llVolver = findViewById(R.id.llVolver);
 
         //recibimos los datos enviados de la lista de carreras
         idCarrera = getIntent().getIntExtra("idCarrera", 0);
@@ -63,6 +67,12 @@ public class RutaExperiencia extends AppCompatActivity {
         initView();
         initValues();
 
+        llVolver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     private void cargarCarreras() {
