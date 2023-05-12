@@ -118,7 +118,8 @@ public class SolicitarInformacionActivity extends AppCompatActivity {
     }
 
     private void llamarNombresCarreras() {
-        String url = Util.RUTA_LLAMARNOMBRE_CARRERA;
+        //String url = Util.RUTA_LLAMARNOMBRE_CARRERA;
+        String url = Util.RUTA_CARRERAS+"/"+1;
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
@@ -148,7 +149,8 @@ public class SolicitarInformacionActivity extends AppCompatActivity {
     }
 
     private void llamarNombresSedes() {
-        String url = Util.RUTA_LLAMARNOMBRE_SEDE;
+        //String url = Util.RUTA_LLAMARNOMBRE_SEDE;
+        String url = Util.RUTA_SEDE;
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
