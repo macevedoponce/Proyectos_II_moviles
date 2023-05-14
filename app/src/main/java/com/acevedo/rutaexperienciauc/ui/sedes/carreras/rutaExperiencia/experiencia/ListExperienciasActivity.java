@@ -173,6 +173,7 @@ public class ListExperienciasActivity extends AppCompatActivity {
         i.putExtra("coTitulo",coTitulo);
         i.putExtra("coDescripcion",coDescripcion);
         i.putExtra("coUrlMedia",coUrlMedia);
+        i.putExtra("idExperiencia",idExperiencia);
         startActivity(i);
 
     }

@@ -8,6 +8,7 @@ import androidx.cardview.widget.CardView;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -137,6 +138,7 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
         String coTitulo = getIntent().getStringExtra("coTitulo");
         String coDescripcion = getIntent().getStringExtra("coDescripcion");
         String coUrlMedia = getIntent().getStringExtra("coUrlMedia");
+        int idContenido = getIntent().getIntExtra("idContenido",0);
 
         tvTitulo.setText(coTitulo);
         tvDescripcion.setText(coDescripcion);
@@ -190,21 +192,28 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
             }
         });
 
-        //al subir la calificación se debe guardar en sharedPreferences
-        //cuando se tenga datos de sharedPrefrences deberia cargarse en el rbCalificarExperiencia
-        //la bd, limita a subir solo una calificación por usuario
+        //recuperar datos de calificación
+        SharedPreferences sharedPreferences = getSharedPreferences("calificar_experiencia",MODE_PRIVATE);
+        float ratingRecuperada = sharedPreferences.getFloat("rating"+idContenido,0);
+        int idContenidoRecuperado = sharedPreferences.getInt("idContenido"+idContenido,0);
+
+        //comparación de idExperiencia
+        if(idContenido == idContenidoRecuperado){
+            rbCalificarExperiencia.setIsIndicator(true); //ratingBar solo lectura
+            rbCalificarExperiencia.setRating(ratingRecuperada);
+        }
 
         rbCalificarExperiencia.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                 //cuando se tenga un cambio en RatingBar se llama a Dialog para confirmar la calificación
-                dialogCalificarExperiencia(idExperiencia, rating);
+                dialogCalificarExperiencia(idExperiencia, rating, idContenido);
             }
         });
 
     }
 
-    private void dialogCalificarExperiencia(int idExperiencia, float rating) {
+    private void dialogCalificarExperiencia(int idExperiencia, float rating, int idContenido) {
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.calificar_experiencia_dialogo);
@@ -220,7 +229,41 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //enviar calificación
-                subirCalificacion(idExperiencia,rating);
+                JSONObject datos = new JSONObject();
+                String url = Util.RUTA_CALIFICAR_EXPERIENCIA;
+
+                try{
+                    datos.put("idExperiencia", idExperiencia);
+                    datos.put("idCalificacion", (int) rating);
+                } catch (JSONException e){
+                    e.printStackTrace();
+                }
+                //Enviar la petición al servidor
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, datos,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                //guardar calificacion del usuario
+                                SharedPreferences sharedPreferences = getSharedPreferences("calificar_experiencia",MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putFloat("rating"+idContenido,rating);
+                                editor.putInt("idContenido"+idContenido,idContenido);
+                                editor.commit();
+                                
+                                dialog.dismiss();
+                                //mostrar animación
+                                Toast.makeText(DetalleExperienciaActivity.this, "Perfecto", Toast.LENGTH_SHORT).show();
+
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(DetalleExperienciaActivity.this, error + "", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                );
+                requestQueue.add(jsonObjectRequest);
             }
         });
 
@@ -243,7 +286,7 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
     private void subirCalificacion(int idExperiencia, float idCalificacion) {
         //Construir el objeto JSON con los datos
         JSONObject datos = new JSONObject();
-        String url = Util.RUTA_SOLICITAR_INFORMACION;
+        String url = Util.RUTA_CALIFICAR_EXPERIENCIA;
 
         try{
             datos.put("idExperiencia", idExperiencia);
@@ -257,6 +300,12 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         //guardar calificacion del usuario
+
+                        SharedPreferences sharedPreferences = getSharedPreferences("calificar_experiencia",MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putFloat("rating",idCalificacion);
+                        editor.putInt("idExperiencia",idExperiencia);
+                        editor.commit();
 
                         //mostrar animación
 
