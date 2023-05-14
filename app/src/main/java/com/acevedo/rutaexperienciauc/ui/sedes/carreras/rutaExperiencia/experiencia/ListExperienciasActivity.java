@@ -19,7 +19,9 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.acevedo.rutaexperienciauc.R;
+import com.acevedo.rutaexperienciauc.adapter.BeneficioAdapter;
 import com.acevedo.rutaexperienciauc.adapter.ExperienciaAdapter;
+import com.acevedo.rutaexperienciauc.clases.Beneficio;
 import com.acevedo.rutaexperienciauc.clases.Experiencia;
 import com.acevedo.rutaexperienciauc.util.Util;
 import com.android.volley.Request;
@@ -39,19 +41,21 @@ import java.util.List;
 public class ListExperienciasActivity extends AppCompatActivity {
 
 
-    RecyclerView rvExperiencias;
+    RecyclerView rvExperiencias,rvBeneficios;
     List<Experiencia> listaExperiencia;
+    List<Beneficio> listaBeneficio;
     RequestQueue requestQueue;
 
     ImageView ivCiclo;
     LinearLayout llVolver;
 
-    int idCarrera, exCiclo;
+    int idCarrera, exCiclo, cantCiclos;
 
     ProgressDialog progreso;
 
     //progressBeneficio
-    ProgressBar pbBeneficio;
+    //ProgressBar pbBeneficio; // ya no se usa
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,23 +64,33 @@ public class ListExperienciasActivity extends AppCompatActivity {
 
         idCarrera = getIntent().getIntExtra("idCarrera",0);
         exCiclo = getIntent().getIntExtra("idCiclo",0);
+        cantCiclos = getIntent().getIntExtra("cantCiclos",0); //cantidad de ciclos
 
 
         llVolver = findViewById(R.id.llVolver);
         ivCiclo = findViewById(R.id.ivCiclo);
         rvExperiencias = findViewById(R.id.rvExperiencias);
-        pbBeneficio = findViewById(R.id.pbBeneficio);
+        //pbBeneficio = findViewById(R.id.pbBeneficio); //ya no se usa
         rvExperiencias.setHasFixedSize(true);
         rvExperiencias.setLayoutManager(new GridLayoutManager(this,2));
         requestQueue = Volley.newRequestQueue(this);
         listaExperiencia = new ArrayList<>();
         cargarExperiencias();
 
+        rvBeneficios= findViewById(R.id.rvBeneficios);
+        rvBeneficios.setHasFixedSize(true);
+        rvBeneficios.setLayoutManager(new LinearLayoutManager(this));
+        listaBeneficio = new ArrayList<>();
+        cargarBeneficios();
+
+
+
         //animacion al progressbarBeneficio
-        ObjectAnimator progressAnimator = ObjectAnimator.ofInt(pbBeneficio, "progress",0,100);//el ultimo 100 es el progresso
-        progressAnimator.setDuration(4000);
-        progressAnimator.setInterpolator(new LinearInterpolator());
-        progressAnimator.start();
+//        ObjectAnimator progressAnimator = ObjectAnimator.ofInt(pbBeneficio, "progress",0,100);//el ultimo 100 es el progresso
+//        progressAnimator.setDuration(4000);
+//        progressAnimator.setInterpolator(new LinearInterpolator());
+//        progressAnimator.start();
+
 
         //icono de ciclo en activity
         String cicloName = getCicloName(exCiclo);
@@ -94,6 +108,67 @@ public class ListExperienciasActivity extends AppCompatActivity {
 
     }
 
+    private int calcularPorcentajeBeneficio(int cantCiclos, int exCiclo) {
+        if (cantCiclos <= 0 || exCiclo <= 0) {
+            return 0; // Devolver 0 si los valores no son válidos
+        }
+
+        float porcentajeFloat = ((float) exCiclo / cantCiclos) * 100.0f;
+        int porcentajeEntero = Math.round(porcentajeFloat);
+        return porcentajeEntero;
+    }
+
+    private void cargarBeneficios() {
+        progreso = new ProgressDialog(this);
+        progreso.setMessage("Buscando Beneficios");
+        progreso.setCancelable(false);
+        progreso.show();
+
+
+        String url = Util.RUTA_BENEFICIO + "/"+ idCarrera ;
+        //String url = Util.RUTA_EXPERIENCIA;
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                progreso.dismiss();
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        JSONObject jsonObject = response.getJSONObject(i);
+                        int idBeneficio =jsonObject.getInt("IdBeneficio");
+                        String beDescripcion = jsonObject.getString("BeDescripcion");
+                        Beneficio beneficio = new Beneficio(idBeneficio, beDescripcion);
+                        listaBeneficio.add(beneficio);
+
+                    } catch (JSONException e) {
+                        progreso.hide();
+                        e.printStackTrace();
+                    }
+                }
+                //obtener porcentaje de beneficio en un determinado ciclo
+                int porcentajeBeneficio = calcularPorcentajeBeneficio(cantCiclos,exCiclo);
+
+                BeneficioAdapter adapter = new BeneficioAdapter(ListExperienciasActivity.this,listaBeneficio,porcentajeBeneficio);
+                adapter.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        //selectBeneficio(v);
+                        Toast.makeText(ListExperienciasActivity.this, "muy bien", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                rvBeneficios.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        requestQueue.add(request);
+    }
+
     private String getCicloName(int exCiclo) {
         String[] cicloNames = {"ciclo_uno", "ciclo_dos", "ciclo_tres", "ciclo_cuatro", "ciclo_cinco", "ciclo_seis", "ciclo_siete", "ciclo_ocho", "ciclo_nueve", "ciclo_diez", "ciclo_once", "ciclo_doce", "ciclo_trece", "ciclo_catorce"};
         // Restar 1 al número para que se corresponda con el índice del array
@@ -107,10 +182,10 @@ public class ListExperienciasActivity extends AppCompatActivity {
 
     private void cargarExperiencias() {
 
-        progreso = new ProgressDialog(this);
-        progreso.setMessage("Buscando Experiencias");
-        progreso.setCancelable(false);
-        progreso.show();
+        //progreso = new ProgressDialog(this);
+        //progreso.setMessage("Buscando Experiencias");
+        //progreso.setCancelable(false);
+        //progreso.show();
 
 
         String url = Util.RUTA_EXPERIENCIA + "/"+ idCarrera + "/" + exCiclo+ "/" + exCiclo;
@@ -118,7 +193,7 @@ public class ListExperienciasActivity extends AppCompatActivity {
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                progreso.dismiss();
+                //progreso.dismiss();
                 for (int i = 0; i < response.length(); i++) {
                     try {
                         JSONObject jsonObject = response.getJSONObject(i);
@@ -134,7 +209,7 @@ public class ListExperienciasActivity extends AppCompatActivity {
                         listaExperiencia.add(experiencia);
 
                     } catch (JSONException e) {
-                        progreso.hide();
+                        //progreso.hide();
                         e.printStackTrace();
                     }
                 }

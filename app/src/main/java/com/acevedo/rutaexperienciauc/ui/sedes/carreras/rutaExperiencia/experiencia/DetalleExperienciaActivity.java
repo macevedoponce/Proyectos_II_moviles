@@ -33,6 +33,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
 import org.json.JSONException;
@@ -49,7 +51,7 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
 
     ImageView ivContenido;
     WebView wvContenido;
-    YouTubePlayerView ypContenido;
+    YouTubePlayerView ypvContenido;
     RatingBar rbCalificarExperiencia;
     RequestQueue requestQueue;
 
@@ -72,7 +74,7 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
         llVolver = findViewById(R.id.llVolver);
         ivContenido = findViewById(R.id.ivContenido);
         wvContenido = findViewById(R.id.wvContenido);
-        //ypContenido = findViewById(R.id.ypContenido);
+        ypvContenido = findViewById(R.id.ypvContenido);
         requestQueue= Volley.newRequestQueue(this);
 // mauricio
         customFavoriteButton = findViewById(R.id.custom_favorite_button);
@@ -144,22 +146,17 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
                 //Toast.makeText(this, "Imagen", Toast.LENGTH_SHORT).show();
                 break;
             case 2:
+                ypvContenido.setVisibility(View.VISIBLE);
+                getLifecycle().addObserver(ypvContenido);
 
-                //ypContenido.setVisibility(View.VISIBLE);
-                wvContenido.setVisibility(View.VISIBLE);
-                ypContenido = new YouTubePlayerView(this);
-                wvContenido.getSettings().setJavaScriptEnabled(true);
-                wvContenido.getSettings().setDomStorageEnabled(true);
-                wvContenido.setWebChromeClient(new WebChromeClient());
+                ypvContenido.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+                    @Override
+                    public void onReady(YouTubePlayer youTubePlayer) {
+                        String videoId = getYoutubeId(coUrlMedia);
+                        youTubePlayer.loadVideo(videoId, 0); // Carga el video y comienza a reproducirlo automáticamente
+                    }
+                });
 
-                wvContenido.addJavascriptInterface(ypContenido,"YouTubePlayer"); //contenido 360
-                String idVideo = getYoutubeId(coUrlMedia);
-                wvContenido.loadDataWithBaseURL("https://www.youtube.com", getHTMLString(idVideo), "text/html", "UTF-8", null);
-
-
-//                wvContenido.setVisibility(View.VISIBLE);
-//                wvContenido.getSettings().setJavaScriptEnabled(true);
-//                wvContenido.loadUrl("https://www.youtube.com/watch?v=SeqgxNQxubo");
                 break;
             case 3:
 
@@ -297,35 +294,6 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
         boolean isFavorite = sharedPreferences.getBoolean("rutaExperiencia" + rutaTitulo, false);
         customFavoriteButton.setSelected(isFavorite);
     }
-
-    private String getHTMLString(String mVideoId) {
-        return "<html><head>" +
-                "<style>body{margin:0;padding:0;}</style>" +
-                "</head><body>" +
-                "<iframe id=\"player\" type=\"text/html\" width=\"100%\" height=\"100%\" src=\"https://www.youtube.com/embed/" + mVideoId + "?enablejsapi=1&playsinline=1&iv_load_policy=3&modestbranding=1&fs=0&controls=1&rel=0&showinfo=0&start=0&end=0&autoplay=1\" frameborder=\"0\"></iframe>" +
-                "<script src=\"https://www.youtube.com/iframe_api\"></script>" +
-                "<script>" +
-                "var player;" +
-                "function onYouTubeIframeAPIReady() {" +
-                "player = new YT.Player('player', {" +
-                "events: {" +
-                "onReady: onPlayerReady," +
-                "onStateChange: onPlayerStateChange" +
-                "}" +
-                "});" +
-                "}" +
-                "function onPlayerReady(event) {" +
-                "event.target.playVideo();" +
-                "}" +
-                "function onPlayerStateChange(event) {" +
-                "if(event.data == YT.PlayerState.PLAYING) {" +
-                "YouTubePlayer.onPlaying();" +
-                "}" +
-                "}" +
-                "</script>" +
-                "</body></html>";
-    }
-
 
     private String getYoutubeId(String videoUrl) {
         String videoId = null;

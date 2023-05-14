@@ -11,5 +11,6 @@ public class Util {
     public static final String RUTA_SOLICITAR_INFORMACION=RUTA+"/api/solicitar_informacion"; //envio de datos
 
     public static final String RUTA_CALIFICAR_EXPERIENCIA=RUTA+"/api/calificar_experiencia/"; //calificar experiencia
+    public static final String RUTA_BENEFICIO=RUTA+"/api/beneficio/"; //calificar experiencia
 
 }
