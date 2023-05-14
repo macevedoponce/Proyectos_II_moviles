@@ -165,6 +165,7 @@ public class ListExperienciasActivity extends AppCompatActivity {
         String coTitulo = listaExperiencia.get(rvExperiencias.getChildAdapterPosition(view)).getCoTitulo();
         String coDescripcion = listaExperiencia.get(rvExperiencias.getChildAdapterPosition(view)).getCoDescripcion();
         String coUrlMedia = listaExperiencia.get(rvExperiencias.getChildAdapterPosition(view)).getCoUrlMedia();
+        int idExperiencia = listaExperiencia.get(rvExperiencias.getChildAdapterPosition(view)).getIdExperiencia();
 
         Intent i = new Intent(ListExperienciasActivity.this, DetalleExperienciaActivity.class);
         i.putExtra("idContenido",idContenido);

@@ -1,16 +1,19 @@
 package com.acevedo.rutaexperienciauc.ui.sedes.carreras.rutaExperiencia.experiencia;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,11 +29,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.acevedo.rutaexperienciauc.R;
+import com.acevedo.rutaexperienciauc.ui.solicitarInformacion.PopupSolicitarInfo;
+import com.acevedo.rutaexperienciauc.ui.solicitarInformacion.SolicitarInformacionActivity;
+import com.acevedo.rutaexperienciauc.util.Util;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.security.MessageDigest;
 import java.security.PrivateKey;
@@ -48,7 +63,8 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
     WebView wvContenido;
     YouTubePlayerView ypContenido;
 
-    RatingBar ratingBar;
+    RatingBar rbCalificarExperiencia;
+    RequestQueue requestQueue;
 
 
     @Override
@@ -59,12 +75,13 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
         tvTitulo = findViewById(R.id.tvTitulo);
         tvDescripcion = findViewById(R.id.tvDescripcion);
         tvVermas = findViewById(R.id.tvVermas);
-        ratingBar = findViewById(R.id.ratingBar);
+        rbCalificarExperiencia = findViewById(R.id.rbCalificarExperiencia);
         cvFullScreen = findViewById(R.id.cvFullScreen);
         llVolver = findViewById(R.id.llVolver);
         ivContenido = findViewById(R.id.ivContenido);
         wvContenido = findViewById(R.id.wvContenido);
         //ypContenido = findViewById(R.id.ypContenido);
+        requestQueue= Volley.newRequestQueue(this);
 
         llVolver.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,7 +132,7 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
     }
 
     private void cargarExperiencia() {
-        int idContenido = getIntent().getIntExtra("idContenido",0);
+        int idExperiencia = getIntent().getIntExtra("idExperiencia",0);
         int idTipoMedia = getIntent().getIntExtra("idTipoMedia",0);
         String coTitulo = getIntent().getStringExtra("coTitulo");
         String coDescripcion = getIntent().getStringExtra("coDescripcion");
@@ -173,6 +190,86 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
             }
         });
 
+        //al subir la calificación se debe guardar en sharedPreferences
+        //cuando se tenga datos de sharedPrefrences deberia cargarse en el rbCalificarExperiencia
+        //la bd, limita a subir solo una calificación por usuario
+
+        rbCalificarExperiencia.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                //cuando se tenga un cambio en RatingBar se llama a Dialog para confirmar la calificación
+                dialogCalificarExperiencia(idExperiencia, rating);
+            }
+        });
+
+    }
+
+    private void dialogCalificarExperiencia(int idExperiencia, float rating) {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.calificar_experiencia_dialogo);
+
+
+        CardView cvAceptar = dialog.findViewById(R.id.cvAceptar);
+        CardView cvCancelar = dialog.findViewById(R.id.cvCancelar);
+        RatingBar rbCantidadEstrellas = dialog.findViewById(R.id.rbCantidadEstrellas);
+
+        rbCantidadEstrellas.setRating(rating);
+
+        cvAceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //enviar calificación
+                subirCalificacion(idExperiencia,rating);
+            }
+        });
+
+        cvCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+        dialog.setCancelable(false);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.CENTER);
+
+    }
+
+    private void subirCalificacion(int idExperiencia, float idCalificacion) {
+        //Construir el objeto JSON con los datos
+        JSONObject datos = new JSONObject();
+        String url = Util.RUTA_SOLICITAR_INFORMACION;
+
+        try{
+            datos.put("idExperiencia", idExperiencia);
+            datos.put("idCalificacion", (int) idCalificacion);
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+        //Enviar la petición al servidor
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, datos,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        //guardar calificacion del usuario
+
+                        //mostrar animación
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(DetalleExperienciaActivity.this, error + "", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        );
+        requestQueue.add(jsonObjectRequest);
     }
 
     private String getHTMLString(String mVideoId) {
