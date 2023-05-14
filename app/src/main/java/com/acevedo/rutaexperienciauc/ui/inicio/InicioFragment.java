@@ -24,7 +24,9 @@ import com.acevedo.rutaexperienciauc.R;
 import com.acevedo.rutaexperienciauc.adapter.SedeAdapter;
 import com.acevedo.rutaexperienciauc.clases.Sede;
 
+
 import com.acevedo.rutaexperienciauc.ui.sedes.carreras.ListaCarrerasActivity;
+
 import com.acevedo.rutaexperienciauc.ui.solicitarInformacion.SolicitarInformacionActivity;
 
 import com.acevedo.rutaexperienciauc.util.Util;
@@ -124,6 +126,7 @@ public class InicioFragment extends Fragment {
 //                cvComunidades.setVisibility(View.GONE);
 //                cvBienestar.setVisibility(View.GONE);
 //                cvEscribenos.setVisibility(View.GONE);
+
             }
         });
 

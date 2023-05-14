@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -56,8 +57,9 @@ public class SolicitarInformacionActivity extends AppCompatActivity {
     //Variables para utilizar internamente
     private boolean fechaSeleccionada = false;
 
-    RequestQueue requestQueue;
+    int idSede;
 
+    RequestQueue requestQueue;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +80,7 @@ public class SolicitarInformacionActivity extends AppCompatActivity {
         rbWhatsApp = findViewById(R.id.rbWhatsApp);
         rgConsentimiento = findViewById(R.id.rgConsentimiento);
         rbConsentimiento = findViewById(R.id.rbConsentimiento);
+
         btnSolicitarInformacion =findViewById(R.id.btnSolicitarInformacion);
         spSedes = findViewById(R.id.spSedes);
         spCarreras = findViewById(R.id.spCarreras);
@@ -91,6 +94,7 @@ public class SolicitarInformacionActivity extends AppCompatActivity {
         edtSolInfoFechaNacimiento = tilSolInfoFechaNacimiento.getEditText().findViewById(R.id.edtSolInfoFechaNacimiento);
 
         implementarCalendario();
+
         requestQueue= Volley.newRequestQueue(this);
 
         llamarNombresSedes();
@@ -128,8 +132,8 @@ public class SolicitarInformacionActivity extends AppCompatActivity {
                         List<String> nombresCarrera = new ArrayList<>();
                         for(int i = 0; i < response.length(); i++){
                             try{
-                                JSONObject carrera = response.getJSONObject(i);
-                                String nombreCarrera = carrera.getString("CaNombre");
+                                JSONObject jsonObject = response.getJSONObject(i);
+                                String nombreCarrera = jsonObject.getString("CaNombre");
                                 nombresCarrera.add(nombreCarrera);
                             }catch (JSONException e){
                                 e.printStackTrace();
@@ -150,6 +154,7 @@ public class SolicitarInformacionActivity extends AppCompatActivity {
 
     private void llamarNombresSedes() {
         //String url = Util.RUTA_LLAMARNOMBRE_SEDE;
+
         String url = Util.RUTA_SEDE;
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
@@ -159,8 +164,9 @@ public class SolicitarInformacionActivity extends AppCompatActivity {
                         List<String> nombresSede = new ArrayList<>();
                         for(int i = 0; i < response.length(); i++){
                             try{
-                                JSONObject sede = response.getJSONObject(i);
-                                String nombreSede = sede.getString("SeNombre");
+                                JSONObject jsonObject = response.getJSONObject(i);
+                                idSede =jsonObject.getInt("IdSede");
+                                String nombreSede = jsonObject.getString("SeNombre");
                                 nombresSede.add(nombreSede);
                             }catch (JSONException e){
                                 e.printStackTrace();
@@ -184,6 +190,7 @@ public class SolicitarInformacionActivity extends AppCompatActivity {
         Pattern patterns = Pattern.compile(expresion, Pattern.CASE_INSENSITIVE);
         return patterns.matcher(email).matches();
     }
+
     private void solicitarInformacion() {
 
         Pair<String, String> result = modalidad_metodoContacto();
@@ -292,6 +299,7 @@ public class SolicitarInformacionActivity extends AppCompatActivity {
 
         return camposCompletos;
     }
+
     private Pair<String, String> modalidad_metodoContacto() {
         String ModalidadInteres = null;
         String MetodoContacto = null;
@@ -320,6 +328,7 @@ public class SolicitarInformacionActivity extends AppCompatActivity {
         }
         return new Pair<>(ModalidadInteres, MetodoContacto);
     }
+
     private void implementarCalendario() {
         //Añadiendo calendario para que escoja su fecha de nacimiento
         edtSolInfoFechaNacimiento.setOnClickListener(new View.OnClickListener() {

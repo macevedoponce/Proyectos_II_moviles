@@ -1,28 +1,23 @@
 package com.acevedo.rutaexperienciauc.ui.sedes.carreras.rutaExperiencia.experiencia;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
+import android.preference.PreferenceManager;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -30,8 +25,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.acevedo.rutaexperienciauc.R;
-import com.acevedo.rutaexperienciauc.ui.solicitarInformacion.PopupSolicitarInfo;
-import com.acevedo.rutaexperienciauc.ui.solicitarInformacion.SolicitarInformacionActivity;
 import com.acevedo.rutaexperienciauc.util.Util;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -40,16 +33,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
-import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
-import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.security.MessageDigest;
-import java.security.PrivateKey;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -63,9 +50,13 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
     ImageView ivContenido;
     WebView wvContenido;
     YouTubePlayerView ypContenido;
-
     RatingBar rbCalificarExperiencia;
     RequestQueue requestQueue;
+
+    //mauricio
+    ImageButton customFavoriteButton;
+    SharedPreferences sharedPreferences;
+    //mauricio
 
 
     @Override
@@ -83,6 +74,10 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
         wvContenido = findViewById(R.id.wvContenido);
         //ypContenido = findViewById(R.id.ypContenido);
         requestQueue= Volley.newRequestQueue(this);
+// mauricio
+        customFavoriteButton = findViewById(R.id.custom_favorite_button);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+//fun mauricio
 
         llVolver.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -191,6 +186,7 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        GuardarExperienciaFavorito(Integer.toString(idContenido));
 
         //recuperar datos de calificación
         SharedPreferences sharedPreferences = getSharedPreferences("calificar_experiencia",MODE_PRIVATE);
@@ -283,42 +279,23 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
 
     }
 
-    private void subirCalificacion(int idExperiencia, float idCalificacion) {
-        //Construir el objeto JSON con los datos
-        JSONObject datos = new JSONObject();
-        String url = Util.RUTA_CALIFICAR_EXPERIENCIA;
-
-        try{
-            datos.put("idExperiencia", idExperiencia);
-            datos.put("idCalificacion", (int) idCalificacion);
-        } catch (JSONException e){
-            e.printStackTrace();
-        }
-        //Enviar la petición al servidor
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, datos,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        //guardar calificacion del usuario
-
-                        SharedPreferences sharedPreferences = getSharedPreferences("calificar_experiencia",MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putFloat("rating",idCalificacion);
-                        editor.putInt("idExperiencia",idExperiencia);
-                        editor.commit();
-
-                        //mostrar animación
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(DetalleExperienciaActivity.this, error + "", Toast.LENGTH_SHORT).show();
-                    }
+    private void GuardarExperienciaFavorito(String rutaTitulo){
+        customFavoriteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean isFavorite = sharedPreferences.getBoolean("rutaExperiencia" + rutaTitulo, false);
+                if (isFavorite) {
+                    customFavoriteButton.setSelected(false);
+                    sharedPreferences.edit().remove("rutaExperiencia" + rutaTitulo).apply();
+                } else {
+                    customFavoriteButton.setSelected(true);
+                    sharedPreferences.edit().putBoolean("rutaExperiencia" + rutaTitulo, true).apply();
+                    Toast.makeText(getApplicationContext(),rutaTitulo , Toast.LENGTH_SHORT).show();
                 }
-        );
-        requestQueue.add(jsonObjectRequest);
+            }
+        });
+        boolean isFavorite = sharedPreferences.getBoolean("rutaExperiencia" + rutaTitulo, false);
+        customFavoriteButton.setSelected(isFavorite);
     }
 
     private String getHTMLString(String mVideoId) {
