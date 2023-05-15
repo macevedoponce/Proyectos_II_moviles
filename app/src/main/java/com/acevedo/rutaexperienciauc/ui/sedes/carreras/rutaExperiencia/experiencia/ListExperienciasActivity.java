@@ -1,21 +1,32 @@
 package com.acevedo.rutaexperienciauc.ui.sedes.carreras.rutaExperiencia.experiencia;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.acevedo.rutaexperienciauc.R;
@@ -24,11 +35,14 @@ import com.acevedo.rutaexperienciauc.adapter.ExperienciaAdapter;
 import com.acevedo.rutaexperienciauc.clases.Beneficio;
 import com.acevedo.rutaexperienciauc.clases.Experiencia;
 import com.acevedo.rutaexperienciauc.util.Util;
+import com.airbnb.lottie.LottieAnimationView;
+import com.airbnb.lottie.LottieDrawable;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -52,6 +66,7 @@ public class ListExperienciasActivity extends AppCompatActivity {
     int idCarrera, exCiclo, cantCiclos;
 
     ProgressDialog progreso;
+    int porcentajeBeneficio;
 
     //progressBeneficio
     //ProgressBar pbBeneficio; // ya no se usa
@@ -82,15 +97,6 @@ public class ListExperienciasActivity extends AppCompatActivity {
         rvBeneficios.setLayoutManager(new LinearLayoutManager(this));
         listaBeneficio = new ArrayList<>();
         cargarBeneficios();
-
-
-
-        //animacion al progressbarBeneficio
-//        ObjectAnimator progressAnimator = ObjectAnimator.ofInt(pbBeneficio, "progress",0,100);//el ultimo 100 es el progresso
-//        progressAnimator.setDuration(4000);
-//        progressAnimator.setInterpolator(new LinearInterpolator());
-//        progressAnimator.start();
-
 
         //icono de ciclo en activity
         String cicloName = getCicloName(exCiclo);
@@ -145,15 +151,15 @@ public class ListExperienciasActivity extends AppCompatActivity {
                     }
                 }
                 //obtener porcentaje de beneficio en un determinado ciclo
-                int porcentajeBeneficio = calcularPorcentajeBeneficio(cantCiclos,exCiclo);
+                porcentajeBeneficio = calcularPorcentajeBeneficio(cantCiclos,exCiclo);
 
                 BeneficioAdapter adapter = new BeneficioAdapter(ListExperienciasActivity.this,listaBeneficio,porcentajeBeneficio);
                 adapter.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
-                        //selectBeneficio(v);
-                        Toast.makeText(ListExperienciasActivity.this, "muy bien", Toast.LENGTH_SHORT).show();
+                        selectBeneficio(v);
+                        //Toast.makeText(ListExperienciasActivity.this, "muy bien", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -167,6 +173,48 @@ public class ListExperienciasActivity extends AppCompatActivity {
             }
         });
         requestQueue.add(request);
+    }
+
+    private void selectBeneficio(View v) {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_beneficio_detalle);
+
+        String beneficioDetalle = listaBeneficio.get(rvBeneficios.getChildAdapterPosition(v)).getBeDescripcion();
+        LottieAnimationView avBeneficioDetalle = dialog.findViewById(R.id.avBeneficioDetalle);
+        ProgressBar pbBeneficioDetalle = dialog.findViewById(R.id.pbBeneficioDetalle);
+        TextView tvProgressBeneficioDetalle = dialog.findViewById(R.id.tvProgressBeneficioDetalle);
+        TextView tvBeneficioDetalle = dialog.findViewById(R.id.tvBeneficioDetalle);
+        CardView cvAceptar = dialog.findViewById(R.id.cvAceptar);
+
+        //pbBeneficioDetalle.setProgress(porcentajeBeneficio);
+        ObjectAnimator progressAnimator = ObjectAnimator.ofInt(pbBeneficioDetalle, "progress",0,porcentajeBeneficio);//el ultimo 100 es el progresso
+        progressAnimator.setDuration(2000);
+        progressAnimator.setInterpolator(new LinearInterpolator());
+        progressAnimator.start();
+
+
+
+        tvProgressBeneficioDetalle.setText(porcentajeBeneficio + "% completado");
+        tvBeneficioDetalle.setText(beneficioDetalle);
+        avBeneficioDetalle.setAnimation(R.raw.joy_in_education);
+        avBeneficioDetalle.setRepeatCount(LottieDrawable.INFINITE);
+        //avBeneficioDetalle.loop(true);
+        avBeneficioDetalle.playAnimation();
+
+        cvAceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+        dialog.setCancelable(false);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.CENTER);
     }
 
     private String getCicloName(int exCiclo) {
