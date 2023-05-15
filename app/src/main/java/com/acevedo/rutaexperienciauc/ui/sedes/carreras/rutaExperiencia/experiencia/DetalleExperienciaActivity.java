@@ -3,6 +3,7 @@ package com.acevedo.rutaexperienciauc.ui.sedes.carreras.rutaExperiencia.experien
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import android.animation.Animator;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 
 import com.acevedo.rutaexperienciauc.R;
 import com.acevedo.rutaexperienciauc.util.Util;
+import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -215,6 +217,9 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
         CardView cvAceptar = dialog.findViewById(R.id.cvAceptar);
         CardView cvCancelar = dialog.findViewById(R.id.cvCancelar);
         RatingBar rbCantidadEstrellas = dialog.findViewById(R.id.rbCantidadEstrellas);
+        TextView tvGracias = dialog.findViewById(R.id.tvGracias);
+        LottieAnimationView avCelebrate = dialog.findViewById(R.id.avCelebrate);
+        CardView cvConfirmacion = dialog.findViewById(R.id.cvConfirmacion);
 
         rbCantidadEstrellas.setRating(rating);
 
@@ -242,10 +247,37 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
                                 editor.putFloat("rating"+idContenido,rating);
                                 editor.putInt("idContenido"+idContenido,idContenido);
                                 editor.commit();
-                                
-                                dialog.dismiss();
-                                //mostrar animación
-                                Toast.makeText(DetalleExperienciaActivity.this, "Perfecto", Toast.LENGTH_SHORT).show();
+
+                                // Ocultar elementos del diálogo
+                                cvConfirmacion.setVisibility(View.GONE);
+
+                                // Mostrar animación
+                                avCelebrate.playAnimation();
+                                avCelebrate.setVisibility(View.VISIBLE);
+                                tvGracias.setVisibility(View.VISIBLE);
+
+                                // Cerrar diálogo después de que la animación termine
+                                avCelebrate.addAnimatorListener(new Animator.AnimatorListener() {
+                                    @Override
+                                    public void onAnimationStart(Animator animation) {
+
+                                    }
+
+                                    @Override
+                                    public void onAnimationEnd(Animator animation) {
+                                        dialog.dismiss();
+                                    }
+
+                                    @Override
+                                    public void onAnimationCancel(Animator animation) {
+
+                                    }
+
+                                    @Override
+                                    public void onAnimationRepeat(Animator animation) {
+
+                                    }
+                                });
 
                             }
                         },
