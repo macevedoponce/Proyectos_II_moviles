@@ -4,12 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.acevedo.rutaexperienciauc.R;
 import com.acevedo.rutaexperienciauc.adapter.ListaRutaExperienciaAdapter;
@@ -48,6 +51,8 @@ public class RutaExperiencia extends AppCompatActivity {
 
     LinearLayout llVolver;
 
+    Button btnPlanEstudios;
+
     //spinner
     final List<Integer> idsCarrera = new ArrayList<>();
     final List<Integer> cantCiclosCarrera = new ArrayList<>();
@@ -60,6 +65,7 @@ public class RutaExperiencia extends AppCompatActivity {
 
         spCarreras = findViewById(R.id.spListaCarreras);
         llVolver = findViewById(R.id.llVolver);
+        btnPlanEstudios = findViewById(R.id.btnPlanEstudios);
 
         //recibimos los datos enviados de la lista de carreras
         idCarrera = getIntent().getIntExtra("idCarrera", 0);
@@ -105,6 +111,16 @@ public class RutaExperiencia extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 onBackPressed();
+            }
+        });
+
+        btnPlanEstudios.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(RutaExperiencia.this, PlanEstudiosActivity.class);
+                intent.putExtra("planEstudiosUrl", planEstudiosUrl);
+                startActivity(intent);
+//                Toast.makeText(RutaExperiencia.this, "plan" + planEstudiosUrl, Toast.LENGTH_SHORT).show();
             }
         });
     }

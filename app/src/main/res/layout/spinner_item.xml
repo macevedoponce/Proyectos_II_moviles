@@ -5,7 +5,7 @@
     android:fontFamily="@font/poppins_bold"
     android:textColor="@color/black"
     android:gravity="center"
-    android:textSize="20sp"
+    android:textSize="18sp"
     android:text="hola"
    />
 
