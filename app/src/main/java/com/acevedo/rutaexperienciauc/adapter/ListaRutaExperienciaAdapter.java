@@ -23,7 +23,6 @@ public class ListaRutaExperienciaAdapter extends RecyclerView.Adapter<ListaRutaE
 
     private int idCarrera;
 
-
     public ListaRutaExperienciaAdapter(List<ListaRutaExperiencia> itemList, int idCarrera){
         this.ListaRuta = itemList;
         this.idCarrera = idCarrera;

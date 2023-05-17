@@ -25,9 +25,9 @@ public class PlanEstudiosActivity extends AppCompatActivity {
         pdfPlanEstudios = findViewById(R.id.pdfPlanEstudios);
         llVolver = findViewById(R.id.llVolver);
 
-        //String pdfUrl = getIntent().getStringExtra("planEstudiosUrl");
+        String pdfUrl = getIntent().getStringExtra("planEstudiosUrl");
 
-        String pdfUrl = "https://ucontinental.edu.pe/documentos/brochure/presencial/ing-de-sistemas-e-informatica/ingenieria-de-sistemas-e-informatica.pdf";
+        //String pdfUrl = "https://ucontinental.edu.pe/documentos/brochure/presencial/ing-de-sistemas-e-informatica/ingenieria-de-sistemas-e-informatica.pdf";
 
         new RecibirPDF(pdfPlanEstudios,progressBar).execute(pdfUrl);
 
