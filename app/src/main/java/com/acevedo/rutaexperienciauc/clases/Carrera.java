@@ -8,10 +8,6 @@ public class Carrera {
     int cantidadCiclos;
     int idSede;
 
-    public Carrera() {
-
-    }
-
     public Carrera(int id, String nombre, String descripcion, String planEstudios_url, int cantidadCiclos, int idSede) {
         this.id = id;
         this.nombre = nombre;

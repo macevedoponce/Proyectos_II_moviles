@@ -1,15 +1,15 @@
 package com.acevedo.rutaexperienciauc.clases;
 
-public class Favoritos {
+public class Favorito {
     private int idExperiencia;
     private String nombreExperiencia;
     private boolean isFavorite;
 
-    public Favoritos() {
+    public Favorito() {
 
     }
 
-    public Favoritos(int idExperiencia, String nombreExperiencia, boolean isFavorite) {
+    public Favorito(int idExperiencia, String nombreExperiencia, boolean isFavorite) {
         this.idExperiencia = idExperiencia;
         this.nombreExperiencia = nombreExperiencia;
         this.isFavorite = isFavorite;

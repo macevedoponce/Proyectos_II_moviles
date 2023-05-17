@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -28,7 +29,9 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.acevedo.rutaexperienciauc.MainActivity;
 import com.acevedo.rutaexperienciauc.R;
+import com.acevedo.rutaexperienciauc.util.sqlite.FavoritosDatabaseHelper;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
@@ -53,7 +56,7 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
 
     RatingBar ratingBar;
     ImageButton customFavoriteButton;
-    SharedPreferences sharedPreferences;
+    private FavoritosDatabaseHelper databaseHelper;
 
 
     @Override
@@ -69,9 +72,9 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
         llVolver = findViewById(R.id.llVolver);
         ivContenido = findViewById(R.id.ivContenido);
         wvContenido = findViewById(R.id.wvContenido);
+        databaseHelper = new FavoritosDatabaseHelper(this);
         //ypContenido = findViewById(R.id.ypContenido);
         customFavoriteButton = findViewById(R.id.custom_favorite_button);
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         llVolver.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,28 +182,40 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        GuardarExperienciaFavorito(Integer.toString(idContenido));
+        boolean isFavorite = databaseHelper.isExperienciaFavorita(idContenido);
+
+        // Actualizar la apariencia del ImageButton
+        customFavoriteButton.setSelected(isFavorite);
+
+        GuardarExperienciaFavorito(idContenido,coTitulo);
 
     }
-
-    private void GuardarExperienciaFavorito(String rutaTitulo){
+    
+    private void GuardarExperienciaFavorito(int idExperiencia, String nombreExperiencia) {
         customFavoriteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean isFavorite = sharedPreferences.getBoolean("rutaExperiencia" + rutaTitulo, false);
+                // Obtener el estado actual del ImageButton
+                boolean currentState = customFavoriteButton.isSelected();
+
+                // Invertir el estado de favorito
+                boolean isFavorite = !currentState;
+
+                // Actualizar la apariencia del ImageButton
+                customFavoriteButton.setSelected(isFavorite);
+
+                // Guardar o eliminar la experiencia favorita según el estado
                 if (isFavorite) {
-                    customFavoriteButton.setSelected(false);
-                    sharedPreferences.edit().remove("rutaExperiencia" + rutaTitulo).apply();
+                    databaseHelper.guardarExperienciaFavorita(idExperiencia, nombreExperiencia);
+                    Toast.makeText(DetalleExperienciaActivity.this, "Experiencia añadida a favoritos", Toast.LENGTH_SHORT).show();
                 } else {
-                    customFavoriteButton.setSelected(true);
-                    sharedPreferences.edit().putBoolean("rutaExperiencia" + rutaTitulo, true).apply();
-                    Toast.makeText(getApplicationContext(),rutaTitulo , Toast.LENGTH_SHORT).show();
+                    databaseHelper.eliminarExperienciaFavorita(idExperiencia);
+                    Toast.makeText(DetalleExperienciaActivity.this, "Experiencia eliminada de favoritos", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-        boolean isFavorite = sharedPreferences.getBoolean("rutaExperiencia" + rutaTitulo, false);
-        customFavoriteButton.setSelected(isFavorite);
     }
+
 
     private String getHTMLString(String mVideoId) {
         return "<html><head>" +
