@@ -36,6 +36,7 @@ public class PreguntasFrecuentesAdapter extends RecyclerView.Adapter<PreguntasFr
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         PreguntasFrecuentes preguntasFrecuentes = preguntasFrecuentesList.get(position);
         holder.setPfPregunta(preguntasFrecuentes.getPfPregunta());
+        holder.setPfRespuesta(preguntasFrecuentes.getPfRespuesta());
 
     }
 
@@ -57,7 +58,7 @@ public class PreguntasFrecuentesAdapter extends RecyclerView.Adapter<PreguntasFr
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvPreguntaFrecuente;
+        TextView tvPreguntaFrecuente, tvRespuestaPregunta;
 
         View view;
 
@@ -69,6 +70,11 @@ public class PreguntasFrecuentesAdapter extends RecyclerView.Adapter<PreguntasFr
         public void setPfPregunta(String PfPregunta){
             tvPreguntaFrecuente = view.findViewById(R.id.tvPreguntaFrecuente);
             tvPreguntaFrecuente.setText(PfPregunta);
+        }
+
+        public void setPfRespuesta(String PfRespuesta){
+            tvRespuestaPregunta = view.findViewById(R.id.tvRespuestaPregunta);
+            tvRespuestaPregunta.setText(PfRespuesta);
         }
     }
 }

@@ -77,12 +77,6 @@ public class AyudaFragment extends Fragment {
                         }
 
                         PreguntasFrecuentesAdapter adapter = new PreguntasFrecuentesAdapter(getContext(),listPreguntasFrecuentes);
-//                        adapter.setOnClickListener(new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View view) {
-//                                selectPregunta();
-//                            }
-//                        });
                         rvPreguntasFrecuentes.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
                     }

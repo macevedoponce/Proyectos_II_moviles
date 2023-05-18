@@ -1,14 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.soporte.SoporteFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.soporte.SoporteFragment"
+    android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvSoporteSedes"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_width="match_parent"
+        android:layout_height="450dp"
+        android:layout_marginTop="10dp"/>
+
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/title_soporte" />
+        android:layout_height="wrap_content"
+        android:text="Si ya decidiste qué carrera estudiar inicia tu postulación"
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+    </TextView>
 
-</FrameLayout>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvEscribenos"
+        app:layout_constraintTop_toBottomOf="@id/id_sedes"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_margin="10dp"
+        app:cardCornerRadius="9dp"
+        android:layout_height="37dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:background="@drawable/degradado"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/style_txt_btn"
+                android:text="@string/btn_escribenos" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="5dp"
+                android:src="@drawable/ic_message"
+                app:tint="@color/white" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Buscanos en nuestra redes sociales"
+        android:layout_marginTop="20dp"
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+    </TextView>
+
+</LinearLayout>
