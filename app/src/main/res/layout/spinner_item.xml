@@ -16,7 +16,6 @@
         android:textColor="@android:color/black"
         android:textSize="16sp"
         android:layout_margin="10dp"
-        android:text="hola"
         android:gravity="center"/>
 
 </androidx.cardview.widget.CardView>

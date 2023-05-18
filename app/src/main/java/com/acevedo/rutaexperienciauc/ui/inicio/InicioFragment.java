@@ -104,29 +104,6 @@ public class InicioFragment extends Fragment {
 
                 Intent i = new Intent(getContext(), SolicitarInformacionActivity.class);
                 startActivity(i);
-//                // Obtener instancia del FragmentManager
-//                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-//
-//                //Crear instancia del Fragment que deseas mostrar
-//                SolicitarInformacionFragment fragment = new SolicitarInformacionFragment();
-//
-//                //Crear una instancia de la clase FragmentTransaction
-//                FragmentTransaction transaction = fragmentManager.beginTransaction();
-//
-//                // Reemplazar el contenido del contenedor de fragmentos con el Fragment que deseas mostrar
-//                transaction.replace(R.id.frameLayoutInicio, fragment);
-//
-//                // Agregar el Fragment actual a la pila de retroceso
-//                transaction.addToBackStack("null");
-//
-//                // Finalizar la transacción
-//                transaction.commit();
-//                imageSlider.setVisibility(View.GONE);
-//                cvPensamiento.setVisibility(View.GONE);
-//                cvComunidades.setVisibility(View.GONE);
-//                cvBienestar.setVisibility(View.GONE);
-//                cvEscribenos.setVisibility(View.GONE);
-
             }
         });
 
@@ -202,8 +179,10 @@ public class InicioFragment extends Fragment {
                                 int id =jsonObject.getInt("IdSede");
                                 String nombre = jsonObject.getString("SeNombre");
                                 String adress =jsonObject.getString("SeDireccion");
+                                String referencia = jsonObject.getString("SeReferencia");
+                                String telefono = jsonObject.getString("SeTelefono");
                                 String image_url = jsonObject.getString("SeUrlImagen");
-                                Sede sede = new Sede(id, nombre, adress, image_url);
+                                Sede sede = new Sede(id, nombre, adress, referencia, telefono, image_url);
                                 listaSede.add(sede);
 
                             } catch (JSONException e) {

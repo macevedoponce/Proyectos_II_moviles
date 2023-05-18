@@ -1,66 +1,106 @@
 package com.acevedo.rutaexperienciauc.ui.soporte;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.acevedo.rutaexperienciauc.R;
+import com.acevedo.rutaexperienciauc.adapter.PreguntasFrecuentesAdapter;
+import com.acevedo.rutaexperienciauc.adapter.SoporteSedesAdapter;
+import com.acevedo.rutaexperienciauc.clases.PreguntasFrecuentes;
+import com.acevedo.rutaexperienciauc.clases.Sede;
+import com.acevedo.rutaexperienciauc.ui.solicitarInformacion.SolicitarInformacionActivity;
+import com.acevedo.rutaexperienciauc.util.Util;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SoporteFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class SoporteFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public SoporteFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SoporteFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SoporteFragment newInstance(String param1, String param2) {
-        SoporteFragment fragment = new SoporteFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
+    RecyclerView rvSoporteSedes;
+    List<Sede> sedeList;
+    RequestQueue requestQueue;
+    CardView cvEscribenos;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_soporte, container, false);
+        View vista = inflater.inflate(R.layout.fragment_soporte, container, false);
+        rvSoporteSedes = vista.findViewById(R.id.rvSoporteSedes);
+        sedeList = new ArrayList<>();
+        rvSoporteSedes.setLayoutManager(new LinearLayoutManager(getContext()));
+        requestQueue = Volley.newRequestQueue(getContext());
+        cvEscribenos = vista.findViewById(R.id.cvEscribenos);
+
+        cargarSoporteSedes();
+
+        cvEscribenos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent i = new Intent(getContext(), SolicitarInformacionActivity.class);
+                startActivity(i);
+            }
+        });
+
+        return vista;
+    }
+
+    private void cargarSoporteSedes() {
+        String url = Util.RUTA_SEDE;
+
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        for (int i = 0; i < response.length(); i++) {
+                            try {
+                                JSONObject jsonObject = response.getJSONObject(i);
+                                int id =jsonObject.getInt("IdSede");
+                                String nombre = jsonObject.getString("SeNombre");
+                                String adress =jsonObject.getString("SeDireccion");
+                                String referencia = jsonObject.getString("SeReferencia");
+                                String telefono = jsonObject.getString("SeTelefono");
+                                String image_url = jsonObject.getString("SeUrlImagen");
+                                Sede sede = new Sede(id, nombre, adress,referencia,telefono, image_url);
+                                sedeList.add(sede);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        SoporteSedesAdapter adapter = new SoporteSedesAdapter(getContext(),sedeList);
+                        rvSoporteSedes.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        requestQueue.add(request);
     }
 }

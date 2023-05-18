@@ -47,7 +47,7 @@
                 <Button
                     android:id="@+id/btnExperienciaAleatoria"
                     android:layout_width="100dp"
-                    android:layout_height="45dp"
+                    android:layout_height="50dp"
                     android:layout_marginTop="50dp"
                     android:layout_marginRight="50dp"
                     android:drawableTop="@drawable/ic_ayuda">
@@ -55,9 +55,10 @@
                 <Button
                     android:id="@+id/btnExperienciaMasInfo"
                     android:layout_width="100dp"
-                    android:layout_height="45dp"
+                    android:layout_height="50dp"
                     android:text="@string/btn_more_info"
-                    android:textSize="10dp"></Button>
+                    android:textSize="13dp"
+                    android:textAllCaps="false"></Button>
             </LinearLayout>
 
         </RelativeLayout>

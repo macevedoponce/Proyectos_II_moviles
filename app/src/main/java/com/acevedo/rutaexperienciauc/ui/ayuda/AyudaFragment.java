@@ -17,6 +17,7 @@ import com.acevedo.rutaexperienciauc.adapter.PreguntasFrecuentesAdapter;
 import com.acevedo.rutaexperienciauc.clases.Carrera;
 import com.acevedo.rutaexperienciauc.clases.PreguntasFrecuentes;
 import com.acevedo.rutaexperienciauc.ui.sedes.carreras.ListaCarrerasActivity;
+import com.acevedo.rutaexperienciauc.util.Util;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -57,7 +58,7 @@ public class AyudaFragment extends Fragment {
 
     private void cargarPreguntasFrecuentes() {
 
-        String url = "http://192.168.100.10:3000/preguntasfrecuentes";
+        String url = Util.RUTA_PREGUNTAS_FRECUENTES;
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {

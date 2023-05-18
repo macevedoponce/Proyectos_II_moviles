@@ -10,4 +10,6 @@ public class Util {
     public static final String RUTA_EXPERIENCIA=RUTA+"/api/experiencias"; // todas la experiencias de un ciclo
     public static final String RUTA_SOLICITAR_INFORMACION=RUTA+"/api/solicitar_informacion"; //envio de datos
 
+    public static final String RUTA_PREGUNTAS_FRECUENTES=RUTA+"/api/preguntas_frecuentes"; //tolas preguntas frecuentes
+
 }
