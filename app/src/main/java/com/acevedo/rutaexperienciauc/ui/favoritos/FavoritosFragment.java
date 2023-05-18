@@ -4,6 +4,7 @@ import static com.acevedo.rutaexperienciauc.R.id.favorite_button_frag;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -21,6 +22,7 @@ import com.acevedo.rutaexperienciauc.R;
 import com.acevedo.rutaexperienciauc.adapter.FavoritosAdapter;
 import com.acevedo.rutaexperienciauc.clases.Favorito;
 import com.acevedo.rutaexperienciauc.clases.Sede;
+import com.acevedo.rutaexperienciauc.ui.sedes.carreras.rutaExperiencia.experiencia.DetalleExperienciaActivity;
 import com.acevedo.rutaexperienciauc.util.sqlite.FavoritosDatabaseHelper;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -34,6 +36,7 @@ public class FavoritosFragment extends Fragment {
     List<Favorito> listaFavoritos;
     FavoritosAdapter favoritosAdapter;
     FavoritosDatabaseHelper databaseHelper;
+    TextView emptyTextView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,6 +45,7 @@ public class FavoritosFragment extends Fragment {
         rvFavoritosAll = vista.findViewById(R.id.rvFavoritosAll);
         rvFavoritosAll.setHasFixedSize(true);
         rvFavoritosAll.setLayoutManager(new LinearLayoutManager(getContext()));
+        emptyTextView = vista.findViewById(R.id.emptyTextView);
 
         // Inicializa FavoritosDatabaseHelper
         databaseHelper = new FavoritosDatabaseHelper(getContext());
@@ -58,6 +62,13 @@ public class FavoritosFragment extends Fragment {
             public void onItemClick(int position) {
                 Favorito favorito = listaFavoritos.get(position);
                 // aquí poner para que vaya al detalleExperienciaActivity
+                Intent i = new Intent(getContext(), DetalleExperienciaActivity.class);
+                i.putExtra("idContenido",favorito.getIdContenido());
+                i.putExtra("idTipoMedia",favorito.getIdTipoMedia());
+                i.putExtra("coTitulo",favorito.getCoTitulo());
+                i.putExtra("coDescripcion",favorito.getCoDescripcion());
+                i.putExtra("coUrlMedia",favorito.getCoUrlMedia());
+                startActivity(i);
             }
 
             @Override
@@ -66,7 +77,7 @@ public class FavoritosFragment extends Fragment {
 
                 // Elimina el favorito de la lista y de la base de datos
                 listaFavoritos.remove(position);
-                databaseHelper.eliminarExperienciaFavorita(favorito.getIdExperiencia());
+                databaseHelper.eliminarExperienciaFavorita(favorito.getIdContenido());
 
                 // Notifica al adaptador que se ha eliminado un elemento
                 favoritosAdapter.notifyItemRemoved(position);
@@ -74,16 +85,39 @@ public class FavoritosFragment extends Fragment {
 
                 // Si no hay más elementos en la lista
                 if (listaFavoritos.isEmpty()) {
-                    Toast.makeText(getContext(), "La lista de favoritos está vacía", Toast.LENGTH_SHORT).show();
+                    showEmptyState();
                 }
             }
         });
 
         // Si no hay elementos en la lista
         if (listaFavoritos.isEmpty()) {
-            Toast.makeText(getContext(), "La lista de favoritos está vacía", Toast.LENGTH_SHORT).show();
+            showEmptyState();
         }
 
         return vista;
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Actualiza la lista de favoritos en onResume
+        listaFavoritos = databaseHelper.getExperienciasFavoritas();
+        favoritosAdapter.setData(listaFavoritos);
+
+        if (listaFavoritos.isEmpty()) {
+            showEmptyState();
+        } else {
+            hideEmptyState();
+        }
+    }
+    private void showEmptyState() {
+        rvFavoritosAll.setVisibility(View.GONE);
+        emptyTextView.setVisibility(View.VISIBLE);
+        emptyTextView.setText("La lista de favoritos está vacía");
+    }
+    private void hideEmptyState() {
+        rvFavoritosAll.setVisibility(View.VISIBLE);
+        emptyTextView.setVisibility(View.GONE);
+    }
+
 }

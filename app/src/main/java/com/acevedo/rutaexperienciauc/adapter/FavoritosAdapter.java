@@ -31,6 +31,7 @@ public class FavoritosAdapter extends RecyclerView.Adapter<FavoritosAdapter.Favo
 
     public interface OnItemClickListener {
         void onItemClick(int position);
+
         void onFavoriteButtonClick(int position);
     }
 
@@ -54,6 +55,11 @@ public class FavoritosAdapter extends RecyclerView.Adapter<FavoritosAdapter.Favo
     @Override
     public int getItemCount() {
         return favoritosList.size();
+    }
+
+    public void setData(List<Favorito> favoritosList) {
+        this.favoritosList = favoritosList;
+        notifyDataSetChanged();
     }
 
     public class FavoritoViewHolder extends RecyclerView.ViewHolder {
@@ -94,7 +100,7 @@ public class FavoritosAdapter extends RecyclerView.Adapter<FavoritosAdapter.Favo
         }
 
         public void bind(Favorito favorito) {
-            nombreTextView.setText(favorito.getNombreExperiencia());
+            nombreTextView.setText(favorito.getCoTitulo());
         }
     }
 }

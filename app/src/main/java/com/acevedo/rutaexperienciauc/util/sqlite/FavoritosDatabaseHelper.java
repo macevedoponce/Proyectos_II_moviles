@@ -13,18 +13,24 @@ import java.util.List;
 
 public class FavoritosDatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "favoritos.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     private static final String TABLE_FAVORITOS = "favoritos";
     private static final String COLUMN_ID = "id";
-    private static final String COLUMN_ID_EXPERIENCIA = "id_experiencia";
-    private static final String COLUMN_NOMBRE_EXPERIENCIA = "nombre_experiencia";
+    private static final String COLUMN_ID_CONTENIDO = "id_contenido";
+    private static final String COLUMN_ID_TIPO_MEDIA = "id_tipo_media";
+    private static final String COLUMN_CO_TITULO = "co_titulo";
+    private static final String COLUMN_CO_DESCRIPCION = "co_descripcion";
+    private static final String COLUMN_CO_URL_MEDIA = "co_url_media";
     private static final String COLUMN_IS_FAVORITE = "is_favorite";
 
     private static final String CREATE_TABLE_FAVORITOS = "CREATE TABLE " + TABLE_FAVORITOS + "(" +
             COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-            COLUMN_ID_EXPERIENCIA + " INTEGER," +
-            COLUMN_NOMBRE_EXPERIENCIA + " TEXT," +
+            COLUMN_ID_CONTENIDO + " INTEGER," +
+            COLUMN_ID_TIPO_MEDIA + " INTEGER," +
+            COLUMN_CO_TITULO + " TEXT," +
+            COLUMN_CO_DESCRIPCION + " TEXT," +
+            COLUMN_CO_URL_MEDIA + " TEXT," +
             COLUMN_IS_FAVORITE + " INTEGER)";
 
     public FavoritosDatabaseHelper(Context context) {
@@ -41,33 +47,36 @@ public class FavoritosDatabaseHelper extends SQLiteOpenHelper {
         // Manejo de actualizaciones futuras de la base de datos
     }
 
-    public void guardarExperienciaFavorita(int idExperiencia, String nombreExperiencia) {
+    public void guardarExperienciaFavorita(int idContenido, int idTipoMedia, String coTitulo, String coDescripcion, String coUrlMedia) {
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(COLUMN_ID_EXPERIENCIA, idExperiencia);
-        values.put(COLUMN_NOMBRE_EXPERIENCIA, nombreExperiencia);
-        values.put(COLUMN_IS_FAVORITE, 1); // Marcamos como favorito
+        values.put(COLUMN_ID_CONTENIDO, idContenido);
+        values.put(COLUMN_ID_TIPO_MEDIA, idTipoMedia);
+        values.put(COLUMN_CO_TITULO, coTitulo);
+        values.put(COLUMN_CO_DESCRIPCION, coDescripcion);
+        values.put(COLUMN_CO_URL_MEDIA, coUrlMedia);
+        values.put(COLUMN_IS_FAVORITE, true ? 1 : 0);
 
         db.insert(TABLE_FAVORITOS, null, values);
         db.close();
     }
 
-    public void eliminarExperienciaFavorita(int idExperiencia) {
+    public void eliminarExperienciaFavorita(int idContenido) {
         SQLiteDatabase db = getWritableDatabase();
 
-        String selection = COLUMN_ID_EXPERIENCIA + " = ?";
-        String[] selectionArgs = {String.valueOf(idExperiencia)};
+        String selection = COLUMN_ID_CONTENIDO + " = ?";
+        String[] selectionArgs = {String.valueOf(idContenido)};
 
         db.delete(TABLE_FAVORITOS, selection, selectionArgs);
         db.close();
     }
 
-    public boolean isExperienciaFavorita(int idExperiencia) {
+    public boolean isExperienciaFavorita(int idContenido) {
         SQLiteDatabase db = getReadableDatabase();
 
-        String selection = COLUMN_ID_EXPERIENCIA + " = ?";
-        String[] selectionArgs = {String.valueOf(idExperiencia)};
+        String selection = COLUMN_ID_CONTENIDO + " = ?";
+        String[] selectionArgs = {String.valueOf(idContenido)};
 
         Cursor cursor = db.query(TABLE_FAVORITOS, null, selection, selectionArgs, null, null, null);
         boolean isFavorite = cursor.moveToFirst();
@@ -84,18 +93,21 @@ public class FavoritosDatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.query(TABLE_FAVORITOS, null, null, null, null, null, null);
         if (cursor.moveToFirst()) {
             do {
-                int idExperiencia = cursor.getInt(cursor.getColumnIndex(COLUMN_ID_EXPERIENCIA));
-                String nombreExperiencia = cursor.getString(cursor.getColumnIndex(COLUMN_NOMBRE_EXPERIENCIA));
+                int idContenido = cursor.getInt(cursor.getColumnIndex(COLUMN_ID_CONTENIDO));
+                int idTipoMedia = cursor.getInt(cursor.getColumnIndex(COLUMN_ID_TIPO_MEDIA));
+                String coTitulo = cursor.getString(cursor.getColumnIndex(COLUMN_CO_TITULO));
+                String coDescripcion = cursor.getString(cursor.getColumnIndex(COLUMN_CO_DESCRIPCION));
+                String coUrlMedia = cursor.getString(cursor.getColumnIndex(COLUMN_CO_URL_MEDIA));
                 boolean isFavorite = cursor.getInt(cursor.getColumnIndex(COLUMN_IS_FAVORITE)) == 1;
 
-                Favorito favorito = new Favorito(idExperiencia, nombreExperiencia, isFavorite);
+                Favorito favorito = new Favorito(idContenido, idTipoMedia, coTitulo, coDescripcion, coUrlMedia, isFavorite);
                 favoritos.add(favorito);
             } while (cursor.moveToNext());
         }
 
-        cursor.close();
-        db.close();
+            cursor.close();
+            db.close();
 
-        return favoritos;
+            return favoritos;
+        }
     }
-}

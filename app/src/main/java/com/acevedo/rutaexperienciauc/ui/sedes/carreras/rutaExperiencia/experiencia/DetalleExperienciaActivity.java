@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import com.acevedo.rutaexperienciauc.MainActivity;
 import com.acevedo.rutaexperienciauc.R;
+import com.acevedo.rutaexperienciauc.clases.Favorito;
 import com.acevedo.rutaexperienciauc.util.sqlite.FavoritosDatabaseHelper;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
@@ -187,11 +188,12 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
         // Actualizar la apariencia del ImageButton
         customFavoriteButton.setSelected(isFavorite);
 
-        GuardarExperienciaFavorito(idContenido,coTitulo);
+        GuardarExperienciaFavorito(idContenido,idTipoMedia,coTitulo,coDescripcion,coUrlMedia);
 
     }
     
-    private void GuardarExperienciaFavorito(int idExperiencia, String nombreExperiencia) {
+    private void GuardarExperienciaFavorito(int idContenido, int idTipoMedia, String coTitulo, String coDescripcion, String coUrlMedia) {
+
         customFavoriteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -206,10 +208,10 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
 
                 // Guardar o eliminar la experiencia favorita según el estado
                 if (isFavorite) {
-                    databaseHelper.guardarExperienciaFavorita(idExperiencia, nombreExperiencia);
+                    databaseHelper.guardarExperienciaFavorita(idContenido,idTipoMedia,coTitulo,coDescripcion,coUrlMedia);
                     Toast.makeText(DetalleExperienciaActivity.this, "Experiencia añadida a favoritos", Toast.LENGTH_SHORT).show();
                 } else {
-                    databaseHelper.eliminarExperienciaFavorita(idExperiencia);
+                    databaseHelper.eliminarExperienciaFavorita(idContenido);
                     Toast.makeText(DetalleExperienciaActivity.this, "Experiencia eliminada de favoritos", Toast.LENGTH_SHORT).show();
                 }
             }
