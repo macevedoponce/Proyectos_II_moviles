@@ -19,21 +19,30 @@ import com.acevedo.rutaexperienciauc.util.sqlite.FavoritosDatabaseHelper;
 import java.util.List;
 
 public class FavoritosAdapter extends RecyclerView.Adapter<FavoritosAdapter.FavoritoViewHolder> {
+
     private List<Favorito> favoritosList;
     private Context context;
-    private FavoritosDatabaseHelper databaseHelper;
+    private OnItemClickListener listener;
 
     public FavoritosAdapter(Context context, List<Favorito> favoritosList) {
         this.context = context;
         this.favoritosList = favoritosList;
-        databaseHelper = new FavoritosDatabaseHelper(context);
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+        void onFavoriteButtonClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
     }
 
     @NonNull
     @Override
     public FavoritoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.favorito_item, parent, false);
-        return new FavoritoViewHolder(view);
+        return new FavoritoViewHolder(view, listener);
     }
 
     @Override
@@ -47,44 +56,45 @@ public class FavoritosAdapter extends RecyclerView.Adapter<FavoritosAdapter.Favo
         return favoritosList.size();
     }
 
-    public class FavoritoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class FavoritoViewHolder extends RecyclerView.ViewHolder {
+
         private TextView nombreTextView;
         private ImageButton favoriteButton;
 
-        public FavoritoViewHolder(@NonNull View itemView) {
+        public FavoritoViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
             nombreTextView = itemView.findViewById(R.id.tvNombreExperiencia);
-            favoriteButton = itemView.findViewById(R.id.favoriteButtonFragment);
+            favoriteButton = itemView.findViewById(R.id.favorite_button_frag);
 
-            favoriteButton.setOnClickListener(this);
+            // Asignar clic al elemento de la lista
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
+
+            // Asignar clic al botón de favorito
+            favoriteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onFavoriteButtonClick(position);
+                        }
+                    }
+                }
+            });
         }
 
         public void bind(Favorito favorito) {
             nombreTextView.setText(favorito.getNombreExperiencia());
-            favoriteButton.setSelected(favorito.isFavorite());
         }
-
-        @Override
-        public void onClick(View v) {
-            int position = getAdapterPosition();
-            if (position != RecyclerView.NO_POSITION) {
-                Favorito favorito = favoritosList.get(position);
-                GuardarExperienciaFavorito(favorito.getIdExperiencia(), favorito.getNombreExperiencia());
-            }
-        }
-    }
-
-    private void GuardarExperienciaFavorito(int idExperiencia, String nombreExperiencia) {
-        boolean isFavorite = databaseHelper.isExperienciaFavorita(idExperiencia);
-
-        if (isFavorite) {
-            databaseHelper.eliminarExperienciaFavorita(idExperiencia);
-            Toast.makeText(context, "Experiencia eliminada de favoritos", Toast.LENGTH_SHORT).show();
-        } else {
-            databaseHelper.guardarExperienciaFavorita(idExperiencia, nombreExperiencia);
-            Toast.makeText(context, "Experiencia añadida a favoritos", Toast.LENGTH_SHORT).show();
-        }
-
-        notifyDataSetChanged();
     }
 }
