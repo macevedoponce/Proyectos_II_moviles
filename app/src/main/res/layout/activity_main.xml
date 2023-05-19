@@ -42,19 +42,17 @@
 
     <ImageButton
         android:id="@+id/whatsapp_button"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        app:elevation="4dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:src="@drawable/whatsappicon"
-        android:scaleType="fitCenter"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
         android:background="@android:color/transparent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:elevation="4dp"
+        android:scaleType="fitCenter"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@id/nav_view"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias="0.8"
-        app:layout_constraintBottom_toTopOf="@+id/nav_view"
-        />
+        app:layout_constraintVertical_bias="0.8" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"

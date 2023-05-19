@@ -68,12 +68,42 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/soporte_redes_sociales"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="8dp"
         android:textSize="20dp"
         android:textColor="@color/black"
         android:gravity="center"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp">
     </TextView>
+
+    <LinearLayout
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageButton
+            android:id="@+id/ibLinkedin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:src="@drawable/ic_linkedin"
+            android:background="@android:color/transparent" />
+        <ImageButton
+            android:id="@+id/ibFacebook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:src="@drawable/ic_facebook"
+            android:background="@android:color/transparent" />
+        <ImageButton
+            android:id="@+id/ibWhatsapp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:src="@drawable/ic_whatsapp"
+            android:background="@android:color/transparent" />
+
+    </LinearLayout>
+
 
 </LinearLayout>

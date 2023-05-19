@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         whatsAppButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String phoneNumberWithCountryCode = "+51941837474"; //número de teléfono incluyendo el código de país 51
+                String phoneNumberWithCountryCode = "+51989485010"; //número de teléfono incluyendo el código de país 51
                 String message = "Solicito informacion"; // Mensaje que se va enviar a whatsapp
 
                 try {

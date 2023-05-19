@@ -1,6 +1,7 @@
 package com.acevedo.rutaexperienciauc.ui.soporte;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
@@ -11,7 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.acevedo.rutaexperienciauc.MainActivity;
 import com.acevedo.rutaexperienciauc.R;
 import com.acevedo.rutaexperienciauc.adapter.PreguntasFrecuentesAdapter;
 import com.acevedo.rutaexperienciauc.adapter.SoporteSedesAdapter;
@@ -29,6 +34,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import java.net.URLEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +44,10 @@ public class SoporteFragment extends Fragment {
     List<Sede> sedeList;
     RequestQueue requestQueue;
     CardView cvEscribenos;
+
+    ImageButton ibLinkedin;
+    ImageButton ibFacebook;
+    ImageButton ibWhatsapp;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +63,9 @@ public class SoporteFragment extends Fragment {
         rvSoporteSedes.setLayoutManager(new LinearLayoutManager(getContext()));
         requestQueue = Volley.newRequestQueue(getContext());
         cvEscribenos = vista.findViewById(R.id.cvEscribenos);
+        ibLinkedin = vista.findViewById(R.id.ibLinkedin);
+        ibFacebook = vista.findViewById(R.id.ibFacebook);
+        ibWhatsapp = vista.findViewById(R.id.ibWhatsapp);
 
         cargarSoporteSedes();
 
@@ -64,6 +77,10 @@ public class SoporteFragment extends Fragment {
                 startActivity(i);
             }
         });
+
+        seleccionarRedSocial(ibLinkedin,"https://pe.linkedin.com/school/universidad-continental/","LinkedIn");
+        seleccionarRedSocial(ibFacebook,"https://www.facebook.com/ucontinental/?locale=es_LA","Facebook");
+        seleccionarRedSocial(ibWhatsapp,"https://ucontinental.edu.pe/sin-categoria/bienvenido-whatsapp-conti/","WhatsApp");
 
         return vista;
     }
@@ -102,5 +119,22 @@ public class SoporteFragment extends Fragment {
             }
         });
         requestQueue.add(request);
+    }
+
+    private void seleccionarRedSocial(ImageButton imgbtn,String urlRedSocial,String nombre){
+        imgbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    String url = urlRedSocial;
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse(url));
+                    startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(getContext(), "No se puede abrir " + nombre, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }

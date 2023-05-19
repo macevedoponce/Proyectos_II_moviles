@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -41,6 +42,8 @@ public class ListaCarrerasActivity extends AppCompatActivity {
     LinearLayout llVolver;
     private EditText edtBuscarCarreraNombre;
     private Button btnBuscarCarrera;
+
+    ProgressDialog progreso;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +101,11 @@ public class ListaCarrerasActivity extends AppCompatActivity {
 
     private void cargarCarreras() {
 
+        progreso = new ProgressDialog(ListaCarrerasActivity.this);
+        progreso.setMessage("Buscando carreras");
+        progreso.setCancelable(false);
+        progreso.show();
+
         int idSedeRecibido = getIntent().getIntExtra("idSede",0);
 
         String url = Util.RUTA_CARRERAS + "/" + idSedeRecibido;
@@ -106,6 +114,7 @@ public class ListaCarrerasActivity extends AppCompatActivity {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
+                        progreso.dismiss();
                         for (int i = 0; i < response.length(); i++) {
                             try {
                                 JSONObject jsonObject = response.getJSONObject(i);
