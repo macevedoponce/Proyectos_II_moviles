@@ -1,6 +1,7 @@
 package com.acevedo.rutaexperienciauc.ui.inicio;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -58,6 +59,8 @@ public class InicioFragment extends Fragment {
 
     RequestQueue requestQueue;
 
+    ProgressDialog progreso;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -101,7 +104,6 @@ public class InicioFragment extends Fragment {
         cvEscribenos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent i = new Intent(getContext(), SolicitarInformacionActivity.class);
                 startActivity(i);
             }
@@ -167,12 +169,18 @@ public class InicioFragment extends Fragment {
     }
 
     private void cargarSedes() {
+
+        progreso = new ProgressDialog(getContext());
+        progreso.setMessage("Buscando Sedes");
+        progreso.setCancelable(false);
+        progreso.show();
         String url = Util.RUTA_SEDE_RANDOM;
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
+                        progreso.dismiss();
                         for (int i = 0; i < response.length(); i++) {
                             try {
                                 JSONObject jsonObject = response.getJSONObject(i);

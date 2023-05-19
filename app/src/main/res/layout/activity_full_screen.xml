@@ -19,6 +19,12 @@
         android:scaleType="centerCrop"
         android:layout_height="match_parent"/>
 
+    <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+        android:id="@+id/ypvContenido"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
+
     <androidx.cardview.widget.CardView
         android:id="@+id/cvX"
         android:layout_width="50dp"
@@ -36,29 +42,6 @@
             android:text="X"
             android:textSize="20sp"
             android:fontFamily="@font/poppins_bold"
-            android:layout_gravity="center"/>
-    </androidx.cardview.widget.CardView>
-
-
-
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cvVolver"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:layout_margin="16dp"
-        android:visibility="gone"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:cardCornerRadius="16dp"
-        android:elevation="5dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Volver"
-            android:textSize="20sp"
-            android:fontFamily="@font/poppins_medium"
             android:layout_gravity="center"/>
     </androidx.cardview.widget.CardView>
 

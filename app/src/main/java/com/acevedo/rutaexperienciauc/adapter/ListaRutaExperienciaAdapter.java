@@ -79,6 +79,7 @@ public class ListaRutaExperienciaAdapter extends RecyclerView.Adapter<ListaRutaE
                     Intent intent = new Intent(context, ListExperienciasActivity.class);
                     intent.putExtra("idCarrera", idCarrera);
                     intent.putExtra("idCiclo", position);
+                    intent.putExtra("cantCiclos", getItemCount());
                     context.startActivity(intent);
                     break;
             }

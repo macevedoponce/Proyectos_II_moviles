@@ -1,15 +1,13 @@
 package com.acevedo.rutaexperienciauc.ui.sedes.carreras.rutaExperiencia.experiencia;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import android.animation.Animator;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -18,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -29,14 +26,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.acevedo.rutaexperienciauc.R;
+import com.acevedo.rutaexperienciauc.util.Util;
+import com.airbnb.lottie.LottieAnimationView;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
-import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
-import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
-import java.security.MessageDigest;
-import java.security.PrivateKey;
+import org.json.JSONException;
+import org.json.JSONObject;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -49,11 +53,14 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
 
     ImageView ivContenido;
     WebView wvContenido;
-    YouTubePlayerView ypContenido;
+    YouTubePlayerView ypvContenido;
+    RatingBar rbCalificarExperiencia;
+    RequestQueue requestQueue;
 
-    RatingBar ratingBar;
+    //mauricio
     ImageButton customFavoriteButton;
     SharedPreferences sharedPreferences;
+    //mauricio
 
 
     @Override
@@ -64,14 +71,17 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
         tvTitulo = findViewById(R.id.tvTitulo);
         tvDescripcion = findViewById(R.id.tvDescripcion);
         tvVermas = findViewById(R.id.tvVermas);
-        ratingBar = findViewById(R.id.ratingBar);
+        rbCalificarExperiencia = findViewById(R.id.rbCalificarExperiencia);
         cvFullScreen = findViewById(R.id.cvFullScreen);
         llVolver = findViewById(R.id.llVolver);
         ivContenido = findViewById(R.id.ivContenido);
         wvContenido = findViewById(R.id.wvContenido);
-        //ypContenido = findViewById(R.id.ypContenido);
+        ypvContenido = findViewById(R.id.ypvContenido);
+        requestQueue= Volley.newRequestQueue(this);
+// mauricio
         customFavoriteButton = findViewById(R.id.custom_favorite_button);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+//fun mauricio
 
         llVolver.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,11 +132,12 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
     }
 
     private void cargarExperiencia() {
-        int idContenido = getIntent().getIntExtra("idContenido",0);
+        int idExperiencia = getIntent().getIntExtra("idExperiencia",0);
         int idTipoMedia = getIntent().getIntExtra("idTipoMedia",0);
         String coTitulo = getIntent().getStringExtra("coTitulo");
         String coDescripcion = getIntent().getStringExtra("coDescripcion");
         String coUrlMedia = getIntent().getStringExtra("coUrlMedia");
+        int idContenido = getIntent().getIntExtra("idContenido",0);
 
         tvTitulo.setText(coTitulo);
         tvDescripcion.setText(coDescripcion);
@@ -137,22 +148,17 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
                 //Toast.makeText(this, "Imagen", Toast.LENGTH_SHORT).show();
                 break;
             case 2:
+                ypvContenido.setVisibility(View.VISIBLE);
+                getLifecycle().addObserver(ypvContenido);
 
-                //ypContenido.setVisibility(View.VISIBLE);
-                wvContenido.setVisibility(View.VISIBLE);
-                ypContenido = new YouTubePlayerView(this);
-                wvContenido.getSettings().setJavaScriptEnabled(true);
-                wvContenido.getSettings().setDomStorageEnabled(true);
-                wvContenido.setWebChromeClient(new WebChromeClient());
+                ypvContenido.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+                    @Override
+                    public void onReady(YouTubePlayer youTubePlayer) {
+                        String videoId = getYoutubeId(coUrlMedia);
+                        youTubePlayer.loadVideo(videoId, 0); // Carga el video y comienza a reproducirlo automáticamente
+                    }
+                });
 
-                wvContenido.addJavascriptInterface(ypContenido,"YouTubePlayer"); //contenido 360
-                String idVideo = getYoutubeId(coUrlMedia);
-                wvContenido.loadDataWithBaseURL("https://www.youtube.com", getHTMLString(idVideo), "text/html", "UTF-8", null);
-
-
-//                wvContenido.setVisibility(View.VISIBLE);
-//                wvContenido.getSettings().setJavaScriptEnabled(true);
-//                wvContenido.loadUrl("https://www.youtube.com/watch?v=SeqgxNQxubo");
                 break;
             case 3:
 
@@ -181,6 +187,125 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
         });
         GuardarExperienciaFavorito(Integer.toString(idContenido));
 
+        //recuperar datos de calificación
+        SharedPreferences sharedPreferences = getSharedPreferences("calificar_experiencia",MODE_PRIVATE);
+        float ratingRecuperada = sharedPreferences.getFloat("rating"+idContenido,0);
+        int idContenidoRecuperado = sharedPreferences.getInt("idContenido"+idContenido,0);
+
+        //comparación de idExperiencia
+        if(idContenido == idContenidoRecuperado){
+            rbCalificarExperiencia.setIsIndicator(true); //ratingBar solo lectura
+            rbCalificarExperiencia.setRating(ratingRecuperada);
+        }
+
+        rbCalificarExperiencia.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                //cuando se tenga un cambio en RatingBar se llama a Dialog para confirmar la calificación
+                dialogCalificarExperiencia(idExperiencia, rating, idContenido);
+            }
+        });
+
+    }
+
+    private void dialogCalificarExperiencia(int idExperiencia, float rating, int idContenido) {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.calificar_experiencia_dialogo);
+
+
+        CardView cvAceptar = dialog.findViewById(R.id.cvAceptar);
+        CardView cvCancelar = dialog.findViewById(R.id.cvCancelar);
+        RatingBar rbCantidadEstrellas = dialog.findViewById(R.id.rbCantidadEstrellas);
+        TextView tvGracias = dialog.findViewById(R.id.tvGracias);
+        LottieAnimationView avCelebrate = dialog.findViewById(R.id.avCelebrate);
+        CardView cvConfirmacion = dialog.findViewById(R.id.cvConfirmacion);
+
+        rbCantidadEstrellas.setRating(rating);
+
+        cvAceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //enviar calificación
+                JSONObject datos = new JSONObject();
+                String url = Util.RUTA_CALIFICAR_EXPERIENCIA;
+
+                try{
+                    datos.put("idExperiencia", idExperiencia);
+                    datos.put("idCalificacion", (int) rating);
+                } catch (JSONException e){
+                    e.printStackTrace();
+                }
+                //Enviar la petición al servidor
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, datos,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                //guardar calificacion del usuario
+                                SharedPreferences sharedPreferences = getSharedPreferences("calificar_experiencia",MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putFloat("rating"+idContenido,rating);
+                                editor.putInt("idContenido"+idContenido,idContenido);
+                                editor.commit();
+
+                                // Ocultar elementos del diálogo
+                                cvConfirmacion.setVisibility(View.GONE);
+
+                                // Mostrar animación
+                                avCelebrate.playAnimation();
+                                avCelebrate.setVisibility(View.VISIBLE);
+                                tvGracias.setVisibility(View.VISIBLE);
+
+                                // Cerrar diálogo después de que la animación termine
+                                avCelebrate.addAnimatorListener(new Animator.AnimatorListener() {
+                                    @Override
+                                    public void onAnimationStart(Animator animation) {
+
+                                    }
+
+                                    @Override
+                                    public void onAnimationEnd(Animator animation) {
+                                        dialog.dismiss();
+                                    }
+
+                                    @Override
+                                    public void onAnimationCancel(Animator animation) {
+
+                                    }
+
+                                    @Override
+                                    public void onAnimationRepeat(Animator animation) {
+
+                                    }
+                                });
+
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(DetalleExperienciaActivity.this, error + "", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                );
+                requestQueue.add(jsonObjectRequest);
+            }
+        });
+
+        cvCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+        dialog.setCancelable(false);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.CENTER);
+
     }
 
     private void GuardarExperienciaFavorito(String rutaTitulo){
@@ -201,35 +326,6 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
         boolean isFavorite = sharedPreferences.getBoolean("rutaExperiencia" + rutaTitulo, false);
         customFavoriteButton.setSelected(isFavorite);
     }
-
-    private String getHTMLString(String mVideoId) {
-        return "<html><head>" +
-                "<style>body{margin:0;padding:0;}</style>" +
-                "</head><body>" +
-                "<iframe id=\"player\" type=\"text/html\" width=\"100%\" height=\"100%\" src=\"https://www.youtube.com/embed/" + mVideoId + "?enablejsapi=1&playsinline=1&iv_load_policy=3&modestbranding=1&fs=0&controls=1&rel=0&showinfo=0&start=0&end=0&autoplay=1\" frameborder=\"0\"></iframe>" +
-                "<script src=\"https://www.youtube.com/iframe_api\"></script>" +
-                "<script>" +
-                "var player;" +
-                "function onYouTubeIframeAPIReady() {" +
-                "player = new YT.Player('player', {" +
-                "events: {" +
-                "onReady: onPlayerReady," +
-                "onStateChange: onPlayerStateChange" +
-                "}" +
-                "});" +
-                "}" +
-                "function onPlayerReady(event) {" +
-                "event.target.playVideo();" +
-                "}" +
-                "function onPlayerStateChange(event) {" +
-                "if(event.data == YT.PlayerState.PLAYING) {" +
-                "YouTubePlayer.onPlaying();" +
-                "}" +
-                "}" +
-                "</script>" +
-                "</body></html>";
-    }
-
 
     private String getYoutubeId(String videoUrl) {
         String videoId = null;

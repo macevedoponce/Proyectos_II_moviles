@@ -8,6 +8,7 @@
     <string name="title_soporte">Soporte</string>
     <string name="btn_escribenos">Escríbenos</string>
     <string name="btn_aceptar">Aceptar</string>
+    <string name="btn_cancelar">Cancelar</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -67,6 +68,9 @@
 
     <!-- Buscar carrera -->
     <string name="hint_ingresar_carrera_pref">Ingrese la carrera de su preferencia</string>
+    
+    <string name="confirmacion">confirmación</string>
+    <string name="calificar_experiencia_confirmacion">Tu calificación nos ayuda a mejorar. ¿Deseas enviarla?</string>
 
     <!-- Ruta Experiencia -->
     <string name="title_popup_ruta_experiencia">Ruta de Experiencia UC</string>

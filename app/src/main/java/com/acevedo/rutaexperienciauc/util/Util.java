@@ -12,4 +12,8 @@ public class Util {
 
     public static final String RUTA_PREGUNTAS_FRECUENTES=RUTA+"/api/preguntas_frecuentes"; //tolas preguntas frecuentes
 
+    public static final String RUTA_CALIFICAR_EXPERIENCIA=RUTA+"/api/calificar_experiencia/"; //calificar experiencia
+    public static final String RUTA_BENEFICIO=RUTA+"/api/beneficio/"; //calificar experiencia
+
+
 }
