@@ -23,22 +23,25 @@ public class PopupSolicitarInfo extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_popup_solicitar_info);
+
+        // Obtener referencias a los elementos de la interfaz
         btnPopupAceptar = findViewById(R.id.btnPopupAceptar);
         txtFelicitaciones = findViewById(R.id.txtFelicitaciones);
 
-        //estableciendo degradado al texto
+        //Establecer un degradado en el texto
         int startColor = Color.parseColor("#A304A3");
         int endColor = Color.parseColor("#0204C6");
         Shader textShader = new LinearGradient(270,270,txtFelicitaciones.getWidth(), txtFelicitaciones.getLineHeight(),
                 new int []{startColor, endColor}, null, Shader.TileMode.CLAMP);
         txtFelicitaciones.getPaint().setShader(textShader);
 
-
+        // Establecer el diseño y el comportamiento del diálogo emergente
         getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         getWindow().setGravity(Gravity.CENTER);
         setFinishOnTouchOutside(true);
 
+        // Configurar el clic del botón "Aceptar" para finalizar la actividad
         btnPopupAceptar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
