@@ -67,4 +67,10 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.0'
     implementation 'androidx.arch.core:core-runtime:2.2.0'
 
+    //pdfView
+    implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
+
+    //lottie
+    implementation 'com.airbnb.android:lottie:6.0.0'
+
 }

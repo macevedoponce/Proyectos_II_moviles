@@ -81,8 +81,10 @@ public class SedesFragment extends Fragment {
                                 int id =jsonObject.getInt("IdSede");
                                 String nombre = jsonObject.getString("SeNombre");
                                 String adress =jsonObject.getString("SeDireccion");
+                                String referencia = jsonObject.getString("SeReferencia");
+                                String telefono = jsonObject.getString("SeTelefono");
                                 String image_url = jsonObject.getString("SeUrlImagen");
-                                Sede sede = new Sede(id, nombre, adress, image_url);
+                                Sede sede = new Sede(id, nombre, adress,referencia,telefono, image_url);
                                 listaSede.add(sede);
 
                             } catch (JSONException e) {

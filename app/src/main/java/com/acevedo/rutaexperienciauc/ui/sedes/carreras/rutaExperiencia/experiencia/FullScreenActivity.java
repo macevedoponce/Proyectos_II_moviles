@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import com.acevedo.rutaexperienciauc.R;
 import com.bumptech.glide.Glide;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
 import java.util.regex.Matcher;
@@ -21,28 +23,22 @@ import java.util.regex.Pattern;
 
 public class FullScreenActivity extends AppCompatActivity {
 
-    CardView cvVolver,cvX;
+    CardView cvX;
     ImageView ivFullScreen;
     WebView wvFullScreen;
-    YouTubePlayerView ypContenido;
+    YouTubePlayerView ypvContenido;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_full_screen);
-        cvVolver = findViewById(R.id.cvVolver);
         wvFullScreen = findViewById(R.id.wvFullScreen);
         ivFullScreen = findViewById(R.id.ivFullScreen);
+        ypvContenido = findViewById(R.id.ypvContenido);
         cvX = findViewById(R.id.cvX);
         cargarContenido();
 
         cvX.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-        cvVolver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
@@ -60,16 +56,16 @@ public class FullScreenActivity extends AppCompatActivity {
                 Glide.with(this).load(coUrlMedia).into(ivFullScreen);
                 break;
             case 2:
-                cvVolver.setVisibility(View.VISIBLE);
-                wvFullScreen.setVisibility(View.VISIBLE);
-                ypContenido = new YouTubePlayerView(this);
-                wvFullScreen.getSettings().setJavaScriptEnabled(true);
-                wvFullScreen.getSettings().setDomStorageEnabled(true);
-                wvFullScreen.setWebChromeClient(new WebChromeClient());
+                ypvContenido.setVisibility(View.VISIBLE);
+                getLifecycle().addObserver(ypvContenido);
 
-                wvFullScreen.addJavascriptInterface(ypContenido,"YouTubePlayer");
-                String idVideo = getYoutubeId(coUrlMedia);
-                wvFullScreen.loadDataWithBaseURL("https://www.youtube.com", getHTMLString(idVideo), "text/html", "UTF-8", null);
+                ypvContenido.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+                    @Override
+                    public void onReady(YouTubePlayer youTubePlayer) {
+                        String videoId = getYoutubeId(coUrlMedia);
+                        youTubePlayer.loadVideo(videoId, 0); // Carga el video y comienza a reproducirlo automáticamente
+                    }
+                });
 
                 break;
             case 3:
@@ -79,34 +75,6 @@ public class FullScreenActivity extends AppCompatActivity {
                 break;
         }
 
-    }
-
-    private String getHTMLString(String mVideoId) {
-        return "<html><head>" +
-                "<style>body{margin:0;padding:0;}</style>" +
-                "</head><body>" +
-                "<iframe id=\"player\" type=\"text/html\" width=\"100%\" height=\"100%\" src=\"https://www.youtube.com/embed/" + mVideoId + "?enablejsapi=1&playsinline=1&iv_load_policy=3&modestbranding=1&fs=0&controls=1&rel=0&showinfo=0&start=0&end=0&autoplay=1\" frameborder=\"0\"></iframe>" +
-                "<script src=\"https://www.youtube.com/iframe_api\"></script>" +
-                "<script>" +
-                "var player;" +
-                "function onYouTubeIframeAPIReady() {" +
-                "player = new YT.Player('player', {" +
-                "events: {" +
-                "onReady: onPlayerReady," +
-                "onStateChange: onPlayerStateChange" +
-                "}" +
-                "});" +
-                "}" +
-                "function onPlayerReady(event) {" +
-                "event.target.playVideo();" +
-                "}" +
-                "function onPlayerStateChange(event) {" +
-                "if(event.data == YT.PlayerState.PLAYING) {" +
-                "YouTubePlayer.onPlaying();" +
-                "}" +
-                "}" +
-                "</script>" +
-                "</body></html>";
     }
 
     private String getYoutubeId(String videoUrl) {
