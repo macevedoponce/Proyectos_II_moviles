@@ -68,7 +68,7 @@
 
     <!-- Buscar carrera -->
     <string name="hint_ingresar_carrera_pref">Ingrese la carrera de su preferencia</string>
-    
+
     <string name="confirmacion">confirmación</string>
     <string name="calificar_experiencia_confirmacion">Tu calificación nos ayuda a mejorar. ¿Deseas enviarla?</string>
 

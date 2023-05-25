@@ -1,32 +1,20 @@
 package com.acevedo.rutaexperienciauc.clases;
 
-public class Experiencia {
+public class Contenido {
     int idExperiencia;
-    String exNombre;
-    String exIconoUrl;
-
     int idContenido;
     int idTipoMedia;
     String coTitulo;
     String coDescripcion;
     String coUrlMedia;
 
-
-    public Experiencia(int idExperiencia, String exNombre, String exIconoUrl, int idContenido, int idTipoMedia, String coTitulo, String coDescripcion, String coUrlMedia) {
+    public Contenido(int idExperiencia,int idContenido, int idTipoMedia, String coTitulo, String coDescripcion, String coUrlMedia) {
         this.idExperiencia = idExperiencia;
-        this.exNombre = exNombre;
-        this.exIconoUrl = exIconoUrl;
         this.idContenido = idContenido;
         this.idTipoMedia = idTipoMedia;
         this.coTitulo = coTitulo;
         this.coDescripcion = coDescripcion;
         this.coUrlMedia = coUrlMedia;
-    }
-
-    public Experiencia(int idExperiencia, String exNombre, String exIconoUrl) {
-        this.idExperiencia = idExperiencia;
-        this.exNombre = exNombre;
-        this.exIconoUrl = exIconoUrl;
     }
 
     public int getIdExperiencia() {
@@ -35,22 +23,6 @@ public class Experiencia {
 
     public void setIdExperiencia(int idExperiencia) {
         this.idExperiencia = idExperiencia;
-    }
-
-    public String getExNombre() {
-        return exNombre;
-    }
-
-    public void setExNombre(String exNombre) {
-        this.exNombre = exNombre;
-    }
-
-    public String getExIconoUrl() {
-        return exIconoUrl;
-    }
-
-    public void setExIconoUrl(String exIconoUrl) {
-        this.exIconoUrl = exIconoUrl;
     }
 
     public int getIdContenido() {
