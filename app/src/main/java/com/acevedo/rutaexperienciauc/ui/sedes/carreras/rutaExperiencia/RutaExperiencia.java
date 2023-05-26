@@ -134,7 +134,7 @@ public class RutaExperiencia extends AppCompatActivity {
                 //obteniendo el url de la carrera seleccionada
                 planEstudiosUrl = planEstudiosUrls.get(i-1);
                 items = getItems(cantidadCiclos);
-                adapter = new ListaRutaExperienciaAdapter(items,idCarrera);
+                adapter = new ListaRutaExperienciaAdapter(items,idCarrera,RutaExperiencia.this);
                 rvListaRutaExperiencia.setAdapter(adapter);
 
             }
@@ -322,7 +322,7 @@ public class RutaExperiencia extends AppCompatActivity {
         SnapHelper snapHelper = new LinearSnapHelper();
         snapHelper.attachToRecyclerView(rvListaRutaExperiencia);
         items = getItems(cantidadCiclos);
-        adapter = new ListaRutaExperienciaAdapter(items, idCarrera);
+        adapter = new ListaRutaExperienciaAdapter(items, idCarrera, RutaExperiencia.this);
         rvListaRutaExperiencia.setAdapter(adapter);
     }
     private List<ListaRutaExperiencia> getItems(int cantCiclos){
