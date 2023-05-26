@@ -24,12 +24,17 @@ public class BeneficioAdapter extends RecyclerView.Adapter<BeneficioAdapter.Bene
 
     View.OnClickListener listener;
 
-    int progress;
+    int progress = 10;
 
     public BeneficioAdapter(Context context, List<Beneficio> beneficioList, int porcentajeBeneficio){
         this.context = context;
         this.beneficioList = beneficioList;
         this.progress = porcentajeBeneficio;
+    }
+
+    public BeneficioAdapter(Context context, List<Beneficio> beneficioList){
+        this.context = context;
+        this.beneficioList = beneficioList;
     }
 
     @NonNull
@@ -62,6 +67,12 @@ public class BeneficioAdapter extends RecyclerView.Adapter<BeneficioAdapter.Bene
             listener.onClick(v);
         }
     }
+
+    public void updateProgress(int porcentajeBeneficio) {
+        this.progress = porcentajeBeneficio;
+        notifyDataSetChanged();
+    }
+
     public class BeneficioHolder extends RecyclerView.ViewHolder {
 
         ProgressBar pbBeneficio;
@@ -84,9 +95,22 @@ public class BeneficioAdapter extends RecyclerView.Adapter<BeneficioAdapter.Bene
 
             //animacion al progressbarBeneficio
             ObjectAnimator progressAnimator = ObjectAnimator.ofInt(pbBeneficio, "progress",0,progress);//el ultimo 100 es el progresso
-            //progressAnimator.setDuration(2000);
-            //progressAnimator.setInterpolator(new LinearInterpolator());
+
+            // Cancela la animación existente
+            if (progressAnimator != null) {
+                progressAnimator.cancel();
+            }
+
+            // Crea una nueva animación para el progreso
+            progressAnimator = ObjectAnimator.ofInt(pbBeneficio, "progress", pbBeneficio.getProgress(), progress);
+            progressAnimator.setDuration(500);
+            progressAnimator.setInterpolator(new LinearInterpolator());
             progressAnimator.start();
+
+//            ObjectAnimator progressAnimator = ObjectAnimator.ofInt(pbBeneficio, "progress",0,progress);//el ultimo 100 es el progresso
+//            //progressAnimator.setDuration(2000);
+//            //progressAnimator.setInterpolator(new LinearInterpolator());
+//            progressAnimator.start();
         }
     }
 }

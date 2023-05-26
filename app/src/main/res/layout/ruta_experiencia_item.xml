@@ -3,64 +3,90 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     app:cardCornerRadius="16dp"
     app:cardElevation="4dp"
     app:cardUseCompatPadding="true"
     >
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:animateLayoutChanges="true"
-        android:orientation="vertical"
-        >
-        <RelativeLayout
+        android:layout_height="match_parent">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="6dp"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            >
+
             <ImageView
                 android:id="@+id/ivciclo"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:src="@drawable/ic_dashboard_black_24dp"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center"
-                android:paddingLeft="14dp"
-                android:paddingRight="14dp"
-                android:layout_alignParentLeft="true"
-                >
-            </ImageView>
-            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="2dp"
-                android:layout_toEndOf="@+id/ivciclo"
-                android:orientation="vertical"
-                android:layout_marginLeft="4dp"
-                android:layout_toRightOf="@+id/ivciclo"
-                >
-                <Button
-                    android:id="@+id/btnExperienciaAleatoria"
-                    android:layout_width="100dp"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="50dp"
-                    android:layout_marginRight="50dp"
-                    android:drawableTop="@drawable/ic_ayuda">
-                </Button>
-                <Button
-                    android:id="@+id/btnExperienciaMasInfo"
-                    android:layout_width="100dp"
-                    android:layout_height="50dp"
-                    android:text="@string/btn_more_info"
-                    android:textSize="13dp"
-                    android:textAllCaps="false"></Button>
-            </LinearLayout>
+                android:src="@drawable/ic_dashboard_black_24dp"
+                android:padding="10dp"
+                />
 
-        </RelativeLayout>
-    </LinearLayout>
+            <Button
+                android:id="@+id/btnExperienciaAleatoria"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:drawableTop="@drawable/ic_ayuda"/>
+            <Button
+                android:id="@+id/btnExperienciaMasInfo"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:text="@string/btn_more_info"
+                android:textSize="13dp"
+                android:textAllCaps="false"/>
+            <!--        <RelativeLayout-->
+            <!--            android:layout_width="match_parent"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:padding="6dp"-->
+            <!--            android:orientation="horizontal">-->
+            <!--            <ImageView-->
+            <!--                android:id="@+id/ivciclo"-->
+            <!--                android:layout_width="200dp"-->
+            <!--                android:layout_height="200dp"-->
+            <!--                android:src="@drawable/ic_dashboard_black_24dp"-->
+            <!--                android:layout_alignParentStart="true"-->
+            <!--                android:layout_centerVertical="true"-->
+            <!--                android:layout_gravity="center"-->
+            <!--                android:paddingLeft="14dp"-->
+            <!--                android:paddingRight="14dp"-->
+            <!--                android:layout_alignParentLeft="true"-->
+            <!--                >-->
+            <!--            </ImageView>-->
+            <!--            <LinearLayout-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_alignParentTop="true"-->
+            <!--                android:layout_marginStart="4dp"-->
+            <!--                android:layout_marginTop="2dp"-->
+            <!--                android:layout_toEndOf="@+id/ivciclo"-->
+            <!--                android:orientation="vertical"-->
+            <!--                android:layout_marginLeft="4dp"-->
+            <!--                android:layout_toRightOf="@+id/ivciclo"-->
+            <!--                >-->
+            <!--                <Button-->
+            <!--                    android:id="@+id/btnExperienciaAleatoria"-->
+            <!--                    android:layout_width="100dp"-->
+            <!--                    android:layout_height="50dp"-->
+            <!--                    android:layout_marginTop="50dp"-->
+            <!--                    android:layout_marginRight="50dp"-->
+            <!--                    android:drawableTop="@drawable/ic_ayuda">-->
+            <!--                </Button>-->
+            <!--                <Button-->
+            <!--                    android:id="@+id/btnExperienciaMasInfo"-->
+            <!--                    android:layout_width="100dp"-->
+            <!--                    android:layout_height="50dp"-->
+            <!--                    android:text="@string/btn_more_info"-->
+            <!--                    android:textSize="13dp"-->
+            <!--                    android:textAllCaps="false"></Button>-->
+            <!--            </LinearLayout>-->
+
+            <!--        </RelativeLayout>-->
+        </LinearLayout>
+    </ScrollView>
+
 </androidx.cardview.widget.CardView>
