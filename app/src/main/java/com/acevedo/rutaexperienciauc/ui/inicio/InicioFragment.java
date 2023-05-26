@@ -7,11 +7,18 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +30,7 @@ import android.widget.TextView;
 
 import com.acevedo.rutaexperienciauc.R;
 import com.acevedo.rutaexperienciauc.adapter.SedeAdapter;
+import com.acevedo.rutaexperienciauc.adapter.SliderSedeAdapter;
 import com.acevedo.rutaexperienciauc.clases.Sede;
 
 
@@ -37,9 +45,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
-import com.denzcoskun.imageslider.ImageSlider;
-import com.denzcoskun.imageslider.constants.ScaleTypes;
-import com.denzcoskun.imageslider.models.SlideModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,15 +56,18 @@ import java.util.List;
 
 public class InicioFragment extends Fragment {
 
-    ImageSlider imageSlider;
-    RecyclerView rvSedes;
-
+    //ImageSlider imageSlider;
+    RecyclerView rvSedes,imageSlider;
     CardView cvPensamiento, cvComunidades, cvBienestar, cvEscribenos;
     List<Sede> listaSede;
+    List<Sede> listaSlider;
 
     RequestQueue requestQueue;
 
     ProgressDialog progreso;
+
+    SliderSedeAdapter sliderAdapter;
+    private Handler handler = new Handler();
 
 
     @Override
@@ -75,7 +83,7 @@ public class InicioFragment extends Fragment {
         // Inflate the layout for this fragment
         View vista =  inflater.inflate(R.layout.fragment_inicio, container, false);
 
-        imageSlider = vista.findViewById(R.id.imageSlider);
+
         cvPensamiento = vista.findViewById(R.id.cvPensamiento);
         cvComunidades = vista.findViewById(R.id.cvComunidades);
         cvBienestar = vista.findViewById(R.id.cvBienestar);
@@ -113,6 +121,18 @@ public class InicioFragment extends Fragment {
         rvSedes = vista.findViewById(R.id.rvSedes);
         rvSedes.setHasFixedSize(true);
         rvSedes.setLayoutManager(new GridLayoutManager(getContext(),2));
+
+        //slider
+        imageSlider = vista.findViewById(R.id.imageSlider);
+        LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        imageSlider.setLayoutManager(manager);
+        imageSlider.setHasFixedSize(true);
+        manager.setSmoothScrollbarEnabled(true); // Para un desplazamiento más suave
+        SnapHelper snapHelper = new LinearSnapHelper();
+        snapHelper.attachToRecyclerView(imageSlider);
+
+        listaSlider = new ArrayList<>();
+
         requestQueue = Volley.newRequestQueue(getContext());
         listaSede = new ArrayList<>();
 
@@ -122,6 +142,7 @@ public class InicioFragment extends Fragment {
         return vista;
 
     }
+
 
     private void dialogDiferenciales(String diferencial) {
 
@@ -174,7 +195,7 @@ public class InicioFragment extends Fragment {
         progreso.setMessage("Buscando Sedes");
         progreso.setCancelable(false);
         progreso.show();
-        String url = Util.RUTA_SEDE_RANDOM;
+        String url = Util.RUTA_SEDE;
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
@@ -226,28 +247,61 @@ public class InicioFragment extends Fragment {
         startActivity(i);
     }
 
-    //función que recepciona imagenes desde api
     private void obtenerImagenesSlider() {
-        RequestQueue queue = Volley.newRequestQueue(getContext());
+
+
         String url = Util.RUTA_SEDE;
+
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        List<SlideModel> slideModels = new ArrayList<>();
+                        progreso.dismiss();
                         for (int i = 0; i < response.length(); i++) {
                             try {
                                 JSONObject jsonObject = response.getJSONObject(i);
-                                String imageUrl = jsonObject.getString("SeUrlImagen");
-                                String title = jsonObject.getString("SeNombre");
-                                slideModels.add(new SlideModel(imageUrl,title,ScaleTypes.FIT));
+                                int id =jsonObject.getInt("IdSede");
+                                String nombre = jsonObject.getString("SeNombre");
+                                String adress =jsonObject.getString("SeDireccion");
+                                String referencia = jsonObject.getString("SeReferencia");
+                                String telefono = jsonObject.getString("SeTelefono");
+                                String image_url = jsonObject.getString("SeUrlImagen");
+                                Sede sede = new Sede(id, nombre, adress, referencia, telefono, image_url);
+                                listaSlider.add(sede);
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
 
-                        imageSlider.setImageList(slideModels, ScaleTypes.CENTER_CROP);
-                        imageSlider.startSliding(5000);
+                        sliderAdapter = new SliderSedeAdapter(getContext(),listaSlider);
+                        imageSlider.setAdapter(sliderAdapter);
+                        sliderAdapter.notifyDataSetChanged();
+
+                        // Configurar el desplazamiento automático cada 3 segundos
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                int currentPosition = ((LinearLayoutManager) imageSlider.getLayoutManager()).findFirstVisibleItemPosition();
+                                int newPosition = (currentPosition + 1) % sliderAdapter.getItemCount();
+                                if (newPosition == 0 && currentPosition != newPosition) {
+                                    // Si es el último elemento, volver al primer elemento
+                                    imageSlider.smoothScrollToPosition(0);
+                                } else {
+                                    imageSlider.smoothScrollToPosition(newPosition);
+                                }
+                                handler.postDelayed(this, 3000);
+                            }
+                        }, 3000);
+                        sliderAdapter.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                selectSede(view);
+                            }
+                        });
+
+                        imageSlider.setAdapter(sliderAdapter);
+                        sliderAdapter.notifyDataSetChanged();
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -255,6 +309,13 @@ public class InicioFragment extends Fragment {
                 error.printStackTrace();
             }
         });
-        queue.add(request);
+        requestQueue.add(request);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        // Detener el desplazamiento automático al salir del fragmento
+        handler.removeCallbacksAndMessages(null);
     }
 }

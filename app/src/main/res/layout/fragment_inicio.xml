@@ -23,13 +23,10 @@
             android:gravity="right"
             android:orientation="horizontal">
 
-            <com.denzcoskun.imageslider.ImageSlider
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/imageSlider"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                app:iss_auto_cycle="true"
-                app:iss_delay="1000"
-                app:iss_text_align="CENTER"
-                android:id="@+id/imageSlider"/>
+                android:layout_height="match_parent"/>
 
         </LinearLayout>
 
