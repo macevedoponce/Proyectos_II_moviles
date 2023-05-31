@@ -1,15 +1,21 @@
 package com.acevedo.rutaexperienciauc.ui.soporte;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -48,6 +54,7 @@ public class SoporteFragment extends Fragment {
     ImageButton ibLinkedin;
     ImageButton ibFacebook;
     ImageButton ibWhatsapp;
+    private static final int REQUEST_CALL_PHONE_PERMISSION = 1;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +88,12 @@ public class SoporteFragment extends Fragment {
         seleccionarRedSocial(ibLinkedin,"https://pe.linkedin.com/school/universidad-continental/","LinkedIn");
         seleccionarRedSocial(ibFacebook,"https://www.facebook.com/ucontinental/?locale=es_LA","Facebook");
         seleccionarRedSocial(ibWhatsapp,"https://ucontinental.edu.pe/sin-categoria/bienvenido-whatsapp-conti/","WhatsApp");
+
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CALL_PHONE_PERMISSION);
+        } else {
+            // El permiso ya ha sido concedido, puedes realizar la llamada telefónica
+        }
 
         return vista;
     }
@@ -137,4 +150,5 @@ public class SoporteFragment extends Fragment {
             }
         });
     }
+
 }
