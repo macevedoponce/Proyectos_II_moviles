@@ -63,11 +63,9 @@ public class FavoritosFragment extends Fragment {
                 Favorito favorito = listaFavoritos.get(position);
                 // aquí poner para que vaya al detalleExperienciaActivity
                 Intent i = new Intent(getContext(), DetalleExperienciaActivity.class);
+                i.putExtra("idExperiencia",favorito.getIdExperiencia());
                 i.putExtra("idContenido",favorito.getIdContenido());
-                i.putExtra("idTipoMedia",favorito.getIdTipoMedia());
                 i.putExtra("coTitulo",favorito.getCoTitulo());
-                i.putExtra("coDescripcion",favorito.getCoDescripcion());
-                i.putExtra("coUrlMedia",favorito.getCoUrlMedia());
                 startActivity(i);
             }
 

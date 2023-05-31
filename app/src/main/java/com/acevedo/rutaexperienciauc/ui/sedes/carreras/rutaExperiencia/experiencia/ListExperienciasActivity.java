@@ -2,17 +2,13 @@ package com.acevedo.rutaexperienciauc.ui.sedes.carreras.rutaExperiencia.experien
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -25,10 +21,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.acevedo.rutaexperienciauc.R;
 import com.acevedo.rutaexperienciauc.adapter.BeneficioAdapter;
 import com.acevedo.rutaexperienciauc.adapter.ExperienciaAdapter;
@@ -42,13 +35,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,8 +58,6 @@ public class ListExperienciasActivity extends AppCompatActivity {
     ProgressDialog progreso;
     int porcentajeBeneficio;
 
-    //progressBeneficio
-    //ProgressBar pbBeneficio; // ya no se usa
 
 
     @Override
@@ -85,7 +73,6 @@ public class ListExperienciasActivity extends AppCompatActivity {
         llVolver = findViewById(R.id.llVolver);
         ivCiclo = findViewById(R.id.ivCiclo);
         rvExperiencias = findViewById(R.id.rvExperiencias);
-        //pbBeneficio = findViewById(R.id.pbBeneficio); //ya no se usa
         rvExperiencias.setHasFixedSize(true);
         rvExperiencias.setLayoutManager(new GridLayoutManager(this,2));
         requestQueue = Volley.newRequestQueue(this);
@@ -237,7 +224,6 @@ public class ListExperienciasActivity extends AppCompatActivity {
 
 
         String url = Util.RUTA_EXPERIENCIA + "/"+ idCarrera + "/" + exCiclo+ "/" + exCiclo;
-        //String url = Util.RUTA_EXPERIENCIA;
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -248,12 +234,12 @@ public class ListExperienciasActivity extends AppCompatActivity {
                         int idExperiencia =jsonObject.getInt("IdExperiencia");
                         String ExNombre = jsonObject.getString("ExNombre");
                         String ExIconoUrl =jsonObject.getString("ExIconoUrl");
-                        int idContenido =jsonObject.getInt("IdContenido");
-                        int IdTipoMedia =jsonObject.getInt("IdTipoMedia");
-                        String CoTitulo =jsonObject.getString("CoTitulo");
-                        String CoDescripcion =jsonObject.getString("CoDescripcion");
-                        String CoUrlMedia =jsonObject.getString("CoUrlMedia");
-                        Experiencia experiencia = new Experiencia(idExperiencia, ExNombre, ExIconoUrl,idContenido,IdTipoMedia,CoTitulo,CoDescripcion,CoUrlMedia);
+//                        int idContenido =jsonObject.getInt("IdContenido");
+//                        int IdTipoMedia =jsonObject.getInt("IdTipoMedia");
+//                        String CoTitulo =jsonObject.getString("CoTitulo");
+//                        String CoDescripcion =jsonObject.getString("CoDescripcion");
+//                        String CoUrlMedia =jsonObject.getString("CoUrlMedia");
+                        Experiencia experiencia = new Experiencia(idExperiencia, ExNombre, ExIconoUrl);
                         listaExperiencia.add(experiencia);
 
                     } catch (JSONException e) {
@@ -283,19 +269,8 @@ public class ListExperienciasActivity extends AppCompatActivity {
     }
 
     private void selectExperiencia(View view) {
-        int idContenido = listaExperiencia.get(rvExperiencias.getChildAdapterPosition(view)).getIdContenido();
-        int idTipoMedia = listaExperiencia.get(rvExperiencias.getChildAdapterPosition(view)).getIdTipoMedia();
-        String coTitulo = listaExperiencia.get(rvExperiencias.getChildAdapterPosition(view)).getCoTitulo();
-        String coDescripcion = listaExperiencia.get(rvExperiencias.getChildAdapterPosition(view)).getCoDescripcion();
-        String coUrlMedia = listaExperiencia.get(rvExperiencias.getChildAdapterPosition(view)).getCoUrlMedia();
         int idExperiencia = listaExperiencia.get(rvExperiencias.getChildAdapterPosition(view)).getIdExperiencia();
-
         Intent i = new Intent(ListExperienciasActivity.this, DetalleExperienciaActivity.class);
-        i.putExtra("idContenido",idContenido);
-        i.putExtra("idTipoMedia",idTipoMedia);
-        i.putExtra("coTitulo",coTitulo);
-        i.putExtra("coDescripcion",coDescripcion);
-        i.putExtra("coUrlMedia",coUrlMedia);
         i.putExtra("idExperiencia",idExperiencia);
         startActivity(i);
 

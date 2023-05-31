@@ -170,7 +170,7 @@ public class RutaExperiencia extends AppCompatActivity {
     }
     private List<ListaRutaExperiencia> getItems(int cantCiclos){
 
-        int[] images = {R.drawable.ciclo_uno, R.drawable.ciclo_dos, R.drawable.ciclo_tres, R.drawable.ciclo_cuatro, R.drawable.ciclo_cinco, R.drawable.ciclo_seis, R.drawable.ciclo_siete, R.drawable.ciclo_ocho, R.drawable.ciclo_nueve, R.drawable.ciclo_diez, R.drawable.ciclo_uno, R.drawable.ciclo_dos, R.drawable.ciclo_tres, R.drawable.ciclo_cuatro};
+        int[] images = {R.drawable.ciclo_uno, R.drawable.ciclo_dos, R.drawable.ciclo_tres, R.drawable.ciclo_cuatro, R.drawable.ciclo_cinco, R.drawable.ciclo_seis, R.drawable.ciclo_siete, R.drawable.ciclo_ocho, R.drawable.ciclo_nueve, R.drawable.ciclo_diez, R.drawable.ciclo_once, R.drawable.ciclo_doce, R.drawable.ciclo_trece, R.drawable.ciclo_catorce};
 
         List<ListaRutaExperiencia> rutaExperienciaList = new ArrayList<>();
         for (int i = 0; i < cantCiclos; i++) {

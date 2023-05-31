@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -38,6 +39,7 @@ public class ListaCarrerasActivity extends AppCompatActivity {
 
     RecyclerView rvCarrerasAll;
     List<Carrera> listaCarrera;
+    List<Carrera> listaCarreraFiltrada; // Nueva variable para la lista filtrada
     RequestQueue requestQueue;
     LinearLayout llVolver;
     private EditText edtBuscarCarreraNombre;
@@ -48,11 +50,13 @@ public class ListaCarrerasActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         setContentView(R.layout.activity_lista_carreras);
         rvCarrerasAll = findViewById(R.id.rvCarrerasall);
         edtBuscarCarreraNombre = findViewById(R.id.edtBuscarCarreraNombre);
         btnBuscarCarrera = findViewById(R.id.btnBuscarCarrera);
         listaCarrera = new ArrayList<>();
+        listaCarreraFiltrada = new ArrayList<>(); // Inicializar lista filtrada
         rvCarrerasAll.setHasFixedSize(true);
         rvCarrerasAll.setLayoutManager(new LinearLayoutManager(this));
         requestQueue = Volley.newRequestQueue(this);
@@ -70,20 +74,18 @@ public class ListaCarrerasActivity extends AppCompatActivity {
         btnBuscarCarrera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Obtener el texto del EditText y filtrar la lista de carreras
                 String query = edtBuscarCarreraNombre.getText().toString().toLowerCase();
-                List<Carrera> filteredList = new ArrayList<>();
+                listaCarreraFiltrada.clear(); // Limpiar lista filtrada antes de realizar la búsqueda
                 for (Carrera carrera : listaCarrera) {
                     String nombre = carrera.getNombre().toLowerCase();
                     if (nombre.contains(query)) {
-                        filteredList.add(carrera);
+                        listaCarreraFiltrada.add(carrera);
                     }
                 }
-                // Actualizar el RecyclerView con la lista filtrada o mostrar un Toast si no hay resultados
-                if (filteredList.isEmpty()) {
+                if (listaCarreraFiltrada.isEmpty()) {
                     Toast.makeText(ListaCarrerasActivity.this, "No se encontraron carreras", Toast.LENGTH_SHORT).show();
                 } else {
-                    CarreraAdapter adapter = new CarreraAdapter(ListaCarrerasActivity.this, filteredList);
+                    CarreraAdapter adapter = new CarreraAdapter(ListaCarrerasActivity.this, listaCarreraFiltrada);
                     adapter.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -100,14 +102,12 @@ public class ListaCarrerasActivity extends AppCompatActivity {
     }
 
     private void cargarCarreras() {
-
         progreso = new ProgressDialog(ListaCarrerasActivity.this);
         progreso.setMessage("Buscando carreras");
         progreso.setCancelable(false);
         progreso.show();
 
-        int idSedeRecibido = getIntent().getIntExtra("idSede",0);
-
+        int idSedeRecibido = getIntent().getIntExtra("idSede", 0);
         String url = Util.RUTA_CARRERAS + "/" + idSedeRecibido;
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
@@ -115,23 +115,23 @@ public class ListaCarrerasActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray response) {
                         progreso.dismiss();
+                        listaCarrera.clear(); // Limpiar lista original antes de cargar las carreras
                         for (int i = 0; i < response.length(); i++) {
                             try {
                                 JSONObject jsonObject = response.getJSONObject(i);
-                                int id =jsonObject.getInt("IdCarrera");
+                                int id = jsonObject.getInt("IdCarrera");
                                 String nombre = jsonObject.getString("CaNombre");
-                                String descripcion =jsonObject.getString("CaDescripcion");
+                                String descripcion = jsonObject.getString("CaDescripcion");
                                 String planEstudiosUrl = jsonObject.getString("CaPlanEstudiosUrl");
                                 int cantidadCiclos = jsonObject.getInt("CaCantidadCiclos");
-                                int idSede =jsonObject.getInt("IdSede");
-                                Carrera carrera = new Carrera(id, nombre, descripcion, planEstudiosUrl, cantidadCiclos,idSede);
+                                int idSede = jsonObject.getInt("IdSede");
+                                Carrera carrera = new Carrera(id, nombre, descripcion, planEstudiosUrl, cantidadCiclos, idSede);
                                 listaCarrera.add(carrera);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
-
-                        CarreraAdapter adapter = new CarreraAdapter(ListaCarrerasActivity.this,listaCarrera);
+                        CarreraAdapter adapter = new CarreraAdapter(ListaCarrerasActivity.this, listaCarrera);
                         adapter.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -149,6 +149,7 @@ public class ListaCarrerasActivity extends AppCompatActivity {
         });
         requestQueue.add(request);
     }
+
     private void setUpSearch() {
         edtBuscarCarreraNombre.addTextChangedListener(new TextWatcher() {
             @Override
@@ -159,15 +160,15 @@ public class ListaCarrerasActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 String query = charSequence.toString().toLowerCase();
-                List<Carrera> filteredList = new ArrayList<>();
+                listaCarreraFiltrada.clear(); // Limpiar lista filtrada antes de realizar la búsqueda
                 for (Carrera carrera : listaCarrera) {
                     String nombre = carrera.getNombre().toLowerCase();
                     if (nombre.contains(query)) {
-                        filteredList.add(carrera);
+                        listaCarreraFiltrada.add(carrera);
                     }
                 }
                 // Actualizar el RecyclerView con la lista filtrada
-                CarreraAdapter adapter = new CarreraAdapter(ListaCarrerasActivity.this, filteredList);
+                CarreraAdapter adapter = new CarreraAdapter(ListaCarrerasActivity.this, listaCarreraFiltrada);
                 adapter.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -184,20 +185,26 @@ public class ListaCarrerasActivity extends AppCompatActivity {
             }
         });
     }
+
     private void selectCarrera(View view) {
-        int id = listaCarrera.get(rvCarrerasAll.getChildAdapterPosition(view)).getId();
-        int cantidadCiclos = listaCarrera.get(rvCarrerasAll.getChildAdapterPosition(view)).getCantidadCiclos();
-        int idSede = listaCarrera.get(rvCarrerasAll.getChildAdapterPosition(view)).getIdSede();
-        String planEstudiosUrl = listaCarrera.get(rvCarrerasAll.getChildAdapterPosition(view)).getPlanEstudios_url();
-        String nombre = listaCarrera.get(rvCarrerasAll.getChildAdapterPosition(view)).getNombre();
+        int position = rvCarrerasAll.getChildAdapterPosition(view);
+        Carrera carrera;
+        if (listaCarreraFiltrada.isEmpty()) {
+            carrera = listaCarrera.get(position);
+        } else {
+            carrera = listaCarreraFiltrada.get(position);
+        }
+        int id = carrera.getId();
+        int cantidadCiclos = carrera.getCantidadCiclos();
+        int idSede = carrera.getIdSede();
+        String planEstudiosUrl = carrera.getPlanEstudios_url();
+        String nombre = carrera.getNombre();
 
-        Intent i = new Intent(this, RutaExperiencia.class);
-        i.putExtra("idCarrera",id);
-        i.putExtra("cantidadCiclos", cantidadCiclos);
-        i.putExtra("idSede", idSede);
-        i.putExtra("planEstudiosUrl", planEstudiosUrl);
-
-        startActivity(i);
-
+         Intent i = new Intent(this, RutaExperiencia.class);
+         i.putExtra("idCarrera",id);
+         i.putExtra("cantidadCiclos", cantidadCiclos);
+         i.putExtra("idSede", idSede);
+         i.putExtra("planEstudiosUrl", planEstudiosUrl);
+         startActivity(i);
     }
 }
