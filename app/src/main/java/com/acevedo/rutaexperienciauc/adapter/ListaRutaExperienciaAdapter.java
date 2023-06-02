@@ -59,22 +59,16 @@ public class ListaRutaExperienciaAdapter extends RecyclerView.Adapter<ListaRutaE
             super(itemView);
             context = itemView.getContext();
             ivCiclo = itemView.findViewById(R.id.ivciclo);
-            btnExperienciaAleatoria = itemView.findViewById(R.id.btnExperienciaAleatoria);
             btnExperienciaMasInfo = itemView.findViewById(R.id.btnExperienciaMasInfo);
         }
         void setOnClickListener(int position){
             btnExperienciaMasInfo.setTag(position);
-            btnExperienciaAleatoria.setTag(position);
-            btnExperienciaAleatoria.setOnClickListener(this);
             btnExperienciaMasInfo.setOnClickListener(this);
         }
         @Override
         public void onClick(View view){
             int position = (int) view.getTag() +1;
             switch (view.getId()){
-                case R.id.btnExperienciaAleatoria:
-                    Toast.makeText(context, "idCarrera: "+idCarrera +"idCiclo: "+position, Toast.LENGTH_SHORT).show();
-                    break;
                 case R.id.btnExperienciaMasInfo:
                     Intent intent = new Intent(context, ListExperienciasActivity.class);
                     intent.putExtra("idCarrera", idCarrera);
