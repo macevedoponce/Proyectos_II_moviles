@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clContenidoActivo"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- Primer CardView -->
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView1"
             android:layout_width="0dp"
@@ -117,12 +115,7 @@
 
             </LinearLayout>
 
-
-
-
         </androidx.cardview.widget.CardView>
-
-        <!-- CardView en la esquina superior derecha -->
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cvFullScreen"
@@ -146,7 +139,6 @@
 
         </androidx.cardview.widget.CardView>
 
-        <!-- CardView en la mitad del CardView 1 y 2 -->
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewMiddle"
             android:layout_width="171dp"

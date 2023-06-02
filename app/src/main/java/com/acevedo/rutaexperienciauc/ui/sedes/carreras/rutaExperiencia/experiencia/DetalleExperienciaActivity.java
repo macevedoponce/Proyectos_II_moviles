@@ -11,10 +11,9 @@ import android.animation.ObjectAnimator;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
-import android.view.animation.DecelerateInterpolator;
-import android.view.animation.LinearInterpolator;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.acevedo.rutaexperienciauc.R;
 import com.acevedo.rutaexperienciauc.adapter.ContenidoAdapter;
@@ -43,9 +42,7 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
     List<Contenido> listaContenido;
     ProgressDialog progreso;
     ObjectAnimator progressAnimator;
-
-    int progresoActual = 0;
-
+    TextView tvSinContenido;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,12 +53,12 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
         rvContenido =findViewById(R.id.rvContenido);
         listaContenido = new ArrayList<>();
         llVolver = findViewById(R.id.llVolver);
+        tvSinContenido = findViewById(R.id.tvSinContenido);
 
         // Configuración del LayoutManager
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         rvContenido.setLayoutManager(layoutManager);
         layoutManager.setSmoothScrollbarEnabled(true); // Para un desplazamiento más suave
-        //layoutManager.setStackFromEnd(true); // Asegura que el último elemento esté completamente visible
         rvContenido.setHasFixedSize(true);
 
         SnapHelper snapHelper = new LinearSnapHelper();
@@ -133,10 +130,16 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
-
-                ContenidoAdapter adapter = new ContenidoAdapter(DetalleExperienciaActivity.this,listaContenido);
-                rvContenido.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
+                if(listaContenido.size() == 0){
+                    tvSinContenido.setVisibility(View.VISIBLE);
+                    rvContenido.setVisibility(View.GONE);
+                }else{
+                    tvSinContenido.setVisibility(View.GONE);
+                    rvContenido.setVisibility(View.VISIBLE);
+                    ContenidoAdapter adapter = new ContenidoAdapter(DetalleExperienciaActivity.this,listaContenido);
+                    rvContenido.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                }
             }
         }, new Response.ErrorListener() {
             @Override

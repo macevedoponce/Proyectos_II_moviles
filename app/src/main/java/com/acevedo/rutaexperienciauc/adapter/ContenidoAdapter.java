@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ComponentActivity;
 import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.RecyclerView;
@@ -61,8 +62,6 @@ public class ContenidoAdapter extends RecyclerView.Adapter<ContenidoAdapter.Cont
     RequestQueue requestQueue;
     private FavoritosDatabaseHelper databaseHelper;
 
-    //View.OnClickListener listener;
-
 
     public ContenidoAdapter(Context context, List<Contenido> contenidoList) {
         this.context = context;
@@ -73,13 +72,13 @@ public class ContenidoAdapter extends RecyclerView.Adapter<ContenidoAdapter.Cont
     @Override
     public ContenidoAdapter.ContenidoHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View mView = LayoutInflater.from(context).inflate(R.layout.contenido_item, parent, false);
-        //mView.setOnClickListener(this);
         return new ContenidoHolder(mView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ContenidoAdapter.ContenidoHolder holder, int position) {
         Contenido contenido = contenidoList.get(position);
+
         int idExperiencia = contenido.getIdExperiencia();
         int idContenido = contenido.getIdContenido();
         String coTitulo = contenido.getCoTitulo();
@@ -311,6 +310,7 @@ public class ContenidoAdapter extends RecyclerView.Adapter<ContenidoAdapter.Cont
         RatingBar rbCalificarExperiencia;
         ImageButton customFavoriteButton;
 
+
         View view;
 
         public ContenidoHolder(@NonNull View itemView) {
@@ -325,12 +325,9 @@ public class ContenidoAdapter extends RecyclerView.Adapter<ContenidoAdapter.Cont
             wvContenido = view.findViewById(R.id.wvContenido);
             ypvContenido = view.findViewById(R.id.ypvContenido);
             customFavoriteButton = view.findViewById(R.id.custom_favorite_button);
-
         }
 
-        public void setTitulo(String coTitulo) {
-            tvTitulo.setText(coTitulo);
-        }
+        public void setTitulo(String coTitulo) { tvTitulo.setText(coTitulo); }
 
         public void setDescripcion(String coDescripcion) {
             tvDescripcion.setText(coDescripcion);

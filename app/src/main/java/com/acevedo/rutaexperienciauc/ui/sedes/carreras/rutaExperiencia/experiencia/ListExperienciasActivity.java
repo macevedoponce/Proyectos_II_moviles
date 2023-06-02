@@ -119,7 +119,6 @@ public class ListExperienciasActivity extends AppCompatActivity {
 
 
         String url = Util.RUTA_BENEFICIO + "/"+ idCarrera ;
-        //String url = Util.RUTA_EXPERIENCIA;
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -143,11 +142,7 @@ public class ListExperienciasActivity extends AppCompatActivity {
                 BeneficioAdapter adapter = new BeneficioAdapter(ListExperienciasActivity.this,listaBeneficio,porcentajeBeneficio);
                 adapter.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
-
-                        selectBeneficio(v);
-                        //Toast.makeText(ListExperienciasActivity.this, "muy bien", Toast.LENGTH_SHORT).show();
-                    }
+                    public void onClick(View v) {selectBeneficio(v);}
                 });
 
                 rvBeneficios.setAdapter(adapter);
@@ -179,8 +174,6 @@ public class ListExperienciasActivity extends AppCompatActivity {
         progressAnimator.setDuration(2000);
         progressAnimator.setInterpolator(new LinearInterpolator());
         progressAnimator.start();
-
-
 
         tvProgressBeneficioDetalle.setText(porcentajeBeneficio + "% completado");
         tvBeneficioDetalle.setText(beneficioDetalle);
@@ -222,7 +215,6 @@ public class ListExperienciasActivity extends AppCompatActivity {
         //progreso.setCancelable(false);
         //progreso.show();
 
-
         String url = Util.RUTA_EXPERIENCIA + "/"+ idCarrera + "/" + exCiclo+ "/" + exCiclo;
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
@@ -234,11 +226,6 @@ public class ListExperienciasActivity extends AppCompatActivity {
                         int idExperiencia =jsonObject.getInt("IdExperiencia");
                         String ExNombre = jsonObject.getString("ExNombre");
                         String ExIconoUrl =jsonObject.getString("ExIconoUrl");
-//                        int idContenido =jsonObject.getInt("IdContenido");
-//                        int IdTipoMedia =jsonObject.getInt("IdTipoMedia");
-//                        String CoTitulo =jsonObject.getString("CoTitulo");
-//                        String CoDescripcion =jsonObject.getString("CoDescripcion");
-//                        String CoUrlMedia =jsonObject.getString("CoUrlMedia");
                         Experiencia experiencia = new Experiencia(idExperiencia, ExNombre, ExIconoUrl);
                         listaExperiencia.add(experiencia);
 

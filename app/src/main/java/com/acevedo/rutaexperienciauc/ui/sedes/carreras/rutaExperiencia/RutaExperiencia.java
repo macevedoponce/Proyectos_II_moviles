@@ -8,18 +8,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.acevedo.rutaexperienciauc.R;
 import com.acevedo.rutaexperienciauc.adapter.ListaRutaExperienciaAdapter;
 import com.acevedo.rutaexperienciauc.adapter.SpinnerAdapter;
-import com.acevedo.rutaexperienciauc.clases.Carrera;
 import com.acevedo.rutaexperienciauc.clases.ListaRutaExperiencia;
-import com.acevedo.rutaexperienciauc.ui.solicitarInformacion.SolicitarInformacionActivity;
 import com.acevedo.rutaexperienciauc.util.Util;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;

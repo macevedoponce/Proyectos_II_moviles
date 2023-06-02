@@ -24,11 +24,7 @@ public class PlanEstudiosActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
         pdfPlanEstudios = findViewById(R.id.pdfPlanEstudios);
         llVolver = findViewById(R.id.llVolver);
-
         String pdfUrl = getIntent().getStringExtra("planEstudiosUrl");
-
-        //String pdfUrl = "https://ucontinental.edu.pe/documentos/brochure/presencial/ing-de-sistemas-e-informatica/ingenieria-de-sistemas-e-informatica.pdf";
-
         new RecibirPDF(pdfPlanEstudios,progressBar).execute(pdfUrl);
 
         llVolver.setOnClickListener(new View.OnClickListener() {

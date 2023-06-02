@@ -198,7 +198,6 @@ public class ListaCarrerasActivity extends AppCompatActivity {
         int cantidadCiclos = carrera.getCantidadCiclos();
         int idSede = carrera.getIdSede();
         String planEstudiosUrl = carrera.getPlanEstudios_url();
-        String nombre = carrera.getNombre();
 
          Intent i = new Intent(this, RutaExperiencia.class);
          i.putExtra("idCarrera",id);

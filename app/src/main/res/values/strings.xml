@@ -12,6 +12,7 @@
     <string name="btn_escribenos">Escríbenos</string>
     <string name="btn_aceptar">Aceptar</string>
     <string name="btn_cancelar">Cancelar</string>
+    <string name="txt_volver">Volver</string>
 
     <!-- Diferenciales -->
     <string name="dif_pensamiento_title_1">Pensamiento +</string>
@@ -73,9 +74,13 @@
     <!-- Ruta Experiencia -->
     <string name="title_popup_ruta_experiencia">Ruta de Experiencia UC</string>
     <string name="btn_more_info">More Info</string>
+    <string name="plan_estudios">Plan de Estudios</string>
 
     <!-- Soporte -->
     <string name="soporte_redes_sociales">Buscanos en nuestra redes sociales</string>
     <string name="soporte_inicia_postulacion">Si ya decidiste qué carrera estudiar inicia tu postulación</string>
+
+<!--    listExperiencias-->
+    <string name="txt_experiencias">Experiencias</string>
 
 </resources>
