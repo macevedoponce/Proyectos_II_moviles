@@ -34,33 +34,23 @@
                 >
             </ImageView>
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="2dp"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:gravity="center"
+                android:layout_gravity="center"
                 android:layout_toEndOf="@+id/ivciclo"
-                android:orientation="vertical"
-                android:layout_marginLeft="4dp"
                 android:layout_toRightOf="@+id/ivciclo"
                 >
-                <Button
-                    android:id="@+id/btnExperienciaAleatoria"
-                    android:layout_width="100dp"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="50dp"
-                    android:layout_marginRight="50dp"
-                    android:drawableTop="@drawable/ic_ayuda">
-                </Button>
                 <Button
                     android:id="@+id/btnExperienciaMasInfo"
                     android:layout_width="100dp"
                     android:layout_height="50dp"
                     android:text="@string/btn_more_info"
+                    android:background="@drawable/degradado"
                     android:textSize="13dp"
+                    app:backgroundTint="@null"
                     android:textAllCaps="false"></Button>
             </LinearLayout>
-
         </RelativeLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
