@@ -10,7 +10,7 @@
         android:id="@+id/imgSplashFondo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/fondo_uc"
+        android:src="@drawable/fondo_splash_uc_2"
         android:scaleType="centerCrop"
         />
     <View
@@ -44,7 +44,8 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
-        android:text="Todos los derechos reservados"
+        android:text="@string/derechos_reservados"
+        android:fontFamily="@font/poppins_light"
         android:textColor="@color/white"
         ></TextView>
 </RelativeLayout>
