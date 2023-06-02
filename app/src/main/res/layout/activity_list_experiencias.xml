@@ -35,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/style_txt_voler"
-                android:text="Volver"/>
+                android:text="@string/txt_volver"/>
 
         </LinearLayout>
 
@@ -75,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             style="@style/style_txt_title"
-            android:text="Experiencias"/>
+            android:text="@string/txt_experiencias"/>
 
     </LinearLayout>
 

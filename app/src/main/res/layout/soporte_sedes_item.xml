@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="15dp"
-                android:background="@drawable/ic_direccion">
+                android:background="@drawable/map_marker">
             </ImageView>
             <TextView
                 android:id="@+id/tvNombreSede"

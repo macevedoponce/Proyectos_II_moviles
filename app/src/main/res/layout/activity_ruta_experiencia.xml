@@ -34,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/style_txt_voler"
-                android:text="Volver"/>
+                android:text="@string/txt_volver"/>
 
         </LinearLayout>
 
@@ -96,7 +96,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Plan de Estudios"
+                android:text="@string/plan_estudios"
                 android:textColor="@color/black"
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="5dp"

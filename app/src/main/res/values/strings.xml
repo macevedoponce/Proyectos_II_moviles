@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">RutaExperienciaUC</string>
 
+    <string name="derechos_reservados">Todos los derechos reservados</string>
+
+
     <string name="title_inicio">Inicio</string>
     <string name="title_favoritos">Favoritos</string>
     <string name="title_sedes">Sedes</string>
@@ -9,10 +12,7 @@
     <string name="btn_escribenos">Escríbenos</string>
     <string name="btn_aceptar">Aceptar</string>
     <string name="btn_cancelar">Cancelar</string>
-
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="txt_volver">Volver</string>
 
     <!-- Diferenciales -->
     <string name="dif_pensamiento_title_1">Pensamiento +</string>
@@ -68,16 +68,19 @@
 
     <!-- Buscar carrera -->
     <string name="hint_ingresar_carrera_pref">Ingrese la carrera de su preferencia</string>
-
     <string name="confirmacion">confirmación</string>
     <string name="calificar_experiencia_confirmacion">Tu calificación nos ayuda a mejorar. ¿Deseas enviarla?</string>
 
     <!-- Ruta Experiencia -->
     <string name="title_popup_ruta_experiencia">Ruta de Experiencia UC</string>
     <string name="btn_more_info">More Info</string>
+    <string name="plan_estudios">Plan de Estudios</string>
 
     <!-- Soporte -->
     <string name="soporte_redes_sociales">Buscanos en nuestra redes sociales</string>
     <string name="soporte_inicia_postulacion">Si ya decidiste qué carrera estudiar inicia tu postulación</string>
+
+<!--    listExperiencias-->
+    <string name="txt_experiencias">Experiencias</string>
 
 </resources>

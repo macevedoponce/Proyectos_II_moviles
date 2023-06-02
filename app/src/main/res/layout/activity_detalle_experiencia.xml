@@ -75,6 +75,17 @@
 
     </androidx.cardview.widget.CardView>
 
+    <TextView
+        android:id="@+id/tvSinContenido"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textSize="20sp"
+        android:textColor="@color/icon_selected"
+        android:text="Ningun Contenido encontrado"
+        android:fontFamily="@font/poppins_semibold"
+        android:visibility="gone"
+        android:gravity="center"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvContenido"
         android:layout_width="match_parent"

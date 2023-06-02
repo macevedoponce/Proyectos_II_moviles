@@ -50,7 +50,6 @@ public class SedesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View vista = inflater.inflate(R.layout.fragment_sedes, container, false);
         rvSedesAll = vista.findViewById(R.id.rvSedesAll);
         rvSedesAll.setHasFixedSize(true);
@@ -116,19 +115,8 @@ public class SedesFragment extends Fragment {
 
     private void selectSede(View view) {
         int id = listaSede.get(rvSedesAll.getChildAdapterPosition(view)).getId();
-        String nombre = listaSede.get(rvSedesAll.getChildAdapterPosition(view)).getNombre();
-
-      //  Toast.makeText(getContext(), id+"", Toast.LENGTH_SHORT).show();
-
         Intent i = new Intent(getContext(), ListaCarrerasActivity.class);
         i.putExtra("idSede",id);
         startActivity(i);
-        //codigo que reemplaza el fragment inicio por el fragment solicitar información
-//        ListaCarrerasFragment listaCarrerasFragment = new ListaCarrerasFragment(); // inicializa el fragment
-//        Bundle args = new Bundle();
-//        args.putInt("idSede",id);
-//        listaCarrerasFragment.setArguments(args);
-//
-//        getFragmentManager().beginTransaction().replace(R.id.nav_host_fragment_activity_main,listaCarrerasFragment).addToBackStack(null).commit();
     }
 }

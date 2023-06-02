@@ -32,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/style_txt_voler"
-                android:text="Volver"/>
+                android:text="@string/txt_volver"/>
 
         </LinearLayout>
         <LinearLayout
