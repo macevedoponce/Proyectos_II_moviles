@@ -182,8 +182,8 @@ public class ContenidoAdapter extends RecyclerView.Adapter<ContenidoAdapter.Cont
                 String url = Util.RUTA_CALIFICAR_EXPERIENCIA;
 
                 try{
-                    datos.put("idExperiencia", idExperiencia);
-                    datos.put("idCalificacion", (int) rating);
+                    datos.put("IdExperiencia", idExperiencia);
+                    datos.put("IdCalificacion", (int) rating);
                 } catch (JSONException e){
                     e.printStackTrace();
                 }
