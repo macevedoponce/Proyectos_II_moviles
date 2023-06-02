@@ -85,10 +85,13 @@ public class ContenidoAdapter extends RecyclerView.Adapter<ContenidoAdapter.Cont
         String coDescripcion = contenido.getCoDescripcion();
         int coTipoMedia = contenido.getIdTipoMedia();
         String coUrlMedia = contenido.getCoUrlMedia();
+        String exCicloInicio = contenido.getExCicloInicio();
+        String exCicloFin = contenido.getExCicloFin();
 
         holder.setTitulo(coTitulo);
         holder.setDescripcion(coDescripcion);
         holder.setTipoMedia(coTipoMedia,coUrlMedia);
+        holder.setCiclos(exCicloInicio,exCicloFin);
 
         holder.tvVermas.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -302,7 +305,7 @@ public class ContenidoAdapter extends RecyclerView.Adapter<ContenidoAdapter.Cont
     }
 
     public class ContenidoHolder extends RecyclerView.ViewHolder {
-        TextView tvTitulo, tvDescripcion, tvVermas;
+        TextView tvTitulo, tvDescripcion, tvVermas, tvCicloInicioFin;
         CardView cvFullScreen;
         ImageView ivContenido;
         WebView wvContenido;
@@ -316,6 +319,7 @@ public class ContenidoAdapter extends RecyclerView.Adapter<ContenidoAdapter.Cont
         public ContenidoHolder(@NonNull View itemView) {
             super(itemView);
             view = itemView;
+            tvCicloInicioFin = view.findViewById(R.id.tvCicloInicioFin);
             tvTitulo = view.findViewById(R.id.tvTitulo);
             tvDescripcion = view.findViewById(R.id.tvDescripcion);
             tvVermas = view.findViewById(R.id.tvVermas);
@@ -359,6 +363,10 @@ public class ContenidoAdapter extends RecyclerView.Adapter<ContenidoAdapter.Cont
 
                     break;
             }
+        }
+
+        public void setCiclos(String exCicloInicio, String exCicloFin) {
+            tvCicloInicioFin.setText("Del Ciclo: " + exCicloInicio +" al " + exCicloFin);
         }
     }
     private String getYoutubeId(String videoUrl) {

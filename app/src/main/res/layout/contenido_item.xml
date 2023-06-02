@@ -101,17 +101,40 @@
                     android:text="Fomentar la creatividad y la innovación para desarrollar proyectos con impacto social, es fundamental en la formación de los estudiantes universitarios. Por esta razón, la Universidad Continental ha implementado un Fab Lab en el interior del país, bajo el modelo del Massachusetts Institute of Technology (MIT). De esta manera, se convirtirtió en la primera universidad en descentralizar la fabricación digital en el Perú."
                     />
 
-                <TextView
-                    android:id="@+id/tvVermas"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:layout_gravity="end"
-                    android:textColor="@color/icon_selected"
-                    android:justificationMode="inter_word"
-                    android:fontFamily="@font/poppins_medium"
-                    android:text="Ver más"
-                    />
+                    >
+
+                    <TextView
+                        android:id="@+id/tvCicloInicioFin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="1"
+                        android:textColor="@color/icon_selected"
+                        android:justificationMode="inter_word"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="Del cico 1 al 10"
+                        />
+
+                    <TextView
+                        android:id="@+id/tvVermas"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:gravity="end"
+                        android:layout_weight="1"
+                        android:textColor="@color/icon_selected"
+                        android:justificationMode="inter_word"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Ver más"
+                        />
+
+
+                </LinearLayout>
+
+
 
             </LinearLayout>
 

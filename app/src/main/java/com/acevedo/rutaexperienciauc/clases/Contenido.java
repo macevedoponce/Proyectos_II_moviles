@@ -7,14 +7,18 @@ public class Contenido {
     String coTitulo;
     String coDescripcion;
     String coUrlMedia;
+    String exCicloInicio;
+    String exCicloFin;
 
-    public Contenido(int idExperiencia,int idContenido, int idTipoMedia, String coTitulo, String coDescripcion, String coUrlMedia) {
+    public Contenido(int idExperiencia, int idContenido, int idTipoMedia, String coTitulo, String coDescripcion, String coUrlMedia, String exCicloInicio, String exCicloFin) {
         this.idExperiencia = idExperiencia;
         this.idContenido = idContenido;
         this.idTipoMedia = idTipoMedia;
         this.coTitulo = coTitulo;
         this.coDescripcion = coDescripcion;
         this.coUrlMedia = coUrlMedia;
+        this.exCicloInicio = exCicloInicio;
+        this.exCicloFin = exCicloFin;
     }
 
     public int getIdExperiencia() {
@@ -63,5 +67,21 @@ public class Contenido {
 
     public void setCoUrlMedia(String coUrlMedia) {
         this.coUrlMedia = coUrlMedia;
+    }
+
+    public String getExCicloInicio() {
+        return exCicloInicio;
+    }
+
+    public void setExCicloInicio(String exCicloInicio) {
+        this.exCicloInicio = exCicloInicio;
+    }
+
+    public String getExCicloFin() {
+        return exCicloFin;
+    }
+
+    public void setExCicloFin(String exCicloFin) {
+        this.exCicloFin = exCicloFin;
     }
 }

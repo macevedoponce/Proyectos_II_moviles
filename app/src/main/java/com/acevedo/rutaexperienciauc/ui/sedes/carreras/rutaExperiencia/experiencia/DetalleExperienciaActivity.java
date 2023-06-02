@@ -122,7 +122,18 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
                         String coTitulo =jsonObject.getString("CoTitulo");
                         String coDescripcion =jsonObject.getString("CoDescripcion");
                         String coUrlMedia =jsonObject.getString("CoUrlMedia");
-                        Contenido contenido = new Contenido(idExperiencia,idContenido, idTipoMedia,coTitulo, coDescripcion, coUrlMedia);
+                        String exCicloInicio =jsonObject.getString("ExCicloInicio");
+                        String exCicloFin =jsonObject.getString("ExCicloFin");
+                        Contenido contenido = new Contenido(
+                                idExperiencia,
+                                idContenido,
+                                idTipoMedia,
+                                coTitulo,
+                                coDescripcion,
+                                coUrlMedia,
+                                exCicloInicio,
+                                exCicloFin
+                        );
                         listaContenido.add(contenido);
 
                     } catch (JSONException e) {
