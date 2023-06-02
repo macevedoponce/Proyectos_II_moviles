@@ -3,7 +3,7 @@ package com.acevedo.rutaexperienciauc.util;
 public class Util {
 
 
-    public static final String RUTA="http://192.168.1.46:4040"; // solo cambia la su IP
+    public static final String RUTA="http://192.168.1.14:4040"; // solo cambia la su IP
 
     public static final String RUTA_CONTENIDO=RUTA+"/contenido/experiencia"; // todas las sedes
     public static final String RUTA_SEDE=RUTA+"/sede"; // todas las sedes
