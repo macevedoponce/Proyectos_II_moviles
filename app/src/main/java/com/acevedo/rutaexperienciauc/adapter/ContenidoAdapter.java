@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
@@ -13,10 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -312,6 +315,7 @@ public class ContenidoAdapter extends RecyclerView.Adapter<ContenidoAdapter.Cont
         YouTubePlayerView ypvContenido;
         RatingBar rbCalificarExperiencia;
         ImageButton customFavoriteButton;
+        ProgressBar progressBar;
 
 
         View view;
@@ -329,6 +333,8 @@ public class ContenidoAdapter extends RecyclerView.Adapter<ContenidoAdapter.Cont
             wvContenido = view.findViewById(R.id.wvContenido);
             ypvContenido = view.findViewById(R.id.ypvContenido);
             customFavoriteButton = view.findViewById(R.id.custom_favorite_button);
+            progressBar = view.findViewById(R.id.progressBar);
+            progressBar.setVisibility(View.GONE);
         }
 
         public void setTitulo(String coTitulo) { tvTitulo.setText(coTitulo); }
@@ -357,8 +363,23 @@ public class ContenidoAdapter extends RecyclerView.Adapter<ContenidoAdapter.Cont
 
                     break;
                 case 3:
-                    wvContenido.setVisibility(View.VISIBLE);
+                    //wvContenido.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.VISIBLE);
                     wvContenido.getSettings().setJavaScriptEnabled(true);
+                    wvContenido.setWebViewClient(new WebViewClient() {
+                        @Override
+                        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+
+                            //progreso.show(); // Muestra el ProgressBar cuando se inicia la carga de la página
+                        }
+
+                        @Override
+                        public void onPageFinished(WebView view, String url) {
+                            progressBar.setVisibility(View.GONE);
+                            wvContenido.setVisibility(View.VISIBLE);
+                            //progreso.dismiss(); // Oculta el ProgressBar cuando la página ha terminado de cargarse
+                        }
+                    });
                     wvContenido.loadUrl(coUrlMedia);
 
                     break;
