@@ -3,13 +3,16 @@ package com.acevedo.rutaexperienciauc.ui.sedes.carreras.rutaExperiencia.experien
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.acevedo.rutaexperienciauc.R;
@@ -28,6 +31,7 @@ public class FullScreenActivity extends AppCompatActivity {
     WebView wvFullScreen;
     YouTubePlayerView ypvContenido;
 
+    ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +39,7 @@ public class FullScreenActivity extends AppCompatActivity {
         wvFullScreen = findViewById(R.id.wvFullScreen);
         ivFullScreen = findViewById(R.id.ivFullScreen);
         ypvContenido = findViewById(R.id.ypvContenido);
+        progressBar = findViewById(R.id.progressBar);
         cvX = findViewById(R.id.cvX);
         cargarContenido();
 
@@ -69,8 +74,21 @@ public class FullScreenActivity extends AppCompatActivity {
 
                 break;
             case 3:
-                wvFullScreen.setVisibility(View.VISIBLE);
+                //wvFullScreen.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
                 wvFullScreen.getSettings().setJavaScriptEnabled(true);
+                wvFullScreen.setWebViewClient(new WebViewClient() {
+                    @Override
+                    public void onPageStarted(WebView view, String url, Bitmap favicon) {
+
+                    }
+
+                    @Override
+                    public void onPageFinished(WebView view, String url) {
+                        progressBar.setVisibility(View.GONE);
+                        wvFullScreen.setVisibility(View.VISIBLE);
+                    }
+                });
                 wvFullScreen.loadUrl(coUrlMedia);
                 break;
         }
