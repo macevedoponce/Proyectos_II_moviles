@@ -354,7 +354,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:justificationMode="inter_word"
-                            android:text="@string/consentimiento" />
+                            android:text="@string/consentimiento"
+                            android:linksClickable="true"/>
                     </RadioGroup>
                 </LinearLayout>
             </LinearLayout>

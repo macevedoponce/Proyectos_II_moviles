@@ -63,4 +63,8 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
     }
 
+    @Override
+    public void onBackPressed() {
+        finishAffinity(); // Cierra todas las actividades abiertas en la aplicación, incluyendo el MainActivity
+    }
 }

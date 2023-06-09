@@ -94,6 +94,7 @@ public class SoporteSedesAdapter extends RecyclerView.Adapter<SoporteSedesAdapte
 
         public void setNombre(String Nombre){
             tvNombreSede.setText(Nombre);
+            tvNombreSede.setPaintFlags(tvNombreSede.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         }
 
         public void setAdress(String Adress){
@@ -101,6 +102,7 @@ public class SoporteSedesAdapter extends RecyclerView.Adapter<SoporteSedesAdapte
         }
 
         public void setSeReferencia(String SeReferencia){
+
             tvReferenciaSede.setText(SeReferencia);
         }
 

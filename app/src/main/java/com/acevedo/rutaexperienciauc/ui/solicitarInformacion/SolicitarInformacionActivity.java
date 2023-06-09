@@ -4,7 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
@@ -35,11 +40,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 public class SolicitarInformacionActivity extends AppCompatActivity {
@@ -82,7 +90,23 @@ public class SolicitarInformacionActivity extends AppCompatActivity {
         rbCelular = findViewById(R.id.rbCelular);
         rbWhatsApp = findViewById(R.id.rbWhatsApp);
         rgConsentimiento = findViewById(R.id.rgConsentimiento);
+        //linkear politica de tratamiento de datos
         rbConsentimiento = findViewById(R.id.rbConsentimiento);
+        String consentimientoText = getResources().getString(R.string.consentimiento);
+        SpannableString spannableStringBuilder = new SpannableString(consentimientoText);
+        String linkText = "política de tratamiento de datos";
+        int startIndex = consentimientoText.indexOf(linkText);
+        int endIndex = startIndex + linkText.length();
+        ClickableSpan clickableSpan = new ClickableSpan() {
+            @Override
+            public void onClick(View view) {
+                // Acción al hacer clic en el enlace
+                openPrivacyPolicy();
+            }
+        };
+        spannableStringBuilder.setSpan(clickableSpan, startIndex, endIndex, 0);
+        rbConsentimiento.setText(spannableStringBuilder);
+        rbConsentimiento.setMovementMethod(LinkMovementMethod.getInstance());
 
         btnSolicitarInformacion =findViewById(R.id.btnSolicitarInformacion);
         spSedes = findViewById(R.id.spSedes);
@@ -96,6 +120,35 @@ public class SolicitarInformacionActivity extends AppCompatActivity {
         edtSolInfoCelular = tilSolInfoCelular.getEditText().findViewById(R.id.edtSolInfoCelular);
         edtSolInfoFechaNacimiento = tilSolInfoFechaNacimiento.getEditText().findViewById(R.id.edtSolInfoFechaNacimiento);
 
+        //validando entrada de fecha ingresada manuealmente
+        edtSolInfoFechaNacimiento.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+                    // Obtener la fecha ingresada manualmente
+                    String dateStr = edtSolInfoFechaNacimiento.getText().toString();
+
+                    // Validar la fecha
+                    if (isValidDate(dateStr)) {
+                        // Verificar la edad
+                        if (isOver15Years(dateStr)) {
+                            // La fecha es válida y el usuario tiene más de 15 años
+                            fechaSeleccionada = true;
+                        } else {
+                            // El usuario no tiene más de 15 años, mostrar mensaje de error
+                            Toast.makeText(SolicitarInformacionActivity.this, "Debe tener al menos 15 años de edad.", Toast.LENGTH_SHORT).show();
+                            fechaSeleccionada = false;
+                            edtSolInfoFechaNacimiento.setText("");
+                        }
+                    } else {
+                        // La fecha no es válida, mostrar mensaje de error
+                        Toast.makeText(SolicitarInformacionActivity.this, "Fecha de nacimiento inválida.", Toast.LENGTH_SHORT).show();
+                        fechaSeleccionada = false;
+                        edtSolInfoFechaNacimiento.setText("");
+                    }
+                }
+            }
+        });
         // Implementar el calendario para seleccionar la fecha de nacimiento
         implementarCalendario();
 
@@ -126,6 +179,45 @@ public class SolicitarInformacionActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+    private boolean isValidDate(String dateStr) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            sdf.setLenient(false);
+            sdf.parse(dateStr);
+            return true;
+        } catch (ParseException e) {
+            return false;
+        }
+    }
+    private boolean isOver15Years(String dateStr) {
+        // Obtener la fecha actual
+        Calendar currentDate = Calendar.getInstance();
+        int currentYear = currentDate.get(Calendar.YEAR);
+        int currentMonth = currentDate.get(Calendar.MONTH) + 1; // Sumar 1 ya que en Calendar.MONTH los meses van de 0 a 11
+        int currentDayOfMonth = currentDate.get(Calendar.DAY_OF_MONTH);
+
+        // Obtener los componentes de la fecha de nacimiento
+        String[] dateParts = dateStr.split("-");
+        int year = Integer.parseInt(dateParts[0]);
+        int month = Integer.parseInt(dateParts[1]);
+        int dayOfMonth = Integer.parseInt(dateParts[2]);
+
+        // Calcular la edad del usuario
+        int age = currentYear - year;
+        if (currentMonth < month || (currentMonth == month && currentDayOfMonth < dayOfMonth)) {
+            age--; // Restar 1 año si no ha cumplido aún su próximo cumpleaños
+        }
+
+        return age >= 15;
+    }
+    private void openPrivacyPolicy() {
+        String privacyPolicyUrl = "https://ucontinental.edu.pe/politica-de-privacidad/";
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(privacyPolicyUrl));
+        startActivity(intent);
+
     }
 
     // Método para obtener los nombres de las carreras desde el servidor
@@ -388,10 +480,28 @@ public class SolicitarInformacionActivity extends AppCompatActivity {
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                                // Actualizar el texto del EditText con la fecha seleccionada
-                                String date = year + "-" + (month + 1) + "-" + dayOfMonth;
-                                edtSolInfoFechaNacimiento.setText(date);
-                                fechaSeleccionada = true;
+                                // Obtener la fecha actual
+                                Calendar currentDate = Calendar.getInstance();
+                                int currentYear = currentDate.get(Calendar.YEAR);
+                                int currentMonth = currentDate.get(Calendar.MONTH);
+                                int currentDayOfMonth = currentDate.get(Calendar.DAY_OF_MONTH);
+
+                                // Calcular la edad del usuario
+                                int age = currentYear - year;
+                                if (currentMonth < month || (currentMonth == month && currentDayOfMonth < dayOfMonth)) {
+                                    age--; // Restar 1 año si no ha cumplido aún su próximo cumpleaños
+                                }
+
+                                // Verificar si el usuario tiene más de 15 años
+                                if (age >= 15) {
+                                    // Actualizar el texto del EditText con la fecha seleccionada
+                                    String date = year + "-" + (month + 1) + "-" + dayOfMonth;
+                                    edtSolInfoFechaNacimiento.setText(date);
+                                    fechaSeleccionada = true;
+                                } else {
+                                    // Mostrar un mensaje de error al usuario
+                                    Toast.makeText(SolicitarInformacionActivity.this, "Debe tener al menos 15 años de edad.", Toast.LENGTH_SHORT).show();
+                                }
                             }
                         }, year, month, dayOfMonth);
                 // Mostrar el diálogo de selección de fecha

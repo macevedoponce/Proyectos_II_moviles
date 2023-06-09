@@ -73,7 +73,7 @@
 
     <!-- Ruta Experiencia -->
     <string name="title_popup_ruta_experiencia">Ruta de Experiencia UC</string>
-    <string name="btn_more_info">More Info</string>
+    <string name="btn_experiencias">Experiencias</string>
     <string name="plan_estudios">Plan de Estudios</string>
 
     <!-- Soporte -->
