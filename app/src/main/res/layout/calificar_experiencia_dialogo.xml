@@ -70,14 +70,15 @@
 
             <RatingBar
                 android:id="@+id/rbCantidadEstrellas"
-                style="@style/CustomRatingBar"
-                android:layout_width="146dp"
-                android:layout_height="wrap_content"
+                android:layout_width="240dp"
+                android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
                 android:numStars="5"
                 android:isIndicator="true"
                 android:rating="0"
+                android:progressTint="@color/dorado"
+                android:secondaryProgressTint="@color/dorado"
                 android:stepSize="1" />
 
             <androidx.cardview.widget.CardView
