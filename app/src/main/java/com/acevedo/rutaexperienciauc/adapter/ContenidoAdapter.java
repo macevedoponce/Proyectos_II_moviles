@@ -113,24 +113,24 @@ public class ContenidoAdapter extends RecyclerView.Adapter<ContenidoAdapter.Cont
             }
         });
 
-        //recuperar datos de calificación
-        SharedPreferences sharedPreferences = context.getSharedPreferences("calificar_experiencia",context.MODE_PRIVATE);
-        float ratingRecuperada = sharedPreferences.getFloat("rating"+idContenido,0);
-        int idContenidoRecuperado = sharedPreferences.getInt("idContenido"+idContenido,0);
-
-        //comparación de idExperiencia
-        if(idContenido == idContenidoRecuperado){
-            holder.rbCalificarExperiencia.setIsIndicator(true); //ratingBar solo lectura
-            holder.rbCalificarExperiencia.setRating(ratingRecuperada);
-        }
-
-        holder.rbCalificarExperiencia.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                //cuando se tenga un cambio en RatingBar se llama a Dialog para confirmar la calificación
-                dialogCalificarExperiencia(idExperiencia, rating, idContenido);
-            }
-        });
+//        //recuperar datos de calificación
+//        SharedPreferences sharedPreferences = context.getSharedPreferences("calificar_experiencia",context.MODE_PRIVATE);
+//        float ratingRecuperada = sharedPreferences.getFloat("rating"+idContenido,0);
+//        int idContenidoRecuperado = sharedPreferences.getInt("idContenido"+idContenido,0);
+//
+//        //comparación de idExperiencia
+//        if(idContenido == idContenidoRecuperado){
+//            holder.rbCalificarExperiencia.setIsIndicator(true); //ratingBar solo lectura
+//            holder.rbCalificarExperiencia.setRating(ratingRecuperada);
+//        }
+//
+//        holder.rbCalificarExperiencia.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+//            @Override
+//            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+//                //cuando se tenga un cambio en RatingBar se llama a Dialog para confirmar la calificación
+//                dialogCalificarExperiencia(idExperiencia, rating, idContenido);
+//            }
+//        });
 
         //favorito
         databaseHelper = new FavoritosDatabaseHelper(context);
@@ -313,7 +313,7 @@ public class ContenidoAdapter extends RecyclerView.Adapter<ContenidoAdapter.Cont
         ImageView ivContenido;
         WebView wvContenido;
         YouTubePlayerView ypvContenido;
-        RatingBar rbCalificarExperiencia;
+        //RatingBar rbCalificarExperiencia;
         ImageButton customFavoriteButton;
         ProgressBar progressBar;
 
@@ -328,7 +328,7 @@ public class ContenidoAdapter extends RecyclerView.Adapter<ContenidoAdapter.Cont
             tvDescripcion = view.findViewById(R.id.tvDescripcion);
             tvVermas = view.findViewById(R.id.tvVermas);
             cvFullScreen = view.findViewById(R.id.cvFullScreen);
-            rbCalificarExperiencia = view.findViewById(R.id.rbCalificarExperiencia);
+            //rbCalificarExperiencia = view.findViewById(R.id.rbCalificarExperiencia);
             ivContenido = view.findViewById(R.id.ivContenido);
             wvContenido = view.findViewById(R.id.wvContenido);
             ypvContenido = view.findViewById(R.id.ypvContenido);

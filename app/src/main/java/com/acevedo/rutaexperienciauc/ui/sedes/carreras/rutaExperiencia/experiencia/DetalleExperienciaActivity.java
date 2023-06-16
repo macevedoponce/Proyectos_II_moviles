@@ -2,28 +2,41 @@ package com.acevedo.rutaexperienciauc.ui.sedes.carreras.rutaExperiencia.experien
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
+import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.acevedo.rutaexperienciauc.R;
 import com.acevedo.rutaexperienciauc.adapter.ContenidoAdapter;
 import com.acevedo.rutaexperienciauc.clases.Contenido;
 import com.acevedo.rutaexperienciauc.util.Util;
+import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,6 +55,8 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
     List<Contenido> listaContenido;
     ProgressDialog progreso;
     ObjectAnimator progressAnimator;
+    int idExperiencia;
+    RatingBar rbCalificarExperiencia;
     TextView tvSinContenido;
 
     @Override
@@ -53,6 +68,7 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
         rvContenido =findViewById(R.id.rvContenido);
         listaContenido = new ArrayList<>();
         llVolver = findViewById(R.id.llVolver);
+        rbCalificarExperiencia = findViewById(R.id.rbCalificarExperiencia);
         tvSinContenido = findViewById(R.id.tvSinContenido);
 
         // Configuración del LayoutManager
@@ -70,6 +86,10 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
+        idExperiencia = getIntent().getIntExtra("idExperiencia",0);
+
+        cargarCalifExperiencia();
 
         cargarExperiencia();
 
@@ -101,9 +121,128 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
         });
     }
 
-    private void cargarExperiencia() {
-        int idExperiencia = getIntent().getIntExtra("idExperiencia",0);
+    private void cargarCalifExperiencia() {
+        //recuperar datos de calificación
+        SharedPreferences sharedPreferences = getSharedPreferences("calificar_experiencia",MODE_PRIVATE);
+        float ratingRecuperada = sharedPreferences.getFloat("rating"+idExperiencia,0);
+        int idExperienciaRecuperado = sharedPreferences.getInt("idExperiencia"+idExperiencia,0);
 
+        //comparación de idExperiencia
+        if(idExperiencia == idExperienciaRecuperado){
+            rbCalificarExperiencia.setIsIndicator(true); //ratingBar solo lectura
+            rbCalificarExperiencia.setRating(ratingRecuperada);
+        }
+
+        rbCalificarExperiencia.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                //cuando se tenga un cambio en RatingBar se llama a Dialog para confirmar la calificación
+                dialogCalificarExperiencia(idExperiencia, rating);
+            }
+        });
+    }
+
+    private void dialogCalificarExperiencia(int idExperiencia, float rating) {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.calificar_experiencia_dialogo);
+
+
+        CardView cvAceptar = dialog.findViewById(R.id.cvAceptar);
+        CardView cvCancelar = dialog.findViewById(R.id.cvCancelar);
+        RatingBar rbCantidadEstrellas = dialog.findViewById(R.id.rbCantidadEstrellas);
+        TextView tvGracias = dialog.findViewById(R.id.tvGracias);
+        LottieAnimationView avCelebrate = dialog.findViewById(R.id.avCelebrate);
+        CardView cvConfirmacion = dialog.findViewById(R.id.cvConfirmacion);
+
+        rbCantidadEstrellas.setRating(rating);
+
+        cvAceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //enviar calificación
+                JSONObject datos = new JSONObject();
+                String url = Util.RUTA_CALIFICAR_EXPERIENCIA;
+
+                try{
+                    datos.put("IdExperiencia", idExperiencia);
+                    datos.put("IdCalificacion", (int) rating);
+                } catch (JSONException e){
+                    e.printStackTrace();
+                }
+                //Enviar la petición al servidor
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, datos,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                //guardar calificacion del usuario
+                                SharedPreferences sharedPreferences = getSharedPreferences("calificar_experiencia",MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putFloat("rating"+idExperiencia,rating);
+                                editor.putInt("idExperiencia"+idExperiencia,idExperiencia);
+                                editor.commit();
+
+                                // Ocultar elementos del diálogo
+                                cvConfirmacion.setVisibility(View.GONE);
+
+                                // Mostrar animación
+                                avCelebrate.playAnimation();
+                                avCelebrate.setVisibility(View.VISIBLE);
+                                tvGracias.setVisibility(View.VISIBLE);
+
+                                // Cerrar diálogo después de que la animación termine
+                                avCelebrate.addAnimatorListener(new Animator.AnimatorListener() {
+                                    @Override
+                                    public void onAnimationStart(Animator animation) {
+
+                                    }
+
+                                    @Override
+                                    public void onAnimationEnd(Animator animation) {
+                                        dialog.dismiss();
+                                    }
+
+                                    @Override
+                                    public void onAnimationCancel(Animator animation) {
+
+                                    }
+
+                                    @Override
+                                    public void onAnimationRepeat(Animator animation) {
+
+                                    }
+                                });
+
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(DetalleExperienciaActivity.this, error + "", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                );
+                requestQueue= Volley.newRequestQueue(DetalleExperienciaActivity.this);
+                requestQueue.add(jsonObjectRequest);
+            }
+        });
+
+        cvCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+        dialog.setCancelable(false);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.CENTER);
+    }
+
+    private void cargarExperiencia() {
         progreso = new ProgressDialog(this);
         progreso.setMessage("Buscando Contenido");
         progreso.setCancelable(false);
