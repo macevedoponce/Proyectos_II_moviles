@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.acevedo.rutaexperienciauc.R;
 import com.acevedo.rutaexperienciauc.adapter.ListaRutaExperienciaAdapter;
@@ -42,7 +43,7 @@ public class RutaExperiencia extends AppCompatActivity {
 
     int cantidadCiclos;
     int idCarrera;
-    String planEstudiosUrl;
+    String planEstudiosUrl, nombreCarrera;
 
     int idSede;
 
@@ -56,6 +57,7 @@ public class RutaExperiencia extends AppCompatActivity {
     final List<String> planEstudiosUrls = new ArrayList<>();
     List<String> nombresCarrera = new ArrayList<>();
 
+    TextView tvNombreCarrera;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,12 +66,16 @@ public class RutaExperiencia extends AppCompatActivity {
         spCarreras = findViewById(R.id.spListaCarreras);
         llVolver = findViewById(R.id.llVolver);
         btnPlanEstudios = findViewById(R.id.btnPlanEstudios);
+        tvNombreCarrera = findViewById(R.id.tvNombreCarrera);
 
         //recibimos los datos enviados de la lista de carreras
         idCarrera = getIntent().getIntExtra("idCarrera", 0);
         cantidadCiclos = getIntent().getIntExtra("cantidadCiclos", 0);
         planEstudiosUrl = getIntent().getStringExtra("planEstudiosUrl");
         idSede = getIntent().getIntExtra("idSede",0);
+        nombreCarrera = getIntent().getStringExtra("nombreCarrera");
+
+        tvNombreCarrera.setText(nombreCarrera);
 
         requestQueue = Volley.newRequestQueue(this);
 
@@ -94,6 +100,9 @@ public class RutaExperiencia extends AppCompatActivity {
                 cantidadCiclos = cantCiclosCarrera.get(i-1);
                 //obteniendo el url de la carrera seleccionada
                 planEstudiosUrl = planEstudiosUrls.get(i-1);
+                //obteniendo el nombre de la carrera seleccionada
+                nombreCarrera = nombresCarrera.get(i);
+                tvNombreCarrera.setText(nombreCarrera);
                 items = getItems(cantidadCiclos);
                 adapter = new ListaRutaExperienciaAdapter(items,idCarrera);
                 rvListaRutaExperiencia.setAdapter(adapter);
@@ -140,6 +149,7 @@ public class RutaExperiencia extends AppCompatActivity {
                                 planEstudiosUrls.add(planEstudiosUrl);
                                 idsCarrera.add(id);
                                 cantCiclosCarrera.add(cantidadCiclos);
+
                             }catch (JSONException e){
                                 e.printStackTrace();
                             }
