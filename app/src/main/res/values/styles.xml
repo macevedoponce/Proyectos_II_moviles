@@ -40,12 +40,6 @@
     <style name="Base.Widget.MaterialComponents.TextInputLayout.OutLineBox"/>
 
 
-    <style name="CustomRatingBar" parent="@android:style/Widget.RatingBar">
-        <item name="android:progressDrawable">@drawable/ic_custom_star</item>
-        <item name="android:minHeight">30dp</item>
-        <item name="android:maxHeight">30dp</item>
-    </style>
-
     <style name="CustomFavoriteBar" parent="@android:style/Widget.RatingBar">
         <item name="android:progressDrawable">@drawable/custom_favorite_button</item>
         <item name="android:minHeight">30dp</item>
