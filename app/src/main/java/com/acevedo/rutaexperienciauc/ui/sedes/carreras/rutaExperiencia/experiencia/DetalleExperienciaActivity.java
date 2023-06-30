@@ -20,6 +20,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
@@ -59,6 +60,8 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
     RatingBar rbCalificarExperiencia;
     TextView tvSinContenido;
 
+    ImageView arrowLeft,arrowRight;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +73,9 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
         llVolver = findViewById(R.id.llVolver);
         rbCalificarExperiencia = findViewById(R.id.rbCalificarExperiencia);
         tvSinContenido = findViewById(R.id.tvSinContenido);
+
+        arrowLeft = findViewById(R.id.arrowLeft);
+        arrowRight = findViewById(R.id.arrowRight);
 
         // Configuración del LayoutManager
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -98,6 +104,23 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
+
+                //flechas
+
+                if (layoutManager.findFirstVisibleItemPosition() == 0) {
+                    arrowLeft.setVisibility(View.INVISIBLE); // Oculta la flecha izquierda si se encuentra en el primer elemento
+                } else {
+                    arrowLeft.setVisibility(View.VISIBLE); // Muestra la flecha izquierda si hay elementos anteriores
+                }
+
+                if (layoutManager.findLastVisibleItemPosition() == recyclerView.getAdapter().getItemCount() - 1) {
+                    arrowRight.setVisibility(View.INVISIBLE); // Oculta la flecha derecha si se encuentra en el último elemento
+                } else {
+                    arrowRight.setVisibility(View.VISIBLE); // Muestra la flecha derecha si hay elementos siguientes
+                }
+
+                //fin flechas
+
                 // Obtén información sobre el RecyclerView
                 LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
                 int totalItems = layoutManager.getItemCount();
@@ -117,6 +140,23 @@ public class DetalleExperienciaActivity extends AppCompatActivity {
                 progressAnimator.setDuration(1000);
                 progressAnimator.start();
 
+
+
+            }
+        });
+
+        // Implementa la funcionalidad de desplazamiento cuando se hace clic en las flechas
+        arrowLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rvContenido.smoothScrollToPosition(layoutManager.findFirstVisibleItemPosition() - 1);
+            }
+        });
+
+        arrowRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rvContenido.smoothScrollToPosition(layoutManager.findLastVisibleItemPosition() + 1);
             }
         });
     }
