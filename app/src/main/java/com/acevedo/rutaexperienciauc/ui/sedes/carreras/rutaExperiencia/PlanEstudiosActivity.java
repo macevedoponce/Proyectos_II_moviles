@@ -53,8 +53,10 @@ public class PlanEstudiosActivity extends AppCompatActivity {
                 //progreso.dismiss(); // Oculta el ProgressBar cuando la página ha terminado de cargarse
             }
         });
-
-        wvPlanEstudios.loadUrl("https://docs.google.com/gview?embedded=true&url="+pdfUrl);
+//        String googleDocsUrl = "https://docs.google.com/gview?embedded=true&url=";
+        String googleDocsUrl = "https://docs.google.com/viewer?url=";
+        wvPlanEstudios.loadUrl(googleDocsUrl + pdfUrl);
+        //wvPlanEstudios.loadUrl("https://docs.google.com/gview?embedded=true&url="+pdfUrl);
 
         llVolver.setOnClickListener(new View.OnClickListener() {
             @Override
